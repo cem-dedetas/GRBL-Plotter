@@ -857,6 +857,7 @@ namespace GrblPlotter
             // 
             resources.ApplyResources(this.textStatus, "textStatus");
             this.textStatus.Name = "textStatus";
+            this.textStatus.TextChanged += new System.EventHandler(this.textStatus_TextChanged);
             // 
             // btnSimulatePause
             // 

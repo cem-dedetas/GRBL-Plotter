@@ -71,6 +71,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using virtualJoystick;
+using Nefarius.ViGEm.Client;
+using Nefarius.ViGEm.Client.Targets;
+using Nefarius.ViGEm.Client.Targets.Xbox360;
 
 //#pragma warning disable CA1303	// Do not pass literals as localized parameters
 //#pragma warning disable CA1307
@@ -206,6 +209,17 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
+            Console.WriteLine("in main");
+
+            ViGEmClient client = new ViGEmClient();
+
+            IXbox360Controller controller = client.CreateXbox360Controller();
+
+            controller.Connect();
+
+
+
+            Connector(controller);
 
         }
         
@@ -1327,12 +1341,13 @@ namespace GrblPlotter
         }
 
 
-        public static async Task Method1()
+        public static async Task Method1(IXbox360Controller controller)
         {
+#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
             await TaskEx.Run(() =>
             {
                 
-                 TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8910);
+                TcpListener server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
 
                 server.Start();
 
@@ -1346,27 +1361,55 @@ namespace GrblPlotter
 
                 while (true)
                 {
-                    while (!stream.DataAvailable) ;
+                    try
+                    {
+                        while (!stream.DataAvailable) ;
 
-                    Byte[] bytes = new Byte[client.Available];
+                        Byte[] bytes = new Byte[client.Available];
 
+
+                        stream.Read(bytes, 0, bytes.Length);
+                        String data = Encoding.UTF8.GetString(bytes);
+
+                        Contrllr(controller, data);
+
+                        Byte[] response = Encoding.UTF8.GetBytes("---Echo : " + data + "---");
+                        stream.Write(response, 0, response.Length);
+                        TaskEx.Delay(1).Wait();
+                    }
+                    catch{
+                        server.Stop();
+                        client.Close();
+                        server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
+                        server.Start();
+                        client = server.AcceptTcpClient();
+                        stream = client.GetStream();
+
+                        while (!stream.DataAvailable) ;
+
+                        Byte[] bytes = new Byte[client.Available];
+
+
+                        stream.Read(bytes, 0, bytes.Length);
+                        String data = Encoding.UTF8.GetString(bytes);
+
+                        Byte[] response = Encoding.UTF8.GetBytes("Echo : " + data + "\n");
+                        stream.Write(response, 0, response.Length);
+                        TaskEx.Delay(5).Wait();
+                    }
                     
-                    stream.Read(bytes, 0, bytes.Length);
-                    String data = Encoding.UTF8.GetString(bytes);
-
-                    Byte[] response = Encoding.UTF8.GetBytes("Echo : " +data + "\n");
-                    stream.Write(response, 0, response.Length);
-                    TaskEx.Delay(100).Wait();
                 }
 
                 
 
 
             });
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
         }
-        private async void btnCustom1_Click(object sender, EventArgs e)
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+        private void btnCustom1_Click(object sender, EventArgs e)
         {
-            await Method1();
 
         }
 
@@ -1376,6 +1419,43 @@ namespace GrblPlotter
 
         }
 
+        private void textStatus_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private async void Connector(IXbox360Controller controller)
+        {
+            
+            await Method1(controller);
+
+        }
+        private static void Contrllr( IXbox360Controller controller , string userinp )
+        {
+
+            //minimum of -32768, maximum of 32767
+            Console.WriteLine("func");
+            if (userinp == "A" || userinp == "a")
+            {
+                controller.SetAxisValue(Xbox360Axis.LeftThumbX, -32768);
+            }
+            if (userinp == "D" || userinp == "d")
+            {
+                controller.SetAxisValue(Xbox360Axis.LeftThumbX, 32767);
+            }
+            if (userinp == "W" || userinp == "w")
+            {
+                controller.SetAxisValue(Xbox360Axis.LeftThumbY, 32767);
+            }
+            if (userinp == "S" || userinp == "s")
+            {
+                controller.SetAxisValue(Xbox360Axis.LeftThumbY, -32768);
+            }
+            if (userinp == "O" || userinp == "o")
+            {
+                controller.SetAxisValue(Xbox360Axis.LeftThumbX, 0);
+                controller.SetAxisValue(Xbox360Axis.LeftThumbY, 0);
+            }
+        }
     }   
 }
 
