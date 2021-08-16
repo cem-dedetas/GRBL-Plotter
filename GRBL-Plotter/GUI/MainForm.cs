@@ -54,6 +54,7 @@
  * 2021-07-14 code clean up / code quality
 */
 
+
 using GrblPlotter.GUI;
 using Microsoft.Win32;
 using System;
@@ -63,8 +64,11 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using virtualJoystick;
 
@@ -73,6 +77,8 @@ using virtualJoystick;
 
 namespace GrblPlotter
 {
+
+
     public partial class MainForm : Form
     {
         ControlSerialForm _serial_form = null;
@@ -114,29 +120,29 @@ namespace GrblPlotter
         {   // Use the Constructor in a Windows Form for ensuring that initialization is done properly.
             // Use load event: code that requires the window size and location to be known.
 
-            GetAppDataPath();   		// find AppDataPath
-            
+            GetAppDataPath();           // find AppDataPath
+
             CultureInfo ci = new CultureInfo(Properties.Settings.Default.guiLanguage);
             Localization.UpdateLanguage(Properties.Settings.Default.guiLanguage);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
-			
+
             Logger.Info(culture, "###### START GRBL-Plotter Ver. {0}  Language: {1} ######", Application.ProductVersion, ci);
-            UpdateLogging();			// set logging flags
-			
-            InitializeComponent();		// controls
-			
+            UpdateLogging();            // set logging flags
+
+            InitializeComponent();      // controls
+
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(Application_UnhandledException);
 
-            this.Icon = Properties.Resources.Icon;	// set icon
+            this.Icon = Properties.Resources.Icon;  // set icon
 
-// Attention: no MessageBox during splashScreen: never visible and application waits for action!
+            // Attention: no MessageBox during splashScreen: never visible and application waits for action!
             Logger.Info(culture, "++++++ MainForm SplashScreen start");
             _splashscreen = new Splashscreen();		// shows splash screen
-            _splashscreen.Show();					// will be closed if SplashScreenTimer >= 1500
-			
+            _splashscreen.Show();                   // will be closed if SplashScreenTimer >= 1500
+
             if (Properties.Settings.Default.ctrlUpgradeRequired)	// check if update of settings are needed
             {
                 Logger.Info("MainForm_Load - Properties.Settings.Default.ctrlUpgradeRequired");
@@ -145,11 +151,11 @@ namespace GrblPlotter
                 Properties.Settings.Default.Save();
             }
 
-			CustomButtonsSetEvents();		// for buttons 17 to 32
-			SetMenuShortCuts();				// Add shortcuts to menu items
+            CustomButtonsSetEvents();       // for buttons 17 to 32
+            SetMenuShortCuts();				// Add shortcuts to menu items
             LoadRecentList();				// open Recent.txt and fill menu
             if (MRUlist.Count > 0)			// add recent list to gui menu
-            {	
+            {
                 foreach (string item in MRUlist)
                 {
                     ToolStripMenuItem fileRecent = new ToolStripMenuItem(item, null, RecentFile_click);  //create new menu for each item in list
@@ -158,13 +164,13 @@ namespace GrblPlotter
             }
             LoadExtensionList();			// fill menu with available extension-scripts
             CmsPicBoxEnable(false);			// no graphic - no tasks
-            cmsPicBoxReloadFile.ToolTipText = string.Format(culture, "Load '{0}'", MRUlist[0]);	// set last loaded in cms menu
-			
+            cmsPicBoxReloadFile.ToolTipText = string.Format(culture, "Load '{0}'", MRUlist[0]); // set last loaded in cms menu
+
             this.gBoxOverride.Click += GrpBoxOverride_Click;	// add event handler to groupBox for opening/closing Feed override controls
             gBoxOverride.Height = 15;
             gBoxOverrideBig = false;
-            lbDimension.Select(0, 0);		// unselect text Dimension box
-			
+            lbDimension.Select(0, 0);       // unselect text Dimension box
+
             try
             {
                 if (ControlGamePad.Initialize())
@@ -174,20 +180,21 @@ namespace GrblPlotter
 
             Grbl.Init();                    // load and set grbl messages in grblRelated.cs
             ToolTable.Init();               // fill structure in ToolTable.cs
-            GuiVariables.ResetVariables();	// set variables in MainFormObjects.cs			
-		// T E S T	
-			Graphic.Init(Graphic.SourceType.SVG, "", null, null);	// load class for faster 1st import
-			VisuGCode.GetGCodeLines(fCTBCode.Lines, null, null); 
+            GuiVariables.ResetVariables();  // set variables in MainFormObjects.cs			
+                                            // T E S T	
+            Graphic.Init(Graphic.SourceType.SVG, "", null, null);   // load class for faster 1st import
+            VisuGCode.GetGCodeLines(fCTBCode.Lines, null, null);
         }
-		
+
         // initialize Main form
+
         private void MainForm_Load(object sender, EventArgs e)
         {
-			// Use the Constructor in a Windows Form for ensuring that initialization is done properly.
-			// Use load event: code that requires the window size and location to be known.
+            // Use the Constructor in a Windows Form for ensuring that initialization is done properly.
+            // Use load event: code that requires the window size and location to be known.
 
-			SetGUISize();				// resize GUI arcodring last size and check if within display in MainFormUpdate.cs
-			
+            SetGUISize();               // resize GUI arcodring last size and check if within display in MainFormUpdate.cs
+
             if (Properties.Settings.Default.guiCheckUpdate)
             {
                 StatusStripSet(2, Localization.GetString("statusStripeCheckUpdate"), Color.LightGreen);
@@ -198,7 +205,10 @@ namespace GrblPlotter
             SplashScreenTimer.Enabled = true;
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
+
+
         }
+        
 
         private void SplashScreenTimer_Tick(object sender, EventArgs e)
         {
@@ -437,7 +447,7 @@ namespace GrblPlotter
                 Logger.Trace(culture, "MainTimer_Tick - timerUpdateControls {0}", timerUpdateControlSource);
                 UpdateWholeApplication();
                 UpdateControlEnables();       // enable controls if serial connected
-                                        //                resizeJoystick();       // shows / hide A,B,C joystick controls
+                                              //                resizeJoystick();       // shows / hide A,B,C joystick controls
                 Invalidate();
             }
 
@@ -463,7 +473,7 @@ namespace GrblPlotter
 
                 if (Properties.Settings.Default.flowCheckRegistryChange)
                 {
-                    int update=0;
+                    int update = 0;
                     const string reg_key = "HKEY_CURRENT_USER\\SOFTWARE\\GRBL-Plotter";
                     try
                     {
@@ -532,7 +542,8 @@ namespace GrblPlotter
                 Grbl.lastMessage = "";
             }
             if (timerShowGCodeError)
-            {   timerShowGCodeError = false;
+            {
+                timerShowGCodeError = false;
                 ShowGCodeErrors();
             }
             mainTimerCount++;
@@ -558,11 +569,11 @@ namespace GrblPlotter
                 {
                     if (parts[2].Length > 3)
                     {
-                        Color tmp=SystemColors.Control;
+                        Color tmp = SystemColors.Control;
                         try
                         { tmp = ColorTranslator.FromHtml(parts[2]); }
                         catch (Exception err)
-                        { Logger.Error(err,"SetCustomButton with {0} from {1}",parts[2], text); }
+                        { Logger.Error(err, "SetCustomButton with {0} from {1}", parts[2], text); }
                         btnColor = tmp;
                     }
                 }
@@ -623,10 +634,11 @@ namespace GrblPlotter
                 {
                     var result = f.ShowDialog(this);
                     if (result == DialogResult.OK)
-                    { 	timerUpdateControlSource = "btnCustomButton_Click"; 
-						//UpdateControlEnables(); 
-						UpdateWholeApplication(); 
-					}
+                    {
+                        timerUpdateControlSource = "btnCustomButton_Click";
+                        //UpdateControlEnables(); 
+                        UpdateWholeApplication();
+                    }
                 }
             }
             else
@@ -1035,7 +1047,7 @@ namespace GrblPlotter
         {
             //            Logger.Trace("processSpecialCommands");
             bool commandFound = false;
-//#pragma warning disable CA1307
+            //#pragma warning disable CA1307
             if (command.ToLower(culture).IndexOf("#start") >= 0) { BtnStreamStart_Click(this, EventArgs.Empty); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#stop") >= 0) { BtnStreamStop_Click(this, EventArgs.Empty); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#f100") >= 0) { SendRealtimeCommand(144); commandFound = true; }
@@ -1053,7 +1065,7 @@ namespace GrblPlotter
             else if (command.ToLower(culture).IndexOf("#feedhold") >= 0) { GrblFeedHold(); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#resume") >= 0) { GrblResume(); commandFound = true; }
             else if (command.ToLower(culture).IndexOf("#killalarm") >= 0) { GrblKillAlarm(); commandFound = true; }
-//#pragma warning restore CA1307
+            //#pragma warning restore CA1307
 
             return commandFound;
         }
@@ -1071,7 +1083,7 @@ namespace GrblPlotter
         {
             if (e.KeyValue == (char)13)
             {
-           //     int lineNr; ;
+                //     int lineNr; ;
                 if (int.TryParse(toolStrip_tb_StreamLine.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out int lineNr))
                 {
                     StartStreaming(lineNr);      // 1142
@@ -1313,6 +1325,57 @@ namespace GrblPlotter
             img.Dispose();
             g.Dispose();
         }
-    }
+
+
+        public static async Task Method1()
+        {
+            await TaskEx.Run(() =>
+            {
+                
+                 TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8910);
+
+                server.Start();
+
+
+                TcpClient client = server.AcceptTcpClient();
+
+                Console.WriteLine("A client connected.");
+
+                NetworkStream stream = client.GetStream();
+
+
+                while (true)
+                {
+                    while (!stream.DataAvailable) ;
+
+                    Byte[] bytes = new Byte[client.Available];
+
+                    
+                    stream.Read(bytes, 0, bytes.Length);
+                    String data = Encoding.UTF8.GetString(bytes);
+
+                    Byte[] response = Encoding.UTF8.GetBytes("Echo : " +data + "\n");
+                    stream.Write(response, 0, response.Length);
+                    TaskEx.Delay(100).Wait();
+                }
+
+                
+
+
+            });
+        }
+        private async void btnCustom1_Click(object sender, EventArgs e)
+        {
+            await Method1();
+
+        }
+
+
+        private void closeConnection_Click(object sender, EventArgs e)
+        {
+
+        }
+
+    }   
 }
 

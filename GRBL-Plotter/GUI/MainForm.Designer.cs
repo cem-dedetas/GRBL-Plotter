@@ -151,6 +151,7 @@ namespace GrblPlotter
             this.cmsCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsUpdate2DView = new System.Windows.Forms.ToolStripMenuItem();
             this.gBoxStream = new System.Windows.Forms.GroupBox();
+            this.textStatus = new System.Windows.Forms.TextBox();
             this.btnSimulatePause = new System.Windows.Forms.Button();
             this.btnSimulateSlower = new System.Windows.Forms.Button();
             this.btnSimulateFaster = new System.Windows.Forms.Button();
@@ -833,6 +834,7 @@ namespace GrblPlotter
             // 
             // gBoxStream
             // 
+            this.gBoxStream.Controls.Add(this.textStatus);
             this.gBoxStream.Controls.Add(this.btnSimulatePause);
             this.gBoxStream.Controls.Add(this.btnSimulateSlower);
             this.gBoxStream.Controls.Add(this.btnSimulateFaster);
@@ -850,6 +852,11 @@ namespace GrblPlotter
             resources.ApplyResources(this.gBoxStream, "gBoxStream");
             this.gBoxStream.Name = "gBoxStream";
             this.gBoxStream.TabStop = false;
+            // 
+            // textStatus
+            // 
+            resources.ApplyResources(this.textStatus, "textStatus");
+            this.textStatus.Name = "textStatus";
             // 
             // btnSimulatePause
             // 
@@ -1928,6 +1935,7 @@ namespace GrblPlotter
             resources.ApplyResources(this.btnCustom1, "btnCustom1");
             this.btnCustom1.Name = "btnCustom1";
             this.btnCustom1.UseVisualStyleBackColor = true;
+            this.btnCustom1.Click += new System.EventHandler(this.btnCustom1_Click);
             this.btnCustom1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnCustomButton_Click);
             // 
             // btnCustom2
@@ -3411,6 +3419,7 @@ namespace GrblPlotter
         private System.Windows.Forms.ToolStripMenuItem createJogPathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem control3rdGRBLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cmsPicBoxRotateSelectedPath;
+        private System.Windows.Forms.TextBox textStatus;
     }
 }
 
