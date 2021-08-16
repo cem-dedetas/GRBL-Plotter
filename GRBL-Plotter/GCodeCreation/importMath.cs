@@ -25,36 +25,36 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 
-namespace GRBL_Plotter
+namespace GrblPlotter
 {
-    class importMath
+    public static class ImportMath
     {
 //        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Calculate Path-Arc-Command - Code from https://github.com/vvvv/SVG/blob/master/Source/Paths/SvgArcSegment.cs
         /// </summary>
-        public static void calcArc(float StartX, float StartY, float RadiusX, float RadiusY, 
-            float Angle, float Size, float Sweep, float EndX, float EndY, Action<Point, string> moveTo)
+        public static void CalcArc(float astartX, float astartY, float radiusX, float radiusY, 
+            float angle, float size, float sweep, float endX, float endY, Action<Point, string> moveTo)
         {
  //           Logger.Trace(" calcArc Start: {0};{1} rx: {2} ry: {3} a: {4} size: {5} sweep: {6} End: {7};{8}", StartX, StartY, RadiusX, RadiusY,
 //            Angle, Size, Sweep, EndX, EndY);
-            if (RadiusX == 0.0f && RadiusY == 0.0f)
+            if (radiusX == 0.0f && radiusY == 0.0f)
             {
                 //              graphicsPath.AddLine(this.Start, this.End);
                 return;
             }
-            double sinPhi = Math.Sin(Angle * Math.PI / 180.0);
-            double cosPhi = Math.Cos(Angle * Math.PI / 180.0);
-            double x1dash = cosPhi * (StartX - EndX) / 2.0 + sinPhi * (StartY - EndY) / 2.0;
-            double y1dash = -sinPhi * (StartX - EndX) / 2.0 + cosPhi * (StartY - EndY) / 2.0;
+            double sinPhi = Math.Sin(angle * Math.PI / 180.0);
+            double cosPhi = Math.Cos(angle * Math.PI / 180.0);
+            double x1dash = cosPhi * (astartX - endX) / 2.0 + sinPhi * (astartY - endY) / 2.0;
+            double y1dash = -sinPhi * (astartX - endX) / 2.0 + cosPhi * (astartY - endY) / 2.0;
             double root;
-            double numerator = RadiusX * RadiusX * RadiusY * RadiusY - RadiusX * RadiusX * y1dash * y1dash - RadiusY * RadiusY * x1dash * x1dash;
-            float rx = RadiusX;
-            float ry = RadiusY;
+            double numerator = radiusX * radiusX * radiusY * radiusY - radiusX * radiusX * y1dash * y1dash - radiusY * radiusY * x1dash * x1dash;
+            float rx = radiusX;
+            float ry = radiusY;
             if (numerator < 0.0)
             {
-                float s = (float)Math.Sqrt(1.0 - numerator / (RadiusX * RadiusX * RadiusY * RadiusY));
+                float s = (float)Math.Sqrt(1.0 - numerator / (radiusX * radiusX * radiusY * radiusY));
 
                 rx *= s;
                 ry *= s;
@@ -62,19 +62,19 @@ namespace GRBL_Plotter
             }
             else
             {
-                root = ((Size == 1 && Sweep == 1) || (Size == 0 && Sweep == 0) ? -1.0 : 1.0) * Math.Sqrt(numerator / (RadiusX * RadiusX * y1dash * y1dash + RadiusY * RadiusY * x1dash * x1dash));
+                root = ((size == 1 && sweep == 1) || (size == 0 && sweep == 0) ? -1.0 : 1.0) * Math.Sqrt(numerator / (radiusX * radiusX * y1dash * y1dash + radiusY * radiusY * x1dash * x1dash));
             }
             double cxdash = root * rx * y1dash / ry;
             double cydash = -root * ry * x1dash / rx;
-            double cx = cosPhi * cxdash - sinPhi * cydash + (StartX + EndX) / 2.0;
-            double cy = sinPhi * cxdash + cosPhi * cydash + (StartY + EndY) / 2.0;
+            double cx = cosPhi * cxdash - sinPhi * cydash + (astartX + endX) / 2.0;
+            double cy = sinPhi * cxdash + cosPhi * cydash + (astartY + endY) / 2.0;
             double theta1 = CalculateVectorAngle(1.0, 0.0, (x1dash - cxdash) / rx, (y1dash - cydash) / ry);
             double dtheta = CalculateVectorAngle((x1dash - cxdash) / rx, (y1dash - cydash) / ry, (-x1dash - cxdash) / rx, (-y1dash - cydash) / ry);
-            if (Sweep == 0 && dtheta > 0)
+            if (sweep == 0 && dtheta > 0)
             {
                 dtheta -= 2.0 * Math.PI;
             }
-            else if (Sweep == 1 && dtheta < 0)
+            else if (sweep == 1 && dtheta < 0)
             {
                 dtheta += 2.0 * Math.PI;
             }
@@ -82,8 +82,8 @@ namespace GRBL_Plotter
             double delta = dtheta / segments;
             double t = 8.0 / 3.0 * Math.Sin(delta / 4.0) * Math.Sin(delta / 4.0) / Math.Sin(delta / 2.0);
 
-            double startX = StartX;
-            double startY = StartY;
+            double startX = astartX;
+            double startY = astartY;
 
             for (int i = 0; i < segments; ++i)
             {
@@ -108,7 +108,8 @@ namespace GRBL_Plotter
                 points[2] = new Point((endpointX + dxe), (endpointY + dye));
                 points[3] = new Point(endpointX, endpointY);
                 var b = GetBezierApproximation(points, (int)Properties.Settings.Default.importBezierLineSegmentsCnt);
-                for (int k = 1; k < b.Points.Count; k++)
+                if (moveTo != null)
+                    for (int k = 1; k < b.Points.Count; k++)
                     moveTo(b.Points[k], "arc"); //svgMoveTo(b.Points[k], "arc");
 
                 theta1 = theta2;
@@ -126,29 +127,31 @@ namespace GRBL_Plotter
         }
 
 
-        public static void calcQuadraticBezier(Point P0, Point c2, Point c3, Action<Point, string> moveTo, string cmt)
+        public static void CalcQuadraticBezier(Point p0, Point c2, Point c3, Action<Point, string> moveTo, string cmt)
         {
-            Vector qp1 = new Vector(); qp1 = ((Vector)c2 - (Vector)P0); qp1 *= (2d / 3d); qp1 += (Vector)P0;      // float qpx1 = (cx2 - lastX) * 2 / 3 + lastX;     // shorten control points to 2/3 length to use 
-            Vector qp2 = new Vector(); qp2 = ((Vector)c2 - (Vector)c3); qp2 *= (2d / 3d); qp2 += (Vector)c3;      // float qpx2 = (cx2 - cx3) * 2 / 3 + cx3;
+            Vector qp1  = ((Vector)c2 - (Vector)p0); qp1 *= (2d / 3d); qp1 += (Vector)p0;      // float qpx1 = (cx2 - lastX) * 2 / 3 + lastX;     // shorten control points to 2/3 length to use 
+            Vector qp2  = ((Vector)c2 - (Vector)c3); qp2 *= (2d / 3d); qp2 += (Vector)c3;      // float qpx2 = (cx2 - cx3) * 2 / 3 + cx3;
             Point[] points = new Point[4]; 
-            points[0] = P0;             // new Point(lastX, lastY);
+            points[0] = p0;             // new Point(lastX, lastY);
             points[1] = (Point)qp1;     // new Point(qpx1, qpy1);
             points[2] = (Point)qp2;     // new Point(qpx2, qpy2);
             points[3] = c3;             // new Point(cx3, cy3);
             var b = GetBezierApproximation(points, (int)Properties.Settings.Default.importBezierLineSegmentsCnt);
-            for (int i = 1; i < b.Points.Count; i++)
-                moveTo(b.Points[i], cmt);
+            if(moveTo!=null)
+                for (int i = 1; i < b.Points.Count; i++)
+                    moveTo(b.Points[i], cmt);
         }
 
-        public static void calcCubicBezier(Point P0, Point c1, Point c2, Point c3, Action<Point, string> moveTo, string cmt)
+        public static void CalcCubicBezier(Point p0, Point c1, Point c2, Point c3, Action<Point, string> moveTo, string cmt)
         {
             Point[] points = new Point[4];
-            points[0] = P0;             // new Point(lastX, lastY);
+            points[0] = p0;             // new Point(lastX, lastY);
             points[1] = c1;             
             points[2] = c2;             
             points[3] = c3;             // new Point(cx3, cy3);
             var b = GetBezierApproximation(points, (int)Properties.Settings.Default.importBezierLineSegmentsCnt);
-            for (int i = 1; i < b.Points.Count; i++)
+            if (moveTo != null)
+                for (int i = 1; i < b.Points.Count; i++)
                 moveTo(b.Points[i], cmt);
         }
 
@@ -160,11 +163,12 @@ namespace GRBL_Plotter
         public static PolyLineSegment GetBezierApproximation(Point[] controlPoints, int outputSegmentCount)
         {
             Point[] points = new Point[outputSegmentCount + 1];
-            for (int i = 0; i <= outputSegmentCount; i++)
-            {
-                double t = (double)i / outputSegmentCount;
-                points[i] = GetBezierPoint(t, controlPoints, 0, controlPoints.Length);
-            }
+            if (controlPoints!=null)
+                for (int i = 0; i <= outputSegmentCount; i++)
+                {
+                    double t = (double)i / outputSegmentCount;
+                    points[i] = GetBezierPoint(t, controlPoints, 0, controlPoints.Length);
+                }
             return new PolyLineSegment(points, true);
         }
         private static Point GetBezierPoint(double t, Point[] controlPoints, int index, int count)

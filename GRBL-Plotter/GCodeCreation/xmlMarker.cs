@@ -1,7 +1,7 @@
 ﻿/*  GRBL-Plotter. Another GCode sender for GRBL.
     This file is part of the GRBL-Plotter application.
    
-    Copyright (C) 2019-2020 Sven Hasemann contact: svenhb@web.de
+    Copyright (C) 2019-2021 Sven Hasemann contact: svenhb@web.de
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,88 +21,92 @@
  * 2020-06-15 add 'Header'
  * 2020-08-04 add figureNr, penWidth
  * 2020-12-16 add Tile
+ * 2021-07-02 code clean up / code quality
 */
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 
-namespace GRBL_Plotter
+//#pragma warning disable CA1303	// Do not pass literals as localized parameters
+//#pragma warning disable CA1307
+
+namespace GrblPlotter
 {
-    public enum xmlMarkerType { none, Tile, Group, Figure, Path, Pass, Contour, Fill, Line };
-    public static class xmlMarker
+    public enum XmlMarkerType { None, Tile, Group, Figure, Path, Pass, Contour, Fill, Line };
+    public static class XmlMarker
     {   // order by hierachy / importance
-        public const string tileStart = "<Tile";
-        public const string tileEnd = "</Tile";
-        public const string groupStart = "<Group";
-        public const string groupEnd = "</Group";
-        public const string figureStart = "<Figure";
-        public const string figureEnd = "</Figure";
-        public const string pathStart = "<Path";
-        public const string pathEnd = "</Path";
-        public const string passStart = "<Pass";
-        public const string passEnd = "</Pass";
-        public const string contourStart = "<Contour";
-        public const string contourEnd = "</Contour";
-        public const string fillStart = "<Fill";
-        public const string fillEnd = "</Fill";
-        public const string revolutionStart = "<Revolution";
-        public const string revolutionEnd = "</Revolution";
-        public const string clearanceStart = "<Clearance";
-        public const string clearanceEnd = "</Clearance";
-        public const string headerStart = "<Header";
-        public const string headerEnd = "</Header";
+        public const string TileStart = "<Tile";
+        public const string TileEnd = "</Tile";
+        public const string GroupStart = "<Group";
+        public const string GroupEnd = "</Group";
+        public const string FigureStart = "<Figure";
+        public const string FigureEnd = "</Figure";
+        public const string PathStart = "<Path";
+        public const string PathEnd = "</Path";
+        public const string PassStart = "<Pass";
+        public const string PassEnd = "</Pass";
+        public const string ContourStart = "<Contour";
+        public const string ContourEnd = "</Contour";
+        public const string FillStart = "<Fill";
+        public const string FillEnd = "</Fill";
+        public const string RevolutionStart = "<Revolution";
+        public const string RevolutionEnd = "</Revolution";
+        public const string ClearanceStart = "<Clearance";
+        public const string ClearanceEnd = "</Clearance";
+        public const string HeaderStart = "<Header";
+        public const string HeaderEnd = "</Header";
 
-        public const string tangentialAxis = "<Tangential";
-        public const string halftoneS = "<DisplayPenWidthS";
-        public const string halftoneZ = "<DisplayPenWidthZ";
+        public const string TangentialAxis = "<Tangential";
+        public const string HalftoneS = "<DisplayPenWidthS";
+        public const string HalftoneZ = "<DisplayPenWidthZ";
 
-        public struct BlockData
+        internal class BlockData
         {
-            public int lineStart;           // line nr. in editor
-            public int lineEnd;             // line nr. in editor
-            public xyPoint posStart;        // xy position
-            public xyPoint posEnd;
-            public double distance;
-            public bool reverse;
-            public int figureNr;
+            public int LineStart { get; set; }           // line nr. in editor
+            public int LineEnd { get; set; }             // line nr. in editor
+            public XyPoint PosStart { get; set; }        // xy position
+            public XyPoint PosEnd { get; set; }
+            public double Distance { get; set; }
+            public bool Reverse { get; set; }
+            public int FigureNr { get; set; }
 
-            public int id;                  // block informations
-            public int toolNr;
-            public int codeSize;
-            public int codeArea;
-            public int pathId;        
-            public double pathLength;
-            public double pathArea;
-            public double penWidth;
+            public int Id { get; set; }                  // block informations
+            public int ToolNr { get; set; }
+            public int CodeSize { get; set; }
+            public int CodeArea { get; set; }
+            public int PathId { get; set; }
+            public double PathLength { get; set; }
+            public double PathArea { get; set; }
+            public double PenWidth { get; set; }
 
-            public string geometry;
-            public string penColor;
-            public string toolName;
-            public string layer;
-            public string type;
+            public string Geometry { get; set; }
+            public string PenColor { get; set; }
+            public string ToolName { get; set; }
+            public string Layer { get; set; }
+            public string Type { get; set; }
         };
 
-        private static List<BlockData> listFigures = new List<BlockData>();
-        private static List<BlockData> listGroups = new List<BlockData>();
-        private static List<BlockData> listTiles = new List<BlockData>();
-		
-        public static BlockData tmpFigure = new BlockData();
-        public static BlockData tmpGroup = new BlockData();
-        public static BlockData tmpTile = new BlockData();
-		
-        public static BlockData lastFigure = new BlockData();
-        public static BlockData lastGroup = new BlockData();
-        public static BlockData lastTile = new BlockData();
-        public static BlockData header = new BlockData();
-        public static BlockData footer = new BlockData();
+        private static readonly List<BlockData> listFigures = new List<BlockData>();
+        private static readonly List<BlockData> listGroups = new List<BlockData>();
+        private static readonly List<BlockData> listTiles = new List<BlockData>();
 
-        public enum sortOption { Id, Color, Width, Layer, Type, Geometry, ToolNr, ToolName, CodeSize, CodeArea, Distance };
+        internal static BlockData tmpFigure = new BlockData();
+        internal static BlockData tmpGroup = new BlockData();
+        internal static BlockData tmpTile = new BlockData();
+
+        internal static BlockData lastFigure = new BlockData();
+        internal static BlockData lastGroup = new BlockData();
+        internal static BlockData lastTile = new BlockData();
+        internal static BlockData header = new BlockData();
+        internal static BlockData footer = new BlockData();
+
+        public enum SortOption { Id, Color, Width, Layer, Type, Geometry, ToolNR, ToolName, CodeSize, CodeArea, Distance };
 
         // Trace, Debug, Info, Warn, Error, Fatal
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly CultureInfo culture = CultureInfo.InvariantCulture;
         private static uint logFlags = 0;
         private static bool logEnable = false;
 
@@ -110,153 +114,157 @@ namespace GRBL_Plotter
         public static void Reset()
         {
             listFigures.Clear(); listGroups.Clear(); listTiles.Clear();
-            header.lineStart = 0; header.lineEnd = 999999;
-            footer.lineStart = footer.lineEnd = 0;
-			
-			logFlags = (uint)Properties.Settings.Default.importLoggerSettings;
-            logEnable = Properties.Settings.Default.guiExtendedLoggingEnabled && ((logFlags & (uint)LogEnable.Level4) > 0);			
+            header.LineStart = 0; header.LineEnd = 999999;
+            footer.LineStart = footer.LineEnd = 0;
+
+            logFlags = (uint)Properties.Settings.Default.importLoggerSettings;
+            logEnable = Properties.Settings.Default.guiExtendedLoggingEnabled && ((logFlags & (uint)LogEnables.Level4) > 0);
         }
 
 
-        public static void sortBy(sortOption sort, bool reverse = false)
-		{
-			switch (sort)
-			{
-				case sortOption.Id:
-					if (reverse) { listFigures.Sort((x, y) => y.id.CompareTo(x.id)); }
-					else { listFigures.Sort((x, y) => x.id.CompareTo(y.id)); }
-					return;
-
-                case sortOption.Color:
-                    if (reverse) listFigures.Sort((x, y) => y.penColor.CompareTo(x.penColor));
-                    else listFigures.Sort((x, y) => x.penColor.CompareTo(y.penColor));
+        public static void SortBy(SortOption sort)
+        { SortBy(sort, false); }
+        public static void SortBy(SortOption sort, bool reverse)
+        {
+            switch (sort)
+            {
+                case SortOption.Id:
+                    if (reverse) { listFigures.Sort((x, y) => y.Id.CompareTo(x.Id)); }
+                    else { listFigures.Sort((x, y) => x.Id.CompareTo(y.Id)); }
                     return;
 
-                case sortOption.Width:
-                    if (reverse) listFigures.Sort((x, y) => y.penWidth.CompareTo(x.penWidth));
-                    else listFigures.Sort((x, y) => x.penWidth.CompareTo(y.penWidth));
+                case SortOption.Color:
+                    if (reverse) listFigures.Sort((x, y) => y.PenColor.CompareTo(x.PenColor));
+                    else listFigures.Sort((x, y) => x.PenColor.CompareTo(y.PenColor));
                     return;
 
-                case sortOption.Layer:
-                    if (reverse) listGroups.Sort((x, y) => y.layer.CompareTo(x.layer));
-                    else listGroups.Sort((x, y) => x.layer.CompareTo(y.layer));
-                    sortFigureById(reverse);
+                case SortOption.Width:
+                    if (reverse) listFigures.Sort((x, y) => y.PenWidth.CompareTo(x.PenWidth));
+                    else listFigures.Sort((x, y) => x.PenWidth.CompareTo(y.PenWidth));
                     return;
 
-                case sortOption.Type:
-                    if (reverse) listFigures.Sort((x, y) => y.type.CompareTo(x.type));
-                    else listFigures.Sort((x, y) => x.type.CompareTo(y.type));
-                    sortFigureById(reverse);
+                case SortOption.Layer:
+                    if (reverse) listGroups.Sort((x, y) => y.Layer.CompareTo(x.Layer));
+                    else listGroups.Sort((x, y) => x.Layer.CompareTo(y.Layer));
+                    CortFigureById(reverse);
                     return;
 
-                case sortOption.Geometry:
-					if (reverse) listFigures.Sort((x, y) => y.geometry.CompareTo(x.geometry));
-					else listFigures.Sort((x, y) => x.geometry.CompareTo(y.geometry));
-					return;
-		
-				case sortOption.ToolNr:
-				    if (reverse) { listFigures.Sort((x, y) => y.toolNr.CompareTo(x.toolNr)); listGroups.Sort((x, y) => y.toolNr.CompareTo(x.toolNr)); }
-					else { listFigures.Sort((x, y) => y.toolNr.CompareTo(x.toolNr)); listGroups.Sort((x, y) => y.toolNr.CompareTo(x.toolNr)); }
-					return;
-							
-				case sortOption.ToolName:
-					    if (listGroups.Count > 0)
-						{ sortGroupByToolName(reverse); sortFigureById(reverse); }
-						else
-							sortFigureByToolName(reverse);
-						return;										
+                case SortOption.Type:
+                    if (reverse) listFigures.Sort((x, y) => y.Type.CompareTo(x.Type));
+                    else listFigures.Sort((x, y) => x.Type.CompareTo(y.Type));
+                    CortFigureById(reverse);
+                    return;
 
-                case sortOption.CodeSize:
-						if (reverse) listGroups.Sort((x, y) => y.codeSize.CompareTo(x.codeSize));
-						else listGroups.Sort((x, y) => x.codeSize.CompareTo(y.codeSize));
-						sortFigureById(reverse);
-						return;
+                case SortOption.Geometry:
+                    if (reverse) listFigures.Sort((x, y) => y.Geometry.CompareTo(x.Geometry));
+                    else listFigures.Sort((x, y) => x.Geometry.CompareTo(y.Geometry));
+                    return;
 
-				case sortOption.CodeArea:
-						if (reverse) listGroups.Sort((x, y) => y.codeArea.CompareTo(x.codeArea));
-						else listGroups.Sort((x, y) => x.codeArea.CompareTo(y.codeArea));
-						sortFigureById(reverse);
-						return;
+                case SortOption.ToolNR:
+                    if (reverse) { listFigures.Sort((x, y) => y.ToolNr.CompareTo(x.ToolNr)); listGroups.Sort((x, y) => y.ToolNr.CompareTo(x.ToolNr)); }
+                    else { listFigures.Sort((x, y) => y.ToolNr.CompareTo(x.ToolNr)); listGroups.Sort((x, y) => y.ToolNr.CompareTo(x.ToolNr)); }
+                    return;
 
-				case sortOption.Distance:
-						sortByDistance();
-						return;
-								
-				default:
-					return;
-			}						
-		}
+                case SortOption.ToolName:
+                    if (listGroups.Count > 0)
+                    { SortGroupByToolName(reverse); CortFigureById(reverse); }
+                    else
+                        SortFigureByToolName(reverse);
+                    return;
 
+                case SortOption.CodeSize:
+                    if (reverse) listGroups.Sort((x, y) => y.CodeSize.CompareTo(x.CodeSize));
+                    else listGroups.Sort((x, y) => x.CodeSize.CompareTo(y.CodeSize));
+                    CortFigureById(reverse);
+                    return;
 
-        public static void sortById(bool reverse = false)
-        {
-            if (reverse) { listFigures.Sort((x, y) => y.id.CompareTo(x.id)); listGroups.Sort((x, y) => y.id.CompareTo(x.id)); }
-            else { listFigures.Sort((x, y) => x.id.CompareTo(y.id)); listGroups.Sort((x, y) => x.id.CompareTo(y.id)); }
-        }
-        public static void sortFigureById(bool reverse = false)
-        {
-            if (reverse) { listFigures.Sort((x, y) => y.id.CompareTo(x.id)); }
-            else { listFigures.Sort((x, y) => x.id.CompareTo(y.id)); }
-        }
-        public static void sortFigureByToolName(bool reverse = false)
-        {
-            if (reverse) { listFigures.Sort((x, y) => y.toolName.CompareTo(x.toolName)); }
-            else { listFigures.Sort((x, y) => x.toolName.CompareTo(y.toolName)); }
-        }
-        public static void sortGroupByToolName(bool reverse = false)
-        {
-            if (reverse) { listGroups.Sort((x, y) => y.toolName.CompareTo(x.toolName)); }
-            else { listGroups.Sort((x, y) => x.toolName.CompareTo(y.toolName)); }
+                case SortOption.CodeArea:
+                    if (reverse) listGroups.Sort((x, y) => y.CodeArea.CompareTo(x.CodeArea));
+                    else listGroups.Sort((x, y) => x.CodeArea.CompareTo(y.CodeArea));
+                    CortFigureById(reverse);
+                    return;
+
+                case SortOption.Distance:
+                    SortByDistance();
+                    return;
+
+                default:
+                    return;
+            }
         }
 
-		public static void listIDs()
-		{
-			for(int i=0; i< listGroups.Count; i++)
-			{	Logger.Trace("	xmlMarker Group  {0}  Id:{1}",i, listGroups[i].id);	}
-		
-			for(int i=0; i< listFigures.Count; i++)
-			{	Logger.Trace("	xmlMarker Figure {0}  Id:{1}",i, listFigures[i].id);}	
-		}
-		
-		public static int[] getFigureIdOrder()
-		{	int[] tmp = new int[listFigures.Count];
-			for(int i=0; i< listFigures.Count; i++)
-			{	tmp[i] = listFigures[i].id;}
-			return tmp;
-		}
-		public static int[] getGroupIdOrder()
-		{	int[] tmp = new int[listGroups.Count];
-			for(int i=0; i< listGroups.Count; i++)
-			{	tmp[i] = listGroups[i].id;}
-			return tmp;
-		}
 
-        public static void sortByDistance()
+        /*   public static void sortById(bool reverse = false)
+           {
+               if (reverse) { listFigures.Sort((x, y) => y.id.CompareTo(x.id)); listGroups.Sort((x, y) => y.id.CompareTo(x.id)); }
+               else { listFigures.Sort((x, y) => x.id.CompareTo(y.id)); listGroups.Sort((x, y) => x.id.CompareTo(y.id)); }
+           }*/
+        public static void CortFigureById(bool reverse)
+        {
+            if (reverse) { listFigures.Sort((x, y) => y.Id.CompareTo(x.Id)); }
+            else { listFigures.Sort((x, y) => x.Id.CompareTo(y.Id)); }
+        }
+        public static void SortFigureByToolName(bool reverse)
+        {
+            if (reverse) { listFigures.Sort((x, y) => y.ToolName.CompareTo(x.ToolName)); }
+            else { listFigures.Sort((x, y) => x.ToolName.CompareTo(y.ToolName)); }
+        }
+        public static void SortGroupByToolName(bool reverse)
+        {
+            if (reverse) { listGroups.Sort((x, y) => y.ToolName.CompareTo(x.ToolName)); }
+            else { listGroups.Sort((x, y) => x.ToolName.CompareTo(y.ToolName)); }
+        }
+
+        public static void ListIds()
+        {
+            for (int i = 0; i < listGroups.Count; i++)
+            { Logger.Trace("	xmlMarker Group  {0}  Id:{1}", i, listGroups[i].Id); }
+
+            for (int i = 0; i < listFigures.Count; i++)
+            { Logger.Trace("	xmlMarker Figure {0}  Id:{1}", i, listFigures[i].Id); }
+        }
+
+        public static int[] GetFigureIdOrder()
+        {
+            int[] tmp = new int[listFigures.Count];
+            for (int i = 0; i < listFigures.Count; i++)
+            { tmp[i] = listFigures[i].Id; }
+            return tmp;
+        }
+        public static int[] GetGroupIdOrder()
+        {
+            int[] tmp = new int[listGroups.Count];
+            for (int i = 0; i < listGroups.Count; i++)
+            { tmp[i] = listGroups[i].Id; }
+            return tmp;
+        }
+
+        public static void SortByDistance()
         {
             List<BlockData> result = new List<BlockData>();
-            xyPoint first = new xyPoint();
+            XyPoint first = new XyPoint();
             double distanceReverse;
             BlockData tmp;
-            bool allowReverse = !VisuGCode.containsG2G3Command() && !VisuGCode.containsG91Command() && !VisuGCode.containsTangential();
+            bool allowReverse = !VisuGCode.ContainsG2G3Command() && !VisuGCode.ContainsG91Command() && !VisuGCode.ContainsTangential();
 
             while (listFigures.Count > 0)
             {
                 for (int i = 0; i < listFigures.Count; i++)
                 {
                     tmp = listFigures[i];
-                    tmp.distance = first.DistanceTo(tmp.posStart);
-                    distanceReverse = first.DistanceTo(tmp.posEnd);
-                    if (allowReverse && (distanceReverse < tmp.distance))
+                    tmp.Distance = first.DistanceTo(tmp.PosStart);
+                    distanceReverse = first.DistanceTo(tmp.PosEnd);
+                    if (allowReverse && (distanceReverse < tmp.Distance))
                     {
-                        tmp.distance = distanceReverse;
-                        tmp.reverse = true;
+                        tmp.Distance = distanceReverse;
+                        tmp.Reverse = true;
                     }
                     listFigures[i] = tmp;
                 }
-                listFigures.Sort((x, y) => x.distance.CompareTo(y.distance));
+                listFigures.Sort((x, y) => x.Distance.CompareTo(y.Distance));
 
                 result.Add(listFigures[0]);
-                first = listFigures[0].posEnd;
+                first = listFigures[0].PosEnd;
                 listFigures.RemoveAt(0);
             }
 
@@ -266,168 +274,178 @@ namespace GRBL_Plotter
         }
 
 
-        public static string getSortedCode(string[] oldCode)
+        public static string GetSortedCode(string[] oldCode)
         {
-            StringBuilder tmp = new StringBuilder();
+            if (oldCode == null) return "";
 
-            for (int i = 0; i < xmlMarker.header.lineEnd; i++)          // copy header
+            StringBuilder tmp = new StringBuilder();
+            for (int i = 0; i < XmlMarker.header.LineEnd; i++)          // copy header
             { tmp.AppendLine(oldCode[i]); }
 
             if (listGroups.Count > 0)
             {
                 foreach (BlockData group in listGroups)            // go through all listed groups
                 {
-                    tmp.AppendLine(oldCode[group.lineStart]);
-                    if (gcode.loggerTrace) Logger.Trace(" AddGroup {0}", oldCode[group.lineStart]);
+                    tmp.AppendLine(oldCode[group.LineStart]);
+                    if (Gcode.LoggerTrace) Logger.Trace(culture, " AddGroup {0}", oldCode[group.LineStart]);
 
                     foreach (BlockData figure in listFigures)       // check if figure is within group
                     {
-                        if ((figure.lineStart >= group.lineStart) && (figure.lineEnd <= group.lineEnd))
+                        if ((figure.LineStart >= group.LineStart) && (figure.LineEnd <= group.LineEnd))
                         {
-                            if (gcode.loggerTrace) Logger.Trace("  AddFigure {0}", oldCode[figure.lineStart]);
-                            if (figure.reverse)
-                                oldCode[figure.lineStart] += "(reverse)";
+                            if (Gcode.LoggerTrace) Logger.Trace(culture, "  AddFigure {0}", oldCode[figure.LineStart]);
+                            if (figure.Reverse)
+                                oldCode[figure.LineStart] += "(reverse)";
 
-                            for (int i = figure.lineStart; i <= figure.lineEnd; i++)
+                            for (int i = figure.LineStart; i <= figure.LineEnd; i++)
                             { tmp.AppendLine(oldCode[i]); }
                         }
                     }
-                    tmp.AppendLine(oldCode[group.lineEnd]);
+                    tmp.AppendLine(oldCode[group.LineEnd]);
                 }
             }
             else
             {
                 foreach (BlockData figure in listFigures)
                 {
-                    if (figure.reverse)
-                        oldCode[figure.lineStart] += "(reverse)";
+                    if (figure.Reverse)
+                        oldCode[figure.LineStart] += "(reverse)";
 
-                    for (int i = figure.lineStart; i <= figure.lineEnd; i++)
+                    for (int i = figure.LineStart; i <= figure.LineEnd; i++)
                     { tmp.AppendLine(oldCode[i]); }
                 }  // copy sorted blocks
             }
 
-            for (int i = footer.lineStart + 1; i < oldCode.Length; i++)          // copy footer
+            for (int i = footer.LineStart + 1; i < oldCode.Length; i++)          // copy footer
             { tmp.AppendLine(oldCode[i]); }
 
             return tmp.ToString();
         }
 
-
-        public static string getAttributeValue(string Element, string Attribute, int offset=0)
+        public static string GetAttributeValue(string element, string attribute)
+        { return GetAttributeValue(element, attribute, 0); }
+        public static string GetAttributeValue(string element, string attribute, int offset)
         {
-//            Logger.Trace("   getAttributeValue  element:{0}  attribute:{1}", Element, Attribute);
-            int posAttribute = Element.IndexOf(Attribute, offset);
+            //            Logger.Trace("   getAttributeValue  element:{0}  attribute:{1}", Element, Attribute);
+            if (element == null) return "";
+            if (attribute == null) return "";
+            int posAttribute = element.IndexOf(attribute, offset);
             if (posAttribute <= 0) return "";
-            int strt = Element.IndexOf('"', posAttribute + Attribute.Length);
-            int end = Element.IndexOf('"', strt + 1);
-            string val = Element.Substring(strt + 1, (end - strt - 1));
+            int strt = element.IndexOf('"', posAttribute + attribute.Length);
+            int end = element.IndexOf('"', strt + 1);
+            string val = element.Substring(strt + 1, (end - strt - 1));
             //            if (gcode.loggerTrace)  Logger.Trace(" getAttributeValue({0}, {1})  '{2}'  s:{3}  e:{4}", Element, Attribute, val, strt, end);
             return val;
         }
-        public static int getAttributeValueInt(string Element, string Attribute)
-        {
-//            Logger.Trace("   getAttributeValueInt  element:{0}  attribute:{1}", Element, Attribute);
-            string tmp = getAttributeValue(Element, Attribute);
-            if (tmp == "") return -1;
-            int att;
-            if (int.TryParse(tmp, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out att))
-                return att;
-            Logger.Error("getAttributeValueInt Element:{0} Attribut:{1}",Element, Attribute);
-            return -1;
-        }
-        public static double getAttributeValueDouble(string Element, string Attribute)
+        public static int GetAttributeValueNumber(string element, string attribute)
         {
             //            Logger.Trace("   getAttributeValueInt  element:{0}  attribute:{1}", Element, Attribute);
-            int start = Element.IndexOf(" ");
-            string tmp = getAttributeValue(Element, Attribute, start);
-            if (tmp == "") return -1;
-            double att;
-            if (double.TryParse(tmp, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out att))
+            string tmp = GetAttributeValue(element, attribute);
+            if (string.IsNullOrEmpty(tmp)) return -1;
+            //   int att;
+            if (int.TryParse(tmp, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out int att))
+                return att;
+            Logger.Error("getAttributeValueInt Element:{0} Attribut:{1}", element, attribute);
+            return -1;
+        }
+        public static double GetAttributeValueDouble(string element, string attribute)
+        {
+            //            Logger.Trace("   getAttributeValueInt  element:{0}  attribute:{1}", Element, Attribute);
+            if (element == null) return -1;
+            int start = element.IndexOf(" ");
+            string tmp = GetAttributeValue(element, attribute, start);
+            if (string.IsNullOrEmpty(tmp)) return -1;
+            //    double att;
+            if (double.TryParse(tmp, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out double att))
             {   //Logger.Trace("getAttributeValueDouble({0}, {1}) tmp:{2} result:{3}",Element,Attribute,tmp,att);
                 return att;
             }
-            Logger.Error("getAttributeValueDouble Element:{0} Attribut:{1}", Element, Attribute);
+            Logger.Error("getAttributeValueDouble Element:{0} Attribut:{1}", element, attribute);
             return -1;
         }
 
 
 
-/*************************************************************************************/
-        public static void AddFigure(int lineStart, string element, int figureNr)
+        /*************************************************************************************/
+        public static void AddFigure(int lineStart, string element, int figureNR)
         {
-            tmpFigure = setBlockData(lineStart, element, figureNr);
-        //    if (logEnable) Logger.Trace("AddFigure color:{0}  width{1}", tmpFigure.penColor, tmpFigure.penWidth);
+            if (element != null)
+                tmpFigure = SetBlockData(lineStart, element, figureNR);
+            //    if (logEnable) Logger.Trace("AddFigure color:{0}  width{1}", tmpFigure.penColor, tmpFigure.penWidth);
             //           if (gcode.loggerTrace) Logger.Trace("AddFigure Line {0}  Id {1}  Geometry {2}", lineStart, tmpFigure.id, tmpFigure.geometry);
         }
 
-        public static BlockData setBlockData(int lineStart, string element, int figNr)
+        internal static BlockData SetBlockData(int lineStart, string element, int figNr)
         {
-//            Logger.Trace("   setBlockData");
-            header.lineEnd = Math.Min(header.lineEnd, lineStart);   // lowest block-line = end of header
+            //            Logger.Trace("   setBlockData");
+            header.LineEnd = Math.Min(header.LineEnd, lineStart);   // lowest block-line = end of header
             BlockData tmp = new BlockData();
-            tmp.lineStart = lineStart; tmp.reverse = false;
-            tmp.id = tmp.toolNr = tmp.codeSize = tmp.codeArea = tmp.pathId = - 1;
-            tmp.penWidth = tmp.pathLength  = tmp.pathArea  = - 1;
-            tmp.geometry = tmp.layer = tmp.type = tmp.penColor = tmp.toolName = "";
-            tmp.figureNr = figNr;
+            tmp.LineStart = lineStart; tmp.Reverse = false;
+            tmp.Id = tmp.ToolNr = tmp.CodeSize = tmp.CodeArea = tmp.PathId = -1;
+            tmp.PenWidth = tmp.PathLength = tmp.PathArea = -1;
+            tmp.Geometry = tmp.Layer = tmp.Type = tmp.PenColor = tmp.ToolName = "";
+            tmp.FigureNr = figNr;
             //            if (gcode.loggerTrace) Logger.Trace("setBlockData {0}", element);
-            if (element.Contains("Id"))       { tmp.id = getAttributeValueInt(element, "Id"); }
-            if (element.Contains("ToolNr"))   { tmp.toolNr = getAttributeValueInt(element, "ToolNr"); }
-            if (element.Contains("ToolName")) { tmp.toolName = getAttributeValue(element, "ToolName"); }
-            if (element.Contains("PathLength")) { tmp.pathLength = getAttributeValueDouble(element, "PathLength"); }
-            if (element.Contains("PathArea")) { tmp.pathArea = getAttributeValueDouble(element, "PathArea"); }
-            if (element.Contains("PathId"))   { tmp.pathId = getAttributeValueInt(element, "PathId"); }
-            if (element.Contains("Layer"))    { tmp.layer = getAttributeValue(element, "Layer"); }
-            if (element.Contains("Type"))     { tmp.type = getAttributeValue(element, "Type"); }
-            if (element.Contains("CodeSize")) { tmp.codeSize = getAttributeValueInt(element, "CodeSize"); }
-            if (element.Contains("CodeArea")) { tmp.codeArea = getAttributeValueInt(element, "CodeArea"); }
-            if (element.Contains("Geometry")) { tmp.geometry = getAttributeValue(element, "Geometry"); }
-            if (element.Contains("PenColor")) { tmp.penColor = getAttributeValue(element, "PenColor"); }
-            if (element.Contains("PenWidth")) { tmp.penWidth = getAttributeValueDouble(element, "PenWidth"); }
-  //          if (element.Contains("ToolName")) { tmp.toolName = getAttributeValue(element, "ToolName"); }
-//            Logger.Trace("   setBlockData finish");
+            if (element.Contains("Id")) { tmp.Id = GetAttributeValueNumber(element, "Id"); }
+            if (element.Contains("ToolNr")) { tmp.ToolNr = GetAttributeValueNumber(element, "ToolNr"); }
+            if (element.Contains("ToolName")) { tmp.ToolName = GetAttributeValue(element, "ToolName"); }
+            if (element.Contains("PathLength")) { tmp.PathLength = GetAttributeValueDouble(element, "PathLength"); }
+            if (element.Contains("PathArea")) { tmp.PathArea = GetAttributeValueDouble(element, "PathArea"); }
+            if (element.Contains("PathId")) { tmp.PathId = GetAttributeValueNumber(element, "PathId"); }
+            if (element.Contains("Layer")) { tmp.Layer = GetAttributeValue(element, "Layer"); }
+            if (element.Contains("Type")) { tmp.Type = GetAttributeValue(element, "Type"); }
+            if (element.Contains("CodeSize")) { tmp.CodeSize = GetAttributeValueNumber(element, "CodeSize"); }
+            if (element.Contains("CodeArea")) { tmp.CodeArea = GetAttributeValueNumber(element, "CodeArea"); }
+            if (element.Contains("Geometry")) { tmp.Geometry = GetAttributeValue(element, "Geometry"); }
+            if (element.Contains("PenColor")) { tmp.PenColor = GetAttributeValue(element, "PenColor"); }
+            if (element.Contains("PenWidth")) { tmp.PenWidth = GetAttributeValueDouble(element, "PenWidth"); }
+            //          if (element.Contains("ToolName")) { tmp.toolName = getAttributeValue(element, "ToolName"); }
+            //            Logger.Trace("   setBlockData finish");
             return tmp;
         }
 
 
         public static void FinishFigure(int lineEnd)
         {
-            tmpFigure.lineEnd = lineEnd;
+            tmpFigure.LineEnd = lineEnd;
             listFigures.Add(tmpFigure);
-            footer.lineStart = footer.lineEnd = Math.Max(footer.lineStart, lineEnd);   // highest block-line = start of footer
+            footer.LineStart = footer.LineEnd = Math.Max(footer.LineStart, lineEnd);   // highest block-line = start of footer
         }
         public static int GetFigureCount()
         { return listFigures.Count; }
 
-        public static bool GetFigureByFigureNr(int figNr)
+        public static bool GetFigureByFigureNR(int figNR)
         {
             foreach (BlockData tmp in listFigures)
-            {   if (tmp.figureNr == figNr)
-                {   tmpFigure = tmp;
+            {
+                if (tmp.FigureNr == figNR)
+                {
+                    tmpFigure = tmp;
                     return true;
                 }
             }
             return false;
         }
-        public static bool GetFigure(int lineNr, int search = 0)
+        public static bool GetFigure(int lineNR)
+        { return GetFigure(lineNR, 0); }
+        public static bool GetFigure(int lineNR, int search)
         {
             if (listFigures.Count > 0)
             {
                 if (search <= -1)     // search start/end before actual block
                 {
                     BlockData tmp = listFigures[0];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is first block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is first block
                         return false;
 
-                    lastFigure.lineStart = listFigures[0].lineStart;
+                    lastFigure.LineStart = listFigures[0].LineStart;
                     for (int i = 1; i < listFigures.Count; i++)
                     {
-                        if ((lineNr >= listFigures[i].lineStart) && (lineNr <= listFigures[i].lineEnd))
+                        if ((lineNR >= listFigures[i].LineStart) && (lineNR <= listFigures[i].LineEnd))
                         {
-                            lastFigure.lineEnd = listFigures[i - 1].lineEnd;
+                            lastFigure.LineEnd = listFigures[i - 1].LineEnd;
                             if (search == -1)
-                                lastFigure.lineStart = listFigures[i - 1].lineStart;
+                                lastFigure.LineStart = listFigures[i - 1].LineStart;
                             return true;
                         }
                     }
@@ -435,17 +453,17 @@ namespace GRBL_Plotter
                 else if (search >= 1)     // search start/end before actual block
                 {
                     BlockData tmp = listFigures[listFigures.Count - 1];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is last block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is last block
                         return false;
 
-                    lastFigure.lineEnd = listFigures[listFigures.Count - 1].lineEnd;
+                    lastFigure.LineEnd = listFigures[listFigures.Count - 1].LineEnd;
                     for (int i = listFigures.Count - 1; i >= 0; i--)
                     {
-                        if ((lineNr >= listFigures[i].lineStart) && (lineNr <= listFigures[i].lineEnd))
+                        if ((lineNR >= listFigures[i].LineStart) && (lineNR <= listFigures[i].LineEnd))
                         {
-                            lastFigure.lineStart = listFigures[i + 1].lineStart;
+                            lastFigure.LineStart = listFigures[i + 1].LineStart;
                             if (search == 1)
-                                lastFigure.lineEnd = listFigures[i + 1].lineEnd;
+                                lastFigure.LineEnd = listFigures[i + 1].LineEnd;
                             return true;
                         }
                     }
@@ -454,7 +472,7 @@ namespace GRBL_Plotter
                 {
                     foreach (BlockData tmp in listFigures)
                     {
-                        if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))
+                        if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))
                         {
                             lastFigure = tmp;
                             return true;
@@ -469,11 +487,11 @@ namespace GRBL_Plotter
         {
             int start = 0;
             if (GetGroup(current))      // only check within same group
-                start = lastGroup.lineStart;
+                start = lastGroup.LineStart;
             foreach (BlockData tmp in listFigures)
             {
-                if (tmp.lineStart > start)
-                { return tmp.lineStart; }
+                if (tmp.LineStart > start)
+                { return tmp.LineStart; }
             }
             return -1;
         }
@@ -481,91 +499,97 @@ namespace GRBL_Plotter
         {
             int start = 0;
             if (GetGroup(current))      // only check within same group
-                start = lastGroup.lineStart;
+                start = lastGroup.LineStart;
             for (int i = 1; i < listFigures.Count; i++)
             {
-                if (listFigures[i - 1].lineStart > start)
+                if (listFigures[i - 1].LineStart > start)
                 {
-                    if ((current >= listFigures[i].lineStart) && (current <= listFigures[i].lineEnd))
-                    { return listFigures[i - 1].lineStart; }
+                    if ((current >= listFigures[i].LineStart) && (current <= listFigures[i].LineEnd))
+                    { return listFigures[i - 1].LineStart; }
                 }
             }
             return -1;
         }
         public static int FindInsertPositionFigureMostBottom(int current)
         {
-            int end = listFigures[listFigures.Count - 1].lineEnd;
+            int end;
             if (GetGroup(current))      // only check within same group
-                end = lastGroup.lineEnd;
+                end = lastGroup.LineEnd;
             else
-                return listFigures[listFigures.Count - 1].lineEnd + 1;
+                return listFigures[listFigures.Count - 1].LineEnd + 1;
             int lastEnd = 0;
             foreach (BlockData tmp in listFigures)
             {
-                if (tmp.lineStart >= end)      //
+                if (tmp.LineStart >= end)      //
                 { return lastEnd + 1; }
-                lastEnd = tmp.lineEnd;
+                lastEnd = tmp.LineEnd;
             }
             return -1;
         }
         public static int FindInsertPositionFigureBottom(int current)
         {
-            int end = listFigures[listFigures.Count - 1].lineEnd;
+            int end = listFigures[listFigures.Count - 1].LineEnd;
             if (GetGroup(current))      // only check within same group
-                end = lastGroup.lineEnd;
+                end = lastGroup.LineEnd;
             for (int i = 0; i < listFigures.Count - 1; i++)
             {
-                if (listFigures[i + 1].lineEnd <= end)
+                if (listFigures[i + 1].LineEnd <= end)
                 {
-                    if ((current >= listFigures[i].lineStart) && (current <= listFigures[i].lineEnd))
-                    { return listFigures[i + 1].lineEnd + 1; }
+                    if ((current >= listFigures[i].LineStart) && (current <= listFigures[i].LineEnd))
+                    { return listFigures[i + 1].LineEnd + 1; }
                 }
             }
             return -1;
         }
-        public static bool isFoldingMarkerFigure(int line)
+        public static bool IsFoldingMarkerFigure(int line)
         {
             foreach (BlockData tmp in listFigures)
             {
-                if ((line == tmp.lineStart) || (line == tmp.lineEnd))
+                if ((line == tmp.LineStart) || (line == tmp.LineEnd))
                 { return true; }
             }
             return false;
         }
 
-/**********************************************************************************/
-        public static void AddGroup(int lineStart, string element, int figureNr)
-        {   tmpGroup = setBlockData(lineStart, element, figureNr);
-            if (logEnable) Logger.Trace("AddGroup color:{0}  width{1}",tmpGroup.penColor, tmpGroup.penWidth);
+        /**********************************************************************************/
+        public static void AddGroup(int lineStart, string element, int figureNR)
+        {
+            if (element != null)
+            {
+                tmpGroup = SetBlockData(lineStart, element, figureNR);
+                if (logEnable) Logger.Trace("AddGroup color:{0}  width{1}", tmpGroup.PenColor, tmpGroup.PenWidth);
+            }
         }
 
         public static void FinishGroup(int lineEnd)
         {
-            tmpGroup.lineEnd = lineEnd;
+            tmpGroup.LineEnd = lineEnd;
             listGroups.Add(tmpGroup);
-            footer.lineStart = footer.lineEnd = Math.Max(footer.lineStart, lineEnd);   // highest block-line = start of footer
+            footer.LineStart = footer.LineEnd = Math.Max(footer.LineStart, lineEnd);   // highest block-line = start of footer
         }
         public static int GetGroupCount()
         { return listGroups.Count; }
 
-        public static bool GetGroup(int lineNr, int search = 0)
+        public static bool GetGroup(int lineNR)
+        { return GetGroup(lineNR, 0); }
+        public static bool GetGroup(int lineNR, int search)
         {
             if (listGroups.Count > 0)
             {
                 if (search <= -1)     // search start/end before actual block
                 {
                     BlockData tmp = listGroups[0];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is first block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is first block
                         return false;
 
-                    lastGroup.lineStart = listGroups[0].lineStart;
+                    lastGroup.LineStart = listGroups[0].LineStart;
                     for (int i = 1; i < listGroups.Count; i++)
                     {
-                        if ((lineNr >= listGroups[i].lineStart) && (lineNr <= listGroups[i].lineEnd))
+                        if ((lineNR >= listGroups[i].LineStart) && (lineNR <= listGroups[i].LineEnd))
                         {
-                            lastGroup.lineEnd = listGroups[i - 1].lineEnd;
+                            lastGroup.LineEnd = listGroups[i - 1].LineEnd;
                             if (search == -1)
-                                lastGroup.lineStart = listGroups[i - 1].lineStart;
+                                lastGroup.LineStart = listGroups[i - 1].LineStart;
                             return true;
                         }
                     }
@@ -573,17 +597,17 @@ namespace GRBL_Plotter
                 else if (search >= 1)     // search start/end before actual block
                 {
                     BlockData tmp = listGroups[listGroups.Count - 1];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is last block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is last block
                         return false;
 
-                    lastGroup.lineEnd = listGroups[listGroups.Count - 1].lineEnd;
+                    lastGroup.LineEnd = listGroups[listGroups.Count - 1].LineEnd;
                     for (int i = listGroups.Count - 1; i >= 0; i--)
                     {
-                        if ((lineNr >= listGroups[i].lineStart) && (lineNr <= listGroups[i].lineEnd))
+                        if ((lineNR >= listGroups[i].LineStart) && (lineNR <= listGroups[i].LineEnd))
                         {
-                            lastGroup.lineStart = listGroups[i + 1].lineStart;
+                            lastGroup.LineStart = listGroups[i + 1].LineStart;
                             if (search == 1)
-                                lastGroup.lineEnd = listGroups[i + 1].lineEnd;
+                                lastGroup.LineEnd = listGroups[i + 1].LineEnd;
                             return true;
                         }
                     }
@@ -592,7 +616,7 @@ namespace GRBL_Plotter
                 {
                     foreach (BlockData tmp in listGroups)
                     {
-                        if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))
+                        if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))
                         {
                             lastGroup = tmp;
                             return true;
@@ -603,10 +627,10 @@ namespace GRBL_Plotter
             return false;
         }
 
-        public static int FindInsertPositionGroupMostTop(int current)
+        public static int FindInsertPositionGroupMostTop()//int current)
         {
             if (listGroups.Count > 1)
-                return listGroups[0].lineStart;
+                return listGroups[0].LineStart;
             return -1;
         }
         public static int FindInsertPositionGroupTop(int current)
@@ -615,16 +639,16 @@ namespace GRBL_Plotter
             {
                 for (int i = 1; i < listGroups.Count; i++)
                 {
-                    if ((current >= listGroups[i].lineStart) && (current <= listGroups[i].lineEnd))
-                    { return listGroups[i - 1].lineStart; }
+                    if ((current >= listGroups[i].LineStart) && (current <= listGroups[i].LineEnd))
+                    { return listGroups[i - 1].LineStart; }
                 }
             }
             return -1;
         }
-        public static int FindInsertPositionGroupMostBottom(int current)
+        public static int FindInsertPositionGroupMostBottom()//int current)
         {
             if (listGroups.Count > 0)
-                return listGroups[listGroups.Count - 1].lineEnd + 1;
+                return listGroups[listGroups.Count - 1].LineEnd + 1;
             return -1;
         }
         public static int FindInsertPositionGroupBottom(int current)
@@ -633,54 +657,61 @@ namespace GRBL_Plotter
             {
                 for (int i = 1; i < listGroups.Count - 1; i++)
                 {
-                    if ((current >= listGroups[i].lineStart) && (current <= listGroups[i].lineEnd))
-                    { return listGroups[i + 1].lineEnd + 1; }
+                    if ((current >= listGroups[i].LineStart) && (current <= listGroups[i].LineEnd))
+                    { return listGroups[i + 1].LineEnd + 1; }
                 }
             }
             return -1;
         }
-        public static bool isFoldingMarkerGroup(int line)
+        public static bool IsFoldingMarkerGroup(int line)
         {
             foreach (BlockData tmp in listGroups)
             {
-                if ((line == tmp.lineStart) || (line == tmp.lineEnd))
+                if ((line == tmp.LineStart) || (line == tmp.LineEnd))
                 { return true; }
             }
             return false;
         }
 
-/*************************************************************************************/
-        public static void AddTile(int lineStart, string element, int figureNr)
-        {   tmpTile = setBlockData(lineStart, element, figureNr);
-            if (logEnable) Logger.Trace("AddTile ");
+        /*************************************************************************************/
+        public static void AddTile(int lineStart, string element, int figureNR)
+        {
+            if (element != null)
+            {
+                tmpTile = SetBlockData(lineStart, element, figureNR);
+                if (logEnable) Logger.Trace("AddTile ");
+            }
         }
 
         public static void FinishTile(int lineEnd)
-        {   tmpTile.lineEnd = lineEnd;
+        {
+            tmpTile.LineEnd = lineEnd;
             listTiles.Add(tmpTile);
-            footer.lineStart = footer.lineEnd = Math.Max(footer.lineStart, lineEnd);   // highest block-line = start of footer
+            footer.LineStart = footer.LineEnd = Math.Max(footer.LineStart, lineEnd);   // highest block-line = start of footer
         }
         public static int GetTileCount()
         { return listTiles.Count; }
 
-        public static bool GetTile(int lineNr, int search = 0)
+        public static bool GetTile(int lineNR)
+        { return GetTile(lineNR, 0); }
+        public static bool GetTile(int lineNR, int search)
         {
             if (listTiles.Count > 0)
             {
                 if (search <= -1)     // search start/end before actual block
                 {
                     BlockData tmp = listTiles[0];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is first block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is first block
                         return false;
 
-                    lastTile.lineStart = listTiles[0].lineStart;
+                    lastTile.LineStart = listTiles[0].LineStart;
                     for (int i = 1; i < listTiles.Count; i++)
                     {
-                        if ((lineNr >= listTiles[i].lineStart) && (lineNr <= listTiles[i].lineEnd))
+                        if ((lineNR >= listTiles[i].LineStart) && (lineNR <= listTiles[i].LineEnd))
                         {
-                            lastTile.lineEnd = listTiles[i - 1].lineEnd;
+                            lastTile.LineEnd = listTiles[i - 1].LineEnd;
                             if (search == -1)
-                                lastTile.lineStart = listTiles[i - 1].lineStart;
+                                lastTile.LineStart = listTiles[i - 1].LineStart;
                             return true;
                         }
                     }
@@ -688,17 +719,17 @@ namespace GRBL_Plotter
                 else if (search >= 1)     // search start/end before actual block
                 {
                     BlockData tmp = listTiles[listTiles.Count - 1];
-                    if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))   // actual block is last block
+                    if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))   // actual block is last block
                         return false;
 
-                    lastTile.lineEnd = listTiles[listTiles.Count - 1].lineEnd;
+                    lastTile.LineEnd = listTiles[listTiles.Count - 1].LineEnd;
                     for (int i = listTiles.Count - 1; i >= 0; i--)
                     {
-                        if ((lineNr >= listTiles[i].lineStart) && (lineNr <= listTiles[i].lineEnd))
+                        if ((lineNR >= listTiles[i].LineStart) && (lineNR <= listTiles[i].LineEnd))
                         {
-                            lastTile.lineStart = listTiles[i + 1].lineStart;
+                            lastTile.LineStart = listTiles[i + 1].LineStart;
                             if (search == 1)
-                                lastTile.lineEnd = listTiles[i + 1].lineEnd;
+                                lastTile.LineEnd = listTiles[i + 1].LineEnd;
                             return true;
                         }
                     }
@@ -707,7 +738,7 @@ namespace GRBL_Plotter
                 {
                     foreach (BlockData tmp in listTiles)
                     {
-                        if ((lineNr >= tmp.lineStart) && (lineNr <= tmp.lineEnd))
+                        if ((lineNR >= tmp.LineStart) && (lineNR <= tmp.LineEnd))
                         {
                             lastTile = tmp;
                             return true;
@@ -717,11 +748,11 @@ namespace GRBL_Plotter
             }
             return false;
         }
-        public static bool isFoldingMarkerTile(int line)
+        public static bool IsFoldingMarkerTile(int line)
         {
             foreach (BlockData tmp in listTiles)
             {
-                if ((line == tmp.lineStart) || (line == tmp.lineEnd))
+                if ((line == tmp.LineStart) || (line == tmp.LineEnd))
                 { return true; }
             }
             return false;
