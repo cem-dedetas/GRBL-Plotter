@@ -154,7 +154,7 @@ namespace GrblPlotter
                 catch (Exception e)
                 {
                     Logger.Error(e, "Error loading SVG-Code");
-                    MessageBox.Show("Error '" + e.ToString() + "' in XML string ");// throw;// "( No valid SVG data found)";
+                    System.Windows.MessageBox.Show("Error '" + e.ToString() + "' in XML string ");// throw;// "( No valid SVG data found)";
                     return false;
                 }
             }
@@ -168,14 +168,14 @@ namespace GrblPlotter
             backgroundEvent = e;
 
             if (String.IsNullOrEmpty(filePath))
-            { MessageBox.Show("Empty file name"); return false; }
+            { System.Windows.MessageBox.Show("Empty file name"); return false; }
             else if (filePath.Substring(0, 4) == "http")
             {
                 string content = "";
                 using (var wc = new System.Net.WebClient())
                 {
                     try { content = wc.DownloadString(filePath); }
-                    catch { MessageBox.Show("Could not load content from " + filePath); }
+                    catch { System.Windows.MessageBox.Show("Could not load content from " + filePath); }
                 }
                 if ((!String.IsNullOrEmpty(content)) && (content.IndexOf("<?xml") == 0))
                 {
@@ -187,7 +187,7 @@ namespace GrblPlotter
                     return ConvertSVG(svgCode, filePath);                   // startConvert(svgCode);
                 }
                 else
-                    MessageBox.Show("This is probably not a SVG document.\r\nFirst line: " + content.Substring(0, 50));
+                    System.Windows.MessageBox.Show("This is probably not a SVG document.\r\nFirst line: " + content.Substring(0, 50));
             }
             else
             {
@@ -201,10 +201,10 @@ namespace GrblPlotter
                     catch (Exception err)
                     {
                         Logger.Error(err, "Error loading SVG-Code");
-                        MessageBox.Show("Error '" + err.ToString() + "' in XML file " + filePath + "\r\n\r\nTry to save file with other encoding e.g. UTF-8"); //throw;
+                        System.Windows.MessageBox.Show("Error '" + err.ToString() + "' in XML file " + filePath + "\r\n\r\nTry to save file with other encoding e.g. UTF-8"); //throw;
                     }
                 }
-                else { MessageBox.Show("File does not exist: " + filePath); return false; }
+                else { System.Windows.MessageBox.Show("File does not exist: " + filePath); return false; }
             }
             return false;
         }

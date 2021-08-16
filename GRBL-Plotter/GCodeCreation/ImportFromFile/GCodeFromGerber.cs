@@ -125,11 +125,11 @@ namespace GrblPlotter
 
             if (String.IsNullOrEmpty(file))
             {
-                MessageBox.Show("Empty file name");
+                System.Windows.MessageBox.Show("Empty file name");
                 return false;
             }
             else if (file.Substring(0, 4) == "http")
-            { MessageBox.Show("Load via http is not supported up to now"); }
+            { System.Windows.MessageBox.Show("Load via http is not supported up to now"); }
             else
             {
                 if (File.Exists(file))
@@ -142,10 +142,10 @@ namespace GrblPlotter
                     catch (Exception err)
                     {
                         Logger.Error(err, "Error loading Gerber Code");
-                        MessageBox.Show("Error '" + e.ToString() + "' in Gerber file " + file); //throw;
+                        System.Windows.MessageBox.Show("Error '" + e.ToString() + "' in Gerber file " + file); //throw;
                     }
                 }
-                else { MessageBox.Show("Gerber file does not exist: " + file); return false; }
+                else { System.Windows.MessageBox.Show("Gerber file does not exist: " + file); return false; }
             }
             return false;
         }

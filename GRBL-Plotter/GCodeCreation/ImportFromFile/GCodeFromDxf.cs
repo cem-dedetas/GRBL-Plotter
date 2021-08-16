@@ -148,14 +148,14 @@ namespace GrblPlotter //DXFImporter
             backgroundEvent = e;
 
             if (String.IsNullOrEmpty(filePath))
-            { MessageBox.Show("Empty file name"); return false; }
+            { System.Windows.MessageBox.Show("Empty file name"); return false; }
             else if (filePath.Substring(0, 4) == "http")
             {
                 string content = "";
                 using (var wc = new System.Net.WebClient())
                 {
                     try { content = wc.DownloadString(filePath); }
-                    catch { MessageBox.Show("Could not load content from " + filePath); }
+                    catch { System.Windows.MessageBox.Show("Could not load content from " + filePath); }
                 }
                 int pos = content.IndexOf("dxfrw");
                 if ((!String.IsNullOrEmpty(content)) && (pos >= 0) && (pos < 8))
@@ -171,10 +171,10 @@ namespace GrblPlotter //DXFImporter
                         }
                     }
                     catch (Exception err)
-                    { MessageBox.Show("Error '" + err.ToString() + "' in DXF file " + filePath); }
+                    { System.Windows.MessageBox.Show("Error '" + err.ToString() + "' in DXF file " + filePath); }
                 }
                 else
-                    MessageBox.Show("This is probably not a DXF document.\r\nFirst line: " + content.Substring(0, 50));
+                    System.Windows.MessageBox.Show("This is probably not a DXF document.\r\nFirst line: " + content.Substring(0, 50));
             }
             else
             {
@@ -187,9 +187,9 @@ namespace GrblPlotter //DXFImporter
                             return false;// "(File could not be loaded)";
                     }
                     catch (Exception err)
-                    { MessageBox.Show("Error '" + err.ToString() + "' in DXF file " + filePath); }
+                    { System.Windows.MessageBox.Show("Error '" + err.ToString() + "' in DXF file " + filePath); }
                 }
-                else { MessageBox.Show("File does not exist: " + filePath); return false; }
+                else { System.Windows.MessageBox.Show("File does not exist: " + filePath); return false; }
             }
             return ConvertDXF(filePath);
         }
@@ -234,7 +234,7 @@ namespace GrblPlotter //DXFImporter
             catch (Exception er)
             {
                 Logger.Error(er, "loading the file failed ");
-                MessageBox.Show("The file could not be opened - perhaps already open in other application?\r\n" + er.ToString());
+                System.Windows.MessageBox.Show("The file could not be opened - perhaps already open in other application?\r\n" + er.ToString());
                 //    throw;
             }
             return true;
@@ -246,7 +246,7 @@ namespace GrblPlotter //DXFImporter
             catch (Exception er)
             {
                 Logger.Error(er, "loading the file failed ");
-                MessageBox.Show("The file could not be opened - perhaps already open in other application?\r\n" + er.ToString());
+                System.Windows.MessageBox.Show("The file could not be opened - perhaps already open in other application?\r\n" + er.ToString());
                 //   throw;
             }
             return true;

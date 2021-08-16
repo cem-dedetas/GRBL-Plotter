@@ -90,9 +90,9 @@ namespace GrblPlotter
             backgroundEvent = e;
 
             if (String.IsNullOrEmpty(filePath))
-            { MessageBox.Show("Empty file name"); return false; }
+            { System.Windows.MessageBox.Show("Empty file name"); return false; }
             else if (filePath.Substring(0, 4) == "http")
-            { MessageBox.Show("Load via http is not supported up to now"); }
+            { System.Windows.MessageBox.Show("Load via http is not supported up to now"); }
             else
             {
                 if (File.Exists(filePath))
@@ -106,10 +106,10 @@ namespace GrblPlotter
                     {
                         Logger.Error("Error loading CSV Code");
                         //MessageBox.Show("Error '" + e.ToString() + "' in CSV file " + filePath); return false;throw; 
-                        MessageBox.Show("Error in CSV file " + filePath);  //throw;
+                        System.Windows.MessageBox.Show("Error in CSV file " + filePath);  //throw;
                     }
                 }
-                else { MessageBox.Show("CSV file does not exist: " + filePath); return false; }
+                else { System.Windows.MessageBox.Show("CSV file does not exist: " + filePath); return false; }
             }
             return false;
         }

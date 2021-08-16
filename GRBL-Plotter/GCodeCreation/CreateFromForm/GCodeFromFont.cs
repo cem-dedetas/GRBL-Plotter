@@ -487,7 +487,7 @@ namespace GrblPlotter
                         {
                             chrIndex = Convert.ToInt32(nrString, 16);
                         }
-                        catch { MessageBox.Show("Line " + txtFont[lineIndex] + "  Found " + nrString); }
+                        catch { System.Windows.MessageBox.Show("Line " + txtFont[lineIndex] + "  Found " + nrString); }
                         if (chrIndex == index)                                              // found char
                         {
                             charXOld = -1; charYOld = -1;
