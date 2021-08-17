@@ -1344,13 +1344,11 @@ namespace GrblPlotter
         public static async Task Method1(IXbox360Controller controller)
         {
 #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
-            await TaskEx.Run(() =>
+            while (true)
             {
-                
-                TcpListener server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
-
+                Console.WriteLine("server started . ");
+                TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8910);
                 server.Start();
-
 
                 TcpClient client = server.AcceptTcpClient();
 
@@ -1361,49 +1359,25 @@ namespace GrblPlotter
 
                 while (true)
                 {
-                    try
-                    {
-                        while (!stream.DataAvailable) ;
+                    while (!stream.DataAvailable) ;
 
-                        Byte[] bytes = new Byte[client.Available];
+                    Byte[] bytes = new Byte[client.Available];
 
+                    stream.Read(bytes, 0, bytes.Length);
+                    String data = Encoding.UTF8.GetString(bytes);
+                    if (data.IndexOf("<bye>") > -1)
+                        break;
+                    Contrllr(controller, data);
+                    Byte[] response = Encoding.UTF8.GetBytes("Echo : " + data + "\n");
+                    stream.Write(response, 0, response.Length);
+                    Console.WriteLine(data);
 
-                        stream.Read(bytes, 0, bytes.Length);
-                        String data = Encoding.UTF8.GetString(bytes);
-
-                        Contrllr(controller, data);
-
-                        Byte[] response = Encoding.UTF8.GetBytes("---Echo : " + data + "---");
-                        stream.Write(response, 0, response.Length);
-                        TaskEx.Delay(1).Wait();
-                    }
-                    catch{
-                        server.Stop();
-                        client.Close();
-                        server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
-                        server.Start();
-                        client = server.AcceptTcpClient();
-                        stream = client.GetStream();
-
-                        while (!stream.DataAvailable) ;
-
-                        Byte[] bytes = new Byte[client.Available];
-
-
-                        stream.Read(bytes, 0, bytes.Length);
-                        String data = Encoding.UTF8.GetString(bytes);
-
-                        Byte[] response = Encoding.UTF8.GetBytes("Echo : " + data + "\n");
-                        stream.Write(response, 0, response.Length);
-                        TaskEx.Delay(5).Wait();
-                    }
-                    
                 }
 
-                
+                server.Stop();
 
 
-            });
+            } 
 #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
         }
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
