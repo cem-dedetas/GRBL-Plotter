@@ -1344,13 +1344,19 @@ namespace GrblPlotter
         public static async Task Method1(IXbox360Controller controller)
         {
 #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+            TcpListener server = null;
+            TcpClient client = null;
+           
             while (true)
             {
+               
+                server = null;
+                client = null;
                 Console.WriteLine("server started . ");
-                TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8910);
+                server = new TcpListener(IPAddress.Parse("127.0.0.1"), 8910);
                 server.Start();
 
-                TcpClient client = server.AcceptTcpClient();
+                client = server.AcceptTcpClient();
 
                 Console.WriteLine("A client connected.");
 
@@ -1377,13 +1383,15 @@ namespace GrblPlotter
                 server.Stop();
 
 
-            } 
+            }
 #pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
         }
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
         private void btnCustom1_Click(object sender, EventArgs e)
         {
+         
+
 
         }
 
@@ -1399,8 +1407,8 @@ namespace GrblPlotter
         }
         private async void Connector(IXbox360Controller controller)
         {
-            
-            await Method1(controller);
+            Task.Factory.StartNew(() => Method1(controller));
+           // await Method1(controller);
 
         }
         private static void Contrllr( IXbox360Controller controller , string userinp )
