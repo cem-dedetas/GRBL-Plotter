@@ -1,6 +1,6 @@
 ﻿namespace GrblPlotter
 {
-    partial class SimpleSerialForm
+    public partial class SimpleSerialForm
     {
         /// <summary>
         /// Required designer variable.
@@ -27,7 +27,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             this.btnScanPort = new System.Windows.Forms.Button();

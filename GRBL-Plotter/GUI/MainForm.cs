@@ -211,6 +211,7 @@ namespace GrblPlotter
             SplashScreenTimer.Start();  // 1st event after 1500
 
             Foo();
+            SendCommandFromServer();
 
         }
 
@@ -1341,7 +1342,7 @@ namespace GrblPlotter
                 server.MessageReceived += MessageReceived;
                 server.Start();
             }).ConfigureAwait(true);
-            
+
         }
         static void ClientConnected(object sender, ClientConnectedEventArgs args)
         {
@@ -1363,7 +1364,22 @@ namespace GrblPlotter
             await Connector();
         }
 
-    }
-           
+        private void rotateFreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SendCommandFromServer()
+        {
+            {
+                string cmd = "X20";
+                //_serial_form3.Send(cmd.Trim());
+                var fake_form = new SimpleSerialForm();
+                fake_form.Send(cmd.Trim());
+
+            }
+
+        }
+    }   
 }
 
