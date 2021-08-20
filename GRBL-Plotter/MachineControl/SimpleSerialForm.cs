@@ -102,6 +102,9 @@ namespace GrblPlotter
 
         public void Send(string data)
         {
+            Console.WriteLine(data);
+            Console.WriteLine(serialPort.PortName);
+
             if (serialPort.IsOpen && !string.IsNullOrEmpty(data))
             {
                 serialPort.Write(data.Trim() + lineEndTX);      // send single command via form
