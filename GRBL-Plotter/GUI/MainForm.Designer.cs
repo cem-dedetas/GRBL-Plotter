@@ -857,7 +857,6 @@ namespace GrblPlotter
             // 
             resources.ApplyResources(this.textStatus, "textStatus");
             this.textStatus.Name = "textStatus";
-            this.textStatus.TextChanged += new System.EventHandler(this.textStatus_TextChanged);
             // 
             // btnSimulatePause
             // 
@@ -1936,7 +1935,6 @@ namespace GrblPlotter
             resources.ApplyResources(this.btnCustom1, "btnCustom1");
             this.btnCustom1.Name = "btnCustom1";
             this.btnCustom1.UseVisualStyleBackColor = true;
-            this.btnCustom1.Click += new System.EventHandler(this.btnCustom1_Click);
             this.btnCustom1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnCustomButton_Click);
             // 
             // btnCustom2

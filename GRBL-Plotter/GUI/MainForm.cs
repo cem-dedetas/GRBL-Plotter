@@ -65,7 +65,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,6 +74,7 @@ using virtualJoystick;
 using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
+using WatsonWebsocket;
 
 //#pragma warning disable CA1303	// Do not pass literals as localized parameters
 //#pragma warning disable CA1307
@@ -209,20 +210,10 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
-            Console.WriteLine("in main");
-
-            ViGEmClient client = new ViGEmClient();
-
-            IXbox360Controller controller = client.CreateXbox360Controller();
-
-            controller.Connect();
-
-
-
-            Connector(controller);
+            Foo();
 
         }
-        
+
 
         private void SplashScreenTimer_Tick(object sender, EventArgs e)
         {
@@ -1339,123 +1330,40 @@ namespace GrblPlotter
             img.Dispose();
             g.Dispose();
         }
-
-
-        public static async Task Method1(IXbox360Controller controller)
+        private async Task Connector()
         {
-#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
-            await TaskEx.Run(() =>
-            {
-                
-                TcpListener server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
 
+            await Task.Run(() =>
+            {
+                WatsonWsServer server = new WatsonWsServer("localhost", 8080, false);
+                server.ClientConnected += ClientConnected;
+                server.ClientDisconnected += ClientDisconnected;
+                server.MessageReceived += MessageReceived;
                 server.Start();
-
-
-                TcpClient client = server.AcceptTcpClient();
-
-                Console.WriteLine("A client connected.");
-
-                NetworkStream stream = client.GetStream();
-
-
-                while (true)
-                {
-                    try
-                    {
-                        while (!stream.DataAvailable) ;
-
-                        Byte[] bytes = new Byte[client.Available];
-
-
-                        stream.Read(bytes, 0, bytes.Length);
-                        String data = Encoding.UTF8.GetString(bytes);
-
-                        Contrllr(controller, data);
-
-                        Byte[] response = Encoding.UTF8.GetBytes("---Echo : " + data + "---");
-                        stream.Write(response, 0, response.Length);
-                        TaskEx.Delay(1).Wait();
-                    }
-                    catch{
-                        server.Stop();
-                        client.Close();
-                        server = new TcpListener(IPAddress.Parse("25.52.61.231"), 8910);
-                        server.Start();
-                        client = server.AcceptTcpClient();
-                        stream = client.GetStream();
-
-                        while (!stream.DataAvailable) ;
-
-                        Byte[] bytes = new Byte[client.Available];
-
-
-                        stream.Read(bytes, 0, bytes.Length);
-                        String data = Encoding.UTF8.GetString(bytes);
-
-                        Byte[] response = Encoding.UTF8.GetBytes("Echo : " + data + "\n");
-                        stream.Write(response, 0, response.Length);
-                        TaskEx.Delay(5).Wait();
-                    }
-                    
-                }
-
-                
-
-
-            });
-#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
-        }
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-        private static extern bool AllocConsole();
-        private void btnCustom1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void closeConnection_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textStatus_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private async void Connector(IXbox360Controller controller)
-        {
+            }).ConfigureAwait(true);
             
-            await Method1(controller);
-
         }
-        private static void Contrllr( IXbox360Controller controller , string userinp )
+        static void ClientConnected(object sender, ClientConnectedEventArgs args)
         {
-
-            //minimum of -32768, maximum of 32767
-            Console.WriteLine("func");
-            if (userinp == "A" || userinp == "a")
-            {
-                controller.SetAxisValue(Xbox360Axis.LeftThumbX, -32768);
-            }
-            if (userinp == "D" || userinp == "d")
-            {
-                controller.SetAxisValue(Xbox360Axis.LeftThumbX, 32767);
-            }
-            if (userinp == "W" || userinp == "w")
-            {
-                controller.SetAxisValue(Xbox360Axis.LeftThumbY, 32767);
-            }
-            if (userinp == "S" || userinp == "s")
-            {
-                controller.SetAxisValue(Xbox360Axis.LeftThumbY, -32768);
-            }
-            if (userinp == "O" || userinp == "o")
-            {
-                controller.SetAxisValue(Xbox360Axis.LeftThumbX, 0);
-                controller.SetAxisValue(Xbox360Axis.LeftThumbY, 0);
-            }
+            Console.WriteLine("Client connected: " + args.IpPort);
         }
-    }   
+
+        static void ClientDisconnected(object sender, ClientDisconnectedEventArgs args)
+        {
+            Console.WriteLine("Client disconnected: " + args.IpPort);
+        }
+
+        static void MessageReceived(object sender, MessageReceivedEventArgs args)
+        {
+            Console.WriteLine("Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data));
+        }
+
+        private async void Foo()
+        {
+            await Connector();
+        }
+
+    }
+           
 }
 
