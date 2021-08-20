@@ -1371,12 +1371,12 @@ namespace GrblPlotter
 
         private void SendCommandFromServer()
         {
-            {
+            {/*
                 string cmd = "X20";
                 //_serial_form3.Send(cmd.Trim());
                 var fake_form = new SimpleSerialForm();
                 fake_form.Send(cmd.Trim());
-
+                */
             }
 
         }
