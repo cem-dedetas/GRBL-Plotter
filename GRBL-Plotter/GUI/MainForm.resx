@@ -133,7 +133,7 @@
     <value>1</value>
   </data>
   <data name="fCTBCode.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
-    <value>191, 12</value>
+    <value>214, 12</value>
   </data>
   <metadata name="cmsFCTB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>123, 56</value>
@@ -501,30 +501,6 @@
   <data name="&gt;&gt;fCTBCode.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="textStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>244, 3</value>
-  </data>
-  <data name="textStatus.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 102</value>
-  </data>
-  <data name="textStatus.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;textStatus.Name" xml:space="preserve">
-    <value>textStatus</value>
-  </data>
-  <data name="&gt;&gt;textStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textStatus.Parent" xml:space="preserve">
-    <value>gBoxStream</value>
-  </data>
-  <data name="&gt;&gt;textStatus.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnSimulatePause.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -550,7 +526,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnSimulatePause.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="btnSimulateSlower.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -586,7 +562,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnSimulateSlower.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="btnSimulateFaster.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -619,7 +595,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnSimulateFaster.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="btnSimulate.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -649,7 +625,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnSimulate.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="lbInfo.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -679,7 +655,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;lbInfo.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="pbBuffer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -703,7 +679,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;pbBuffer.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="btnStreamStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -730,7 +706,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnStreamStop.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="btnStreamCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -760,7 +736,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnStreamCheck.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="lblRemaining.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -787,7 +763,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;lblRemaining.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="pbFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -811,7 +787,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;pbFile.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="lblElapsed.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -841,7 +817,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;lblElapsed.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="lblFileProgress.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -871,7 +847,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;lblFileProgress.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="btnStreamStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -898,7 +874,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;btnStreamStart.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="tbFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>32, 85</value>
@@ -922,7 +898,7 @@
     <value>gBoxStream</value>
   </data>
   <data name="&gt;&gt;tbFile.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="gBoxStream.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -6120,9 +6096,6 @@ Langue
   <data name="rotate180ToolStripMenuItem.Text" xml:space="preserve">
     <value>Rotate 180°</value>
   </data>
-  <data name="toolStrip_tb_rotate.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_rotate.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6138,9 +6111,6 @@ Langue
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 6</value>
   </data>
-  <data name="toolStrip_tb_XY_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_XY_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6152,9 +6122,6 @@ Langue
   </data>
   <data name="sToolStripMenuItem.Text" xml:space="preserve">
     <value>Scale XY by ...%</value>
-  </data>
-  <data name="toolStrip_tb_XY_X_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tb_XY_X_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6168,9 +6135,6 @@ Langue
   <data name="skalierenXYToolStripMenuItem.Text" xml:space="preserve">
     <value>Scale XY set X=... units</value>
   </data>
-  <data name="toolStrip_tb_XY_Y_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_XY_Y_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6182,9 +6146,6 @@ Langue
   </data>
   <data name="skalierenXYUmXUnitsZuErreichenToolStripMenuItem.Text" xml:space="preserve">
     <value>Scale XY set Y=... units</value>
-  </data>
-  <data name="toolStrip_tb_X_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tb_X_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6201,9 +6162,6 @@ Langue
   <data name="skaliereXUmToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>G2 / G3 are not supported</value>
   </data>
-  <data name="toolStrip_tb_X_X_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_X_X_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6219,9 +6177,6 @@ Langue
   <data name="skaliereAufXUnitsToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>G2 / G3 are not supported</value>
   </data>
-  <data name="toolStrip_tb_Y_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_Y_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6236,9 +6191,6 @@ Langue
   </data>
   <data name="skaliereYUmToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>G2 / G3 are not supported</value>
-  </data>
-  <data name="toolStrip_tb_Y_Y_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tb_Y_Y_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6258,9 +6210,6 @@ Langue
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 6</value>
   </data>
-  <data name="toolStrip_tb_rotary_diameter.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_rotary_diameter.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6276,9 +6225,6 @@ Langue
   <data name="rotaryDimaeterToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Set Diameter of part for rotary axis</value>
   </data>
-  <data name="toolStrip_tb_X_A_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
   <data name="toolStrip_tb_X_A_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
@@ -6293,9 +6239,6 @@ Langue
   </data>
   <data name="skaliereXAufDrehachseToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>G2 / G3 are not supported</value>
-  </data>
-  <data name="toolStrip_tb_Y_A_scale.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tb_Y_A_scale.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6314,9 +6257,6 @@ Langue
   </data>
   <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 6</value>
-  </data>
-  <data name="toolStrip_tBRadiusCompValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tBRadiusCompValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6432,9 +6372,6 @@ Langue
   </data>
   <data name="toolStripMenuItem1.ToolTipText" xml:space="preserve">
     <value>Show camera picture</value>
-  </data>
-  <data name="toolStrip_tb_StreamLine.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
   </data>
   <data name="toolStrip_tb_StreamLine.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -6564,6 +6501,12 @@ Langue
   </data>
   <data name="logToolStripMenuItem.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
+  </data>
+  <data name="connectionSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 20</value>
+  </data>
+  <data name="connectionSettingsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Connection Settings</value>
   </data>
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>2, 2</value>
@@ -7631,6 +7574,12 @@ Langue
     <value>logToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;logToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;connectionSettingsToolStripMenuItem.Name" xml:space="preserve">
+    <value>connectionSettingsToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;connectionSettingsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;MainTimer.Name" xml:space="preserve">

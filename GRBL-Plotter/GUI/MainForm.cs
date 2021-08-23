@@ -90,6 +90,8 @@ namespace GrblPlotter
 
         MessageForm _message_form = null;
 
+        Form1 _connection_form = null;
+
         private const string appName = "GRBL Plotter";
         private const string fileLastProcessed = "lastProcessed";
         private XyzPoint posProbe = new XyzPoint(0, 0, 0);
@@ -210,7 +212,8 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
-            Foo();
+            ConnectorAsync();
+
             SendCommandFromServer();
 
         }
@@ -233,6 +236,7 @@ namespace GrblPlotter
                         _serial_form3 = new SimpleSerialForm();// "COM simple", 3);
                         _serial_form3.Show(this);
                     }
+
                     _serial_form = new ControlSerialForm("COM CNC", 1, _serial_form2, _serial_form3);
                     _serial_form.Show(this);
                     _serial_form.RaisePosEvent += OnRaisePosEvent;
@@ -1359,7 +1363,7 @@ namespace GrblPlotter
             Console.WriteLine("Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data));
         }
 
-        private async void Foo()
+        private async void ConnectorAsync()
         {
             await Connector();
         }
@@ -1371,14 +1375,29 @@ namespace GrblPlotter
 
         private void SendCommandFromServer()
         {
-            {/*
-                string cmd = "X20";
-                //_serial_form3.Send(cmd.Trim());
-                var fake_form = new SimpleSerialForm();
-                fake_form.Send(cmd.Trim());
-                */
-            }
+            
+            //string cmd = "X20";
+            //_serial_form3.Send(cmd.Trim());
+            //var fake_form = new SimpleSerialForm();
+            //fake_form.Send(cmd.Trim());
 
+            //string cmd = "X20";
+            //var fake_form = new ControlSerialForm("fake", 1);
+            //fake_form.RequestSend(cmd.Trim());
+            //SendCommand("X20",false);.
+
+
+            //_serial_form.RequestSend(cmd.Trim());
+                
+
+            
+
+        }
+
+        private void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _connection_form = new Form1();
+            _connection_form.Show(this);
         }
     }   
 }
