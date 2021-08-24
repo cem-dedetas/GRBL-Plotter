@@ -2,18 +2,14 @@ import websockets
 import asyncio
 
 async def listener():
-    url = "ws://localhost:8080"
+    url = "ws://localhost:9000"
     i=0
     async with websockets.connect(url) as ws:
         print("Connected")
-        msg = ""
-        while(i>=0):
             
-            msg = "test_"+((str)(i))
-
-            await ws.send(msg)
-            print(msg)
-            i+=1
+        msg = "test_"
+        await ws.send(msg)
+        print(msg)
         
         
         

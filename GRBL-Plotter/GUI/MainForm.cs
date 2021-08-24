@@ -89,7 +89,7 @@ namespace GrblPlotter
         Splashscreen _splashscreen = null;
 
         MessageForm _message_form = null;
-
+        WatsonWsServer server = null;
         Form1 _connection_form = null;
 
         private const string appName = "GRBL Plotter";
@@ -212,9 +212,10 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
-            ConnectorAsync();
 
-            SendCommandFromServer();
+            string ip = Properties.Settings.Default.ip;
+            string port = Properties.Settings.Default.port;
+            WatsonWsServer server = new WatsonWsServer(ip, int.Parse(port), false);
 
         }
 
@@ -1335,45 +1336,36 @@ namespace GrblPlotter
             img.Dispose();
             g.Dispose();
         }
-        private async Task Connector()
+        public void Connector()
         {
+            
+            
 
-            await Task.Run(() =>
-            {
-                WatsonWsServer server = new WatsonWsServer("localhost", 8080, false);
-                server.ClientConnected += ClientConnected;
-                server.ClientDisconnected += ClientDisconnected;
-                server.MessageReceived += MessageReceived;
-                server.Start();
-            }).ConfigureAwait(true);
+            //await Task.Run(() =>
+            //{
+            //    WatsonWsServer server = new WatsonWsServer("localhost",9000, false);
+            //    server.ClientConnected += _connection_form.ClientConnected;
+            //    server.ClientDisconnected += _connection_form.ClientDisconnected;
+            //    server.MessageReceived += _connection_form.MessageReceived;
+            //    server.Start();
+            //    _connection_form.LogUpdate("test22222222");
+            //}).ConfigureAwait(true);
 
         }
-        static void ClientConnected(object sender, ClientConnectedEventArgs args)
-        {
-            Console.WriteLine("Client connected: " + args.IpPort);
-        }
 
-        static void ClientDisconnected(object sender, ClientDisconnectedEventArgs args)
-        {
-            Console.WriteLine("Client disconnected: " + args.IpPort);
-        }
 
-        static void MessageReceived(object sender, MessageReceivedEventArgs args)
-        {
-            Console.WriteLine("Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data));
-        }
 
-        private async void ConnectorAsync()
-        {
-            await Connector();
-        }
+        //public  async void ConnectorAsync()
+        //{
+        //    await Connector();
+        //}
 
         private void rotateFreeToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void SendCommandFromServer()
+        public void SendCommandFromServer()
         {
             
             //string cmd = "X20";
@@ -1394,10 +1386,11 @@ namespace GrblPlotter
 
         }
 
-        private void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _connection_form = new Form1();
+            _connection_form = new Form1(server);
             _connection_form.Show(this);
+            _connection_form.LogUpdate("TEST");
         }
     }   
 }
