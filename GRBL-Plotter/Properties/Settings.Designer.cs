@@ -6987,5 +6987,29 @@ namespace GrblPlotter.Properties {
                 this["port"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool connectClicked {
+            get {
+                return ((bool)(this["connectClicked"]));
+            }
+            set {
+                this["connectClicked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textLog {
+            get {
+                return ((string)(this["textLog"]));
+            }
+            set {
+                this["textLog"] = value;
+            }
+        }
     }
 }

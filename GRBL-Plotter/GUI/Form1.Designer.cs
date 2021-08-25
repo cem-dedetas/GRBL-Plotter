@@ -43,6 +43,8 @@ namespace GrblPlotter.GUI
             this.tab_2 = new System.Windows.Forms.TabPage();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnConnectionSave = new System.Windows.Forms.Button();
+            this.txtSend = new System.Windows.Forms.TextBox();
+            this.btnSend = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.server_tab.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +61,8 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.btnSend);
+            this.server_tab.Controls.Add(this.txtSend);
             this.server_tab.Controls.Add(this.btn_LogClear);
             this.server_tab.Controls.Add(this.txtConLog);
             this.server_tab.Controls.Add(this.btnConnect);
@@ -77,7 +81,7 @@ namespace GrblPlotter.GUI
             // 
             // btn_LogClear
             // 
-            this.btn_LogClear.Location = new System.Drawing.Point(309, 398);
+            this.btn_LogClear.Location = new System.Drawing.Point(309, 325);
             this.btn_LogClear.Name = "btn_LogClear";
             this.btn_LogClear.Size = new System.Drawing.Size(84, 23);
             this.btn_LogClear.TabIndex = 9;
@@ -91,7 +95,7 @@ namespace GrblPlotter.GUI
             this.txtConLog.Multiline = true;
             this.txtConLog.Name = "txtConLog";
             this.txtConLog.ReadOnly = true;
-            this.txtConLog.Size = new System.Drawing.Size(346, 255);
+            this.txtConLog.Size = new System.Drawing.Size(346, 182);
             this.txtConLog.TabIndex = 7;
             // 
             // btnConnect
@@ -112,6 +116,7 @@ namespace GrblPlotter.GUI
             this.btnDisconnect.TabIndex = 5;
             this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
             // port_label
             // 
@@ -154,7 +159,7 @@ namespace GrblPlotter.GUI
             this.tab_2.Location = new System.Drawing.Point(4, 22);
             this.tab_2.Name = "tab_2";
             this.tab_2.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_2.Size = new System.Drawing.Size(448, 460);
+            this.tab_2.Size = new System.Drawing.Size(448, 473);
             this.tab_2.TabIndex = 1;
             this.tab_2.Text = "Tab 2";
             this.tab_2.UseVisualStyleBackColor = true;
@@ -178,6 +183,23 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave.Text = "Save";
             this.btnConnectionSave.UseVisualStyleBackColor = true;
             this.btnConnectionSave.Click += new System.EventHandler(this.btnConnectionSave_Click);
+            // 
+            // txtSend
+            // 
+            this.txtSend.Location = new System.Drawing.Point(47, 355);
+            this.txtSend.Name = "txtSend";
+            this.txtSend.Size = new System.Drawing.Size(345, 20);
+            this.txtSend.TabIndex = 10;
+            // 
+            // btnSend
+            // 
+            this.btnSend.Location = new System.Drawing.Point(316, 382);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.TabIndex = 11;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // Form1
             // 
@@ -214,5 +236,7 @@ namespace GrblPlotter.GUI
         public System.Windows.Forms.TextBox txtConLog;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnConnectionSave;
+        private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.TextBox txtSend;
     }
 }

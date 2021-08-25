@@ -1027,5 +1027,7 @@ namespace GrblPlotter
 
         private static string GetTimeStampString()
         { return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); }
+
+        
     }
 }

@@ -65,7 +65,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.WebSockets;
+using System.Configuration;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,8 +89,9 @@ namespace GrblPlotter
         Splashscreen _splashscreen = null;
 
         MessageForm _message_form = null;
-        WatsonWsServer server = null;
         Form1 _connection_form = null;
+
+        WatsonWsServer ws = null;
 
         private const string appName = "GRBL Plotter";
         private const string fileLastProcessed = "lastProcessed";
@@ -190,6 +191,10 @@ namespace GrblPlotter
                                             // T E S T	
             Graphic.Init(Graphic.SourceType.SVG, "", null, null);   // load class for faster 1st import
             VisuGCode.GetGCodeLines(fCTBCode.Lines, null, null);
+
+
+            //Properties.Settings.Default.PropertyChanged += valueChanged;
+            Properties.Settings.Default.SettingChanging += valueChanged;
         }
 
         // initialize Main form
@@ -215,8 +220,8 @@ namespace GrblPlotter
 
             string ip = Properties.Settings.Default.ip;
             string port = Properties.Settings.Default.port;
-            WatsonWsServer server = new WatsonWsServer(ip, int.Parse(port), false);
-
+            ws = new WatsonWsServer(ip, int.Parse(port), false);
+            Properties.Settings.Default.textLog = "";
         }
 
 
@@ -1336,29 +1341,35 @@ namespace GrblPlotter
             img.Dispose();
             g.Dispose();
         }
-        public void Connector()
+        public async Task Connector()
         {
-            
+
+
             
 
-            //await Task.Run(() =>
-            //{
-            //    WatsonWsServer server = new WatsonWsServer("localhost",9000, false);
-            //    server.ClientConnected += _connection_form.ClientConnected;
-            //    server.ClientDisconnected += _connection_form.ClientDisconnected;
-            //    server.MessageReceived += _connection_form.MessageReceived;
-            //    server.Start();
-            //    _connection_form.LogUpdate("test22222222");
-            //}).ConfigureAwait(true);
+            await Task.Run(() =>
+            {
+
+                ws.ClientConnected += ClientConnected;
+                ws.ClientDisconnected += ClientDisconnected;
+                ws.MessageReceived += MessageReceived;
+                ws.Start();
+
+            }).ConfigureAwait(true);
+            
 
         }
 
 
 
-        //public  async void ConnectorAsync()
-        //{
-        //    await Connector();
-        //}
+        public async void ConnectorAsync()
+        {
+
+            await Connector();
+            
+        }
+
+        
 
         private void rotateFreeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1388,9 +1399,38 @@ namespace GrblPlotter
 
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _connection_form = new Form1(server);
+            _connection_form = new Form1();
             _connection_form.Show(this);
-            _connection_form.LogUpdate("TEST");
+            _connection_form.LogUpdate();
+        }
+
+        public void ClientConnected(object sender, ClientConnectedEventArgs args)
+        {
+            Properties.Settings.Default.textLog += "Client connected: " + args.IpPort + Environment.NewLine;
+        }
+
+        public void ClientDisconnected(object sender, ClientDisconnectedEventArgs args)
+        {
+            Properties.Settings.Default.textLog += "Client disconnected: " + args.IpPort + Environment.NewLine;
+
+        }
+
+        public void MessageReceived(object sender, MessageReceivedEventArgs args)
+        {
+            Properties.Settings.Default.textLog += "Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data) + Environment.NewLine;
+        }
+
+        public void valueChanged(object sender, SettingChangingEventArgs args)
+        {
+            if((args.SettingName == "connectClicked") && (args.NewValue.ToString() == "True"))
+            {
+                ConnectorAsync();
+            }
+            if ((args.SettingName == "connectClicked") && (args.NewValue.ToString() == "False"))
+            {
+                ws.Stop();
+                ws.Dispose();
+            }
         }
     }   
 }

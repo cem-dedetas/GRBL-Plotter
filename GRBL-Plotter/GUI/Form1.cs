@@ -14,28 +14,29 @@ namespace GrblPlotter.GUI
 {
     public partial class Form1 : Form
     {
-        WatsonWsServer ws ;
-        public Form1(WatsonWsServer server)
+        public Form1()
         {
-            ws = server;
+            
             InitializeComponent();
             
         }
 
-        public void ClientConnected(object sender, ClientConnectedEventArgs args)
-        {
-            //txtConLog.Text += args.IpPort + Environment.NewLine;
-            LogUpdate("Client connected: " + args.IpPort);
-        }
+        delegate void SetTextCallback(string text);
 
-        public void ClientDisconnected(object sender, ClientDisconnectedEventArgs args)
+        private void SetText(string text)
         {
-            LogUpdate("Client disconnected: " + args.IpPort);
-        }
-
-        public void MessageReceived(object sender, MessageReceivedEventArgs args)
-        {
-            LogUpdate("Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data));
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (this.txtConLog.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this.txtConLog.Text = text;
+            }
         }
 
         public string getIP()
@@ -53,6 +54,9 @@ namespace GrblPlotter.GUI
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadSettings();
+            Waiter();
+
+
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -65,9 +69,9 @@ namespace GrblPlotter.GUI
             txtConLog.Clear();
         }
 
-        public void LogUpdate(string txt)
+        public void LogUpdate()
         {
-            txtConLog.Text += txt + Environment.NewLine;
+            txtConLog.Text += Properties.Settings.Default.textLog;
         }
 
         public void LoadSettings()
@@ -93,22 +97,46 @@ namespace GrblPlotter.GUI
             this.Close();
         }
 
-        public async void btnConnect_Click(object sender, EventArgs e)
+        public void btnConnect_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.textLog += "Server Listening..."+ Environment.NewLine; ;
+            LogUpdate();
+            Properties.Settings.Default.connectClicked = true;
 
-            await Connect();
-            
         }
 
-        public async Task Connect()
+        
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textLog += "Server shutting down..." + Environment.NewLine; ;
+            LogUpdate();
+            Properties.Settings.Default.connectClicked = false;
+        }
+
+
+        
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async Task Updater()
         {
             await Task.Run(() =>
             {
-                ws.ClientConnected += ClientConnected;
-                ws.ClientDisconnected += ClientDisconnected;
-                ws.MessageReceived += MessageReceived;
-                ws.Start();
+                while (true)
+                {
+                    SetText(Properties.Settings.Default.textLog);
+                    Task.Delay(TimeSpan.FromSeconds(1));
+                }
             }).ConfigureAwait(true);
+        }
+
+        private async void Waiter()
+        {
+            await Updater();
         }
 
     }
