@@ -32,6 +32,8 @@ namespace GrblPlotter.GUI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.btnSend = new System.Windows.Forms.Button();
+            this.txtSend = new System.Windows.Forms.TextBox();
             this.btn_LogClear = new System.Windows.Forms.Button();
             this.txtConLog = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -43,8 +45,6 @@ namespace GrblPlotter.GUI
             this.tab_2 = new System.Windows.Forms.TabPage();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnConnectionSave = new System.Windows.Forms.Button();
-            this.txtSend = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.server_tab.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +78,23 @@ namespace GrblPlotter.GUI
             this.server_tab.TabIndex = 0;
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
+            // 
+            // btnSend
+            // 
+            this.btnSend.Location = new System.Drawing.Point(318, 392);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.TabIndex = 11;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // txtSend
+            // 
+            this.txtSend.Location = new System.Drawing.Point(47, 366);
+            this.txtSend.Name = "txtSend";
+            this.txtSend.Size = new System.Drawing.Size(345, 20);
+            this.txtSend.TabIndex = 10;
             // 
             // btn_LogClear
             // 
@@ -133,7 +150,6 @@ namespace GrblPlotter.GUI
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(75, 20);
             this.txtPort.TabIndex = 2;
-            this.txtPort.Text = "8080";
             this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label_IP
@@ -151,7 +167,6 @@ namespace GrblPlotter.GUI
             this.txtIP.Name = "txtIP";
             this.txtIP.Size = new System.Drawing.Size(75, 20);
             this.txtIP.TabIndex = 0;
-            this.txtIP.Text = "127.0.0.1";
             this.txtIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tab_2
@@ -183,23 +198,6 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave.Text = "Save";
             this.btnConnectionSave.UseVisualStyleBackColor = true;
             this.btnConnectionSave.Click += new System.EventHandler(this.btnConnectionSave_Click);
-            // 
-            // txtSend
-            // 
-            this.txtSend.Location = new System.Drawing.Point(47, 355);
-            this.txtSend.Name = "txtSend";
-            this.txtSend.Size = new System.Drawing.Size(345, 20);
-            this.txtSend.TabIndex = 10;
-            // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(316, 382);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.TabIndex = 11;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // Form1
             // 

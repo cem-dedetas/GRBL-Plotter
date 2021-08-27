@@ -217,10 +217,8 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
+            
 
-            string ip = Properties.Settings.Default.ip;
-            string port = Properties.Settings.Default.port;
-            ws = new WatsonWsServer(ip, int.Parse(port), false);
             Properties.Settings.Default.textLog = "";
         }
 
@@ -1376,7 +1374,7 @@ namespace GrblPlotter
 
         }
 
-        public void SendCommandFromServer()
+        public void SendCommandFromServer(string msg)
         {
             
             //string cmd = "X20";
@@ -1387,7 +1385,7 @@ namespace GrblPlotter
             //string cmd = "X20";
             //var fake_form = new ControlSerialForm("fake", 1);
             //fake_form.RequestSend(cmd.Trim());
-            //SendCommand("X20",false);.
+            SendCommand(msg,false);
 
 
             //_serial_form.RequestSend(cmd.Trim());
@@ -1400,8 +1398,20 @@ namespace GrblPlotter
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _connection_form = new Form1();
-            _connection_form.Show(this);
+            if (Properties.Settings.Default.connectClicked.ToString() == "False")
+            {
+                _connection_form.DeactivateButtons();
+            }
+            else
+            {
+                _connection_form.ActivateButtons();
+            }
+
             _connection_form.LogUpdate();
+
+            _connection_form.ShowDialog(this);
+            
+            
         }
 
         public void ClientConnected(object sender, ClientConnectedEventArgs args)
@@ -1417,19 +1427,25 @@ namespace GrblPlotter
 
         public void MessageReceived(object sender, MessageReceivedEventArgs args)
         {
-            Properties.Settings.Default.textLog += "Message received from " + args.IpPort + ": " + Encoding.UTF8.GetString(args.Data) + Environment.NewLine;
+            string msg = Encoding.UTF8.GetString(args.Data);
+            Properties.Settings.Default.textLog += "Message received from " + args.IpPort + ": " + msg + Environment.NewLine;
+            Console.WriteLine("Message received from " + args.IpPort + ": " + msg + Environment.NewLine);
+            SendCommandFromServer(msg);
         }
 
         public void valueChanged(object sender, SettingChangingEventArgs args)
         {
             if((args.SettingName == "connectClicked") && (args.NewValue.ToString() == "True"))
             {
+                string ip = Properties.Settings.Default.ip;
+                string port = Properties.Settings.Default.port;
+                ws = new WatsonWsServer(ip, int.Parse(port), false);
+
                 ConnectorAsync();
             }
             if ((args.SettingName == "connectClicked") && (args.NewValue.ToString() == "False"))
             {
                 ws.Stop();
-                ws.Dispose();
             }
         }
     }   
