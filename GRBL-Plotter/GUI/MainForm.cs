@@ -1405,7 +1405,7 @@ namespace GrblPlotter
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _connection_form = new Connection_Form();
-            if (Properties.Settings.Default.connectClicked.ToString() == "False")
+            if (Properties.Settings.Default.connectClicked.ToString() == "True")
             {
                 _connection_form.DeactivateButtons();
             }
@@ -1463,7 +1463,9 @@ namespace GrblPlotter
 
                 Properties.Settings.Default.textLog += "Python Script Results"  + ": " + res + Environment.NewLine;
                 ControlCameraForm _camForm = new ControlCameraForm();
-                _camera_form.AutoCenter();
+
+                _camForm.RaiseXYEvent += OnRaiseCameraClickEvent;
+                _camForm.AutoCenter();
             }
         }
         public string camStuff(string fileName, string pythonPath) 
