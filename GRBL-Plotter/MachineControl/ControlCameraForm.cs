@@ -743,6 +743,23 @@ namespace GrblPlotter
                 lblCenterPos.Text = "No shape found";
         }
 
+        public string AutoCenter() {
+            if (shapeFound)
+            {
+                float actualScaling = GetActualScaling();
+                XyPoint tmp;
+                tmp.X = 2 * (Convert.ToDouble(shapeCenter.X) / pictureBoxVideo.Size.Width - 0.5) * actualScaling / cameraZoom;
+                tmp.Y = -2 * (Convert.ToDouble(shapeCenter.Y) / pictureBoxVideo.Size.Height - 0.5) * actualScaling * ratio / cameraZoom;
+                OnRaiseXYEvent(new XYEventArgs(0, 1, tmp / 2, "G91")); // move relative and slow
+                                                                       //               MessageBox.Show(x.ToString() + "  " + y.ToString()+"\r\n"+ shapeCenter.X.ToString()+"  "+ shapeCenter.Y.ToString());
+                lblCenterPos.Text = string.Format("X: {0:0.000}  Y: {1:0.000}", tmp.X, tmp.Y);
+                return string.Format("X: {0:0.000}  Y: {1:0.000}", tmp.X, tmp.Y);
+            }
+            else
+                lblCenterPos.Text = "No shape found";
+                return "No shape found";
+        }
+
         private float GetActualScaling()
         {
             double diff = cameraPosTop - cameraPosBot;

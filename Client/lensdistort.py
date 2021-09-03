@@ -5,8 +5,8 @@ import glob
 
 
 ################ FIND CHESSBOARD CORNERS - OBJECT POINTS AND IMAGE POINTS #############################
-def fixshape():
-    chessboardSize = (16,14)
+def fixshape(heig,leng):
+    chessboardSize = (heig,leng)
     cx=chessboardSize[1]
     cy=chessboardSize[0]
 
@@ -141,7 +141,7 @@ def fixshape():
 
 
 if __name__ == "__main__":
-    fixshape()
+    fixshape(16,14)
 """
 # Undistort with Remapping+UD
 mapx, mapy = cv2.initUndistortRectifyMap(cameraMatrix, dist, None, newCameraMatrix, (w,h), 5)

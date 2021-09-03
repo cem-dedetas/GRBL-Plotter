@@ -1752,5 +1752,14 @@
     <Setting Name="textLog" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="startClicked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="pythonPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Cem\AppData\Local\Programs\Python\Python39\python.exe</Value>
+    </Setting>
+    <Setting Name="scriptPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -75,6 +75,8 @@ using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
 using WatsonWebsocket;
+using IronPython.Hosting;
+
 
 //#pragma warning disable CA1303	// Do not pass literals as localized parameters
 //#pragma warning disable CA1307
@@ -89,9 +91,10 @@ namespace GrblPlotter
         Splashscreen _splashscreen = null;
 
         MessageForm _message_form = null;
-        Form1 _connection_form = null;
+        Connection_Form _connection_form = null;
 
         WatsonWsServer ws = null;
+
 
         private const string appName = "GRBL Plotter";
         private const string fileLastProcessed = "lastProcessed";
@@ -195,7 +198,11 @@ namespace GrblPlotter
 
             //Properties.Settings.Default.PropertyChanged += valueChanged;
             Properties.Settings.Default.SettingChanging += valueChanged;
+
+
         }
+
+        
 
         // initialize Main form
 
@@ -1397,7 +1404,7 @@ namespace GrblPlotter
 
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _connection_form = new Form1();
+            _connection_form = new Connection_Form();
             if (Properties.Settings.Default.connectClicked.ToString() == "False")
             {
                 _connection_form.DeactivateButtons();
@@ -1432,7 +1439,7 @@ namespace GrblPlotter
             Console.WriteLine("Message received from " + args.IpPort + ": " + msg + Environment.NewLine);
             SendCommandFromServer(msg);
         }
-
+ 
         public void valueChanged(object sender, SettingChangingEventArgs args)
         {
             if((args.SettingName == "connectClicked") && (args.NewValue.ToString() == "True"))
@@ -1447,7 +1454,46 @@ namespace GrblPlotter
             {
                 ws.Stop();
             }
+            if((args.SettingName == "startClicked") && (args.NewValue.ToString() == "True"))
+            {
+                string fl = Properties.Settings.Default.scriptPath;
+                string py = Properties.Settings.Default.pythonPath;
+
+                string res = camStuff(fl, py);
+
+                Properties.Settings.Default.textLog += "Python Script Results"  + ": " + res + Environment.NewLine;
+                ControlCameraForm _camForm = new ControlCameraForm();
+                _camera_form.AutoCenter();
+            }
         }
+        public string camStuff(string fileName, string pythonPath) 
+        {
+
+            System.Diagnostics.ProcessStartInfo start = new ProcessStartInfo(pythonPath, fileName);
+            start.FileName = pythonPath;
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true; 
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true; 
+            start.LoadUserProfile = true;
+            using (System.Diagnostics.Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string stderr = process.StandardError.ReadToEnd();
+                    string result = reader.ReadToEnd();
+                    Console.WriteLine("From System Diagnostics");
+                    Console.WriteLine(result);
+
+                    return result;
+                }
+            }
+
+
+        }
+
+
+
     }   
 }
 

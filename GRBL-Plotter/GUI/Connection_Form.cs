@@ -14,11 +14,11 @@ using System.Configuration;
 
 namespace GrblPlotter.GUI
 {
-    public partial class Form1 : Form
+    public partial class Connection_Form : Form
     {
         private readonly Timer _timer = new Timer();
 
-        public Form1()
+        public Connection_Form()
         {
             
 
@@ -83,6 +83,8 @@ namespace GrblPlotter.GUI
             txtIP.Text = Properties.Settings.Default.ip.ToString();
             txtPort.Text = Properties.Settings.Default.port.ToString();
             txtConLog.Text = Properties.Settings.Default.textLog;
+            txtPythonPath.Text = Properties.Settings.Default.pythonPath;
+            txtScriptPath.Text = Properties.Settings.Default.scriptPath;
 
 
         }
@@ -91,6 +93,8 @@ namespace GrblPlotter.GUI
             Properties.Settings.Default.ip = txtIP.Text;
             Properties.Settings.Default.port = txtPort.Text;
             Properties.Settings.Default.textLog = txtConLog.Text;
+            Properties.Settings.Default.pythonPath = txtPythonPath.Text;
+            Properties.Settings.Default.scriptPath = txtScriptPath.Text;
             Properties.Settings.Default.Save();
         }
 
@@ -122,14 +126,6 @@ namespace GrblPlotter.GUI
             ActivateButtons();
         }
 
-
-        
-
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public void DeactivateButtons()
         {
             btnDisconnect.Enabled = true;
@@ -142,7 +138,13 @@ namespace GrblPlotter.GUI
             btnConnect.Enabled = true;
         }
 
-        
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+
+            Properties.Settings.Default.pythonPath = txtPythonPath.Text;
+            Properties.Settings.Default.scriptPath = txtScriptPath.Text;
+            Properties.Settings.Default.startClicked = true;
+        }
 
     }
 }

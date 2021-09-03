@@ -7011,5 +7011,41 @@ namespace GrblPlotter.Properties {
                 this["textLog"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool startClicked {
+            get {
+                return ((bool)(this["startClicked"]));
+            }
+            set {
+                this["startClicked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Cem\\AppData\\Local\\Programs\\Python\\Python39\\python.exe")]
+        public string pythonPath {
+            get {
+                return ((string)(this["pythonPath"]));
+            }
+            set {
+                this["pythonPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string scriptPath {
+            get {
+                return ((string)(this["scriptPath"]));
+            }
+            set {
+                this["scriptPath"] = value;
+            }
+        }
     }
 }
