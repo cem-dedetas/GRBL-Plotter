@@ -1405,15 +1405,25 @@ namespace GrblPlotter
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _connection_form = new Connection_Form();
+<<<<<<< Updated upstream
             Console.WriteLine(Properties.Settings.Default.connectClicked.ToString());
             if (Properties.Settings.Default.connectClicked == true)
+=======
+            /*
+            if (Properties.Settings.Default.connectClicked.ToString() == "True")
+>>>>>>> Stashed changes
             {
                 _connection_form.DeactivateConnect();
             }
             else
             {
+<<<<<<< Updated upstream
                 _connection_form.ActivateConnect();
             }
+=======
+                _connection_form.ActivateButtons();
+            }*/
+>>>>>>> Stashed changes
 
             _connection_form.LogUpdate();
 
@@ -1463,11 +1473,24 @@ namespace GrblPlotter
                 string res = camStuff(fl, py);
 
                 Properties.Settings.Default.textLog += "Python Script Results"  + ": " + res + Environment.NewLine;
+                /*
                 ControlCameraForm _camForm = new ControlCameraForm();
+<<<<<<< Updated upstream
 
                 _camForm.cBShapeDetection.Checked = true;
                 _camForm.RaiseXYEvent += OnRaiseCameraClickEvent;
                 _camForm.AutoCenter();
+=======
+                _camForm.RaiseXYEvent += OnRaiseCameraClickEvent;
+                _camForm.InitializeComponent();
+                */
+                ControlCameraForm _camForm =CameraToolStripMenuItem_Click_PBL();
+                Console.WriteLine("IN");
+                System.Threading.Thread.Sleep(5000);
+                Console.WriteLine("OUT");
+                string camformtest = _camForm.AutoCenter();
+                Console.WriteLine(camformtest);
+>>>>>>> Stashed changes
             }
         }
         public string camStuff(string fileName, string pythonPath) 

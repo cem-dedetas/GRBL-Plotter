@@ -52,7 +52,7 @@ namespace GrblPlotter
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ControlCameraForm));
@@ -510,6 +510,7 @@ namespace GrblPlotter
             this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.cBShapeDetection.Checked = true;
 
         }
 

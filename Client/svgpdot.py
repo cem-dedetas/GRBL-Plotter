@@ -17,7 +17,7 @@ import glob
 
 ################################WARNING -------- ONLY JPG FILES WHEN THIS CODE IS RUNNING SHOULD BE THE ONES OF YOUR CHESSBOARD EMPTY AND FILLED , CODE WILL TRY TO SCAN EVERYTHING THATS JPG TO GET A BETTER ESTIMATION
 async def listener(string):
-    url = "ws://25.52.61.231:49152"
+    url = "ws://127.0.0.1:8090"
     async with websockets.connect(url) as ws:
         print("Connected")
             

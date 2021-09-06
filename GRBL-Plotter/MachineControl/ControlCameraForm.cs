@@ -401,7 +401,7 @@ namespace GrblPlotter
         }
 
         // select video source from list
-        private void CamSourceSubmenuItem_Click(object sender, EventArgs e)
+        public void CamSourceSubmenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
             ((ToolStripMenuItem)camSourceToolStripMenuItem.DropDownItems[cameraIndex]).Checked = false;

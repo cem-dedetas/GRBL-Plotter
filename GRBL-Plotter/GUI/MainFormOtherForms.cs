@@ -274,6 +274,23 @@ namespace GrblPlotter
             _camera_form.Show(this);
             _camera_form.WindowState = FormWindowState.Normal;
         }
+        public ControlCameraForm CameraToolStripMenuItem_Click_PBL()
+        {
+            if (_camera_form == null)
+            {
+                _camera_form = new ControlCameraForm();
+                _camera_form.FormClosed += FormClosed_CameraForm;
+                _camera_form.RaiseXYEvent += OnRaiseCameraClickEvent;
+                //               _camera_form.setPosMarker(grbl.posMarker);// visuGCode.GetPosMarker());
+            }
+            else
+            {
+                _camera_form.Visible = false;
+            }
+            //_camera_form.Show(this);
+            _camera_form.WindowState = FormWindowState.Normal;
+            return _camera_form;
+        }
         private void FormClosed_CameraForm(object sender, FormClosedEventArgs e)
         { _camera_form = null; }
 
