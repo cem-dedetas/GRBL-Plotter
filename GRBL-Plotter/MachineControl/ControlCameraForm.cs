@@ -753,10 +753,12 @@ namespace GrblPlotter
                 tmp.Y = -2 * (Convert.ToDouble(shapeCenter.Y) / pictureBoxVideo.Size.Height - 0.5) * actualScaling * ratio / cameraZoom;
                 OnRaiseXYEvent(new XYEventArgs(0, 1, tmp / 2, "G91")); // move relative and slow
                                                                        //               MessageBox.Show(x.ToString() + "  " + y.ToString()+"\r\n"+ shapeCenter.X.ToString()+"  "+ shapeCenter.Y.ToString());
+                Properties.Settings.Default.textLog += string.Format("X: {0:0.000}  Y: {1:0.000}", tmp.X, tmp.Y);
                 lblCenterPos.Text = string.Format("X: {0:0.000}  Y: {1:0.000}", tmp.X, tmp.Y);
                 return string.Format("X: {0:0.000}  Y: {1:0.000}", tmp.X, tmp.Y);
             }
             else
+                Properties.Settings.Default.textLog += "No shape found";
                 lblCenterPos.Text = "No shape found";
                 return "No shape found";
         }
