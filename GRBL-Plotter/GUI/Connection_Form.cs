@@ -65,6 +65,7 @@ namespace GrblPlotter.GUI
 
         private void btn_LogClear_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.textLog = "";
             txtConLog.Clear();
         }
 

@@ -165,6 +165,7 @@ namespace GrblPlotter.GUI
             this.txtConLog.Multiline = true;
             this.txtConLog.Name = "txtConLog";
             this.txtConLog.ReadOnly = true;
+            this.txtConLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtConLog.Size = new System.Drawing.Size(346, 182);
             this.txtConLog.TabIndex = 7;
             // 
