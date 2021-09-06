@@ -195,7 +195,7 @@ namespace GrblPlotter
             Graphic.Init(Graphic.SourceType.SVG, "", null, null);   // load class for faster 1st import
             VisuGCode.GetGCodeLines(fCTBCode.Lines, null, null);
 
-
+            Properties.Settings.Default.connectClicked = false;
             //Properties.Settings.Default.PropertyChanged += valueChanged;
             Properties.Settings.Default.SettingChanging += valueChanged;
 
@@ -224,8 +224,8 @@ namespace GrblPlotter
             SplashScreenTimer.Stop();
             SplashScreenTimer.Start();  // 1st event after 1500
 
-            
 
+            
             Properties.Settings.Default.textLog = "";
         }
 
@@ -1405,13 +1405,14 @@ namespace GrblPlotter
         public void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _connection_form = new Connection_Form();
-            if (Properties.Settings.Default.connectClicked.ToString() == "True")
+            Console.WriteLine(Properties.Settings.Default.connectClicked.ToString());
+            if (Properties.Settings.Default.connectClicked == true)
             {
-                _connection_form.DeactivateButtons();
+                _connection_form.DeactivateConnect();
             }
             else
             {
-                _connection_form.ActivateButtons();
+                _connection_form.ActivateConnect();
             }
 
             _connection_form.LogUpdate();

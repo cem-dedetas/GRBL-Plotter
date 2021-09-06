@@ -60,6 +60,7 @@ namespace GrblPlotter.GUI
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
 
+            Properties.Settings.Default.Save();
         }
         
 
@@ -115,7 +116,9 @@ namespace GrblPlotter.GUI
         {
             Properties.Settings.Default.textLog += "Server Listening..." + Environment.NewLine;
             Properties.Settings.Default.connectClicked = true;
-            DeactivateButtons();
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.connectClicked.ToString());
+            DeactivateConnect();
         }
 
         
@@ -124,16 +127,18 @@ namespace GrblPlotter.GUI
         {
             Properties.Settings.Default.textLog += "Server shutting down..." + Environment.NewLine;
             Properties.Settings.Default.connectClicked = false;
-            ActivateButtons();
+            Properties.Settings.Default.Save();
+            Console.WriteLine(Properties.Settings.Default.connectClicked.ToString());
+            ActivateConnect();
         }
 
-        public void DeactivateButtons()
+        public void DeactivateConnect()
         {
             btnDisconnect.Enabled = true;
             btnConnect.Enabled = false;
         }
 
-        public void ActivateButtons()
+        public void ActivateConnect()
         {
             btnDisconnect.Enabled = false;
             btnConnect.Enabled = true;
