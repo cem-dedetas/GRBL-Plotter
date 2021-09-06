@@ -231,6 +231,7 @@ namespace GrblPlotter
         // event-handler of video - rotate image and display
         void VideoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
+            Properties.Settings.Default.textLog += "frame";
             frameCounter++;
             if (frameCounter > 10)
             {

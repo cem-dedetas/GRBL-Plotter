@@ -550,7 +550,7 @@ namespace GrblPlotter
         private System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crossHairsToolStripMenuItem;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.CheckBox cBShapeDetection;
+        public System.Windows.Forms.CheckBox cBShapeDetection;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btnAutoCenter;
         private System.Windows.Forms.Label lblCenterPos;

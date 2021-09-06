@@ -1465,6 +1465,7 @@ namespace GrblPlotter
                 Properties.Settings.Default.textLog += "Python Script Results"  + ": " + res + Environment.NewLine;
                 ControlCameraForm _camForm = new ControlCameraForm();
 
+                _camForm.cBShapeDetection.Checked = true;
                 _camForm.RaiseXYEvent += OnRaiseCameraClickEvent;
                 _camForm.AutoCenter();
             }
