@@ -124,7 +124,7 @@ namespace GrblPlotter
         private static bool logDetailed = false;
         private static bool logPosEvent = false;
         private static bool logStreaming = false;
-
+        private List<String> message = null;
 
         public MainForm()
         {   // Use the Constructor in a Windows Form for ensuring that initialization is done properly.
@@ -227,6 +227,7 @@ namespace GrblPlotter
 
             
             Properties.Settings.Default.textLog = "";
+            message = new List<string>();
         }
 
 
@@ -1443,7 +1444,8 @@ namespace GrblPlotter
             string msg = Encoding.UTF8.GetString(args.Data);
             Properties.Settings.Default.textLog += "Message received from " + args.IpPort + ": " + msg + Environment.NewLine;
             Console.WriteLine("Message received from " + args.IpPort + ": " + msg + Environment.NewLine);
-            SendCommandFromServer(msg);
+            message.Add( msg );
+            //SendCommandFromServer(msg);
         }
  
         public void valueChanged(object sender, SettingChangingEventArgs args)
@@ -1465,13 +1467,21 @@ namespace GrblPlotter
                 string fl = Properties.Settings.Default.scriptPath;
                 string py = Properties.Settings.Default.pythonPath;
 
+                int i = 0;
+
                 string res = camStuff(fl, py);
 
                 Properties.Settings.Default.textLog += "Python Script Results"  + ": " + res + Environment.NewLine;
 
+
                 ControlCameraForm _camForm =CameraToolStripMenuItem_Click_PBL();
+
+                SendCommandFromServer(message[i]);
+                i++;
                 Console.WriteLine("IN");
+
                 System.Threading.Thread.Sleep(5000);
+                SendCommandFromServer(message[i]);
                 Console.WriteLine("OUT");
                 string camformtest = _camForm.AutoCenter();
                 Console.WriteLine(camformtest);
