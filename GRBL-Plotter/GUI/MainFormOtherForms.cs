@@ -287,7 +287,8 @@ namespace GrblPlotter
             {
                 _camera_form.Visible = false;
             }
-            //_camera_form.Show(this);
+            _camera_form.Show(this);
+            //_camera_form.Visible = false;
             _camera_form.WindowState = FormWindowState.Normal;
             return _camera_form;
         }
