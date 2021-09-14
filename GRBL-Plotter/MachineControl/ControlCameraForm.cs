@@ -231,7 +231,7 @@ namespace GrblPlotter
         // event-handler of video - rotate image and display
         void VideoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            Properties.Settings.Default.textLog += "frame";
+            //Properties.Settings.Default.textLog += "frame";
             frameCounter++;
             if (frameCounter > 10)
             {
@@ -814,6 +814,15 @@ namespace GrblPlotter
             teachPoint1 = (XyPoint)Grbl.PosMarker;
             teachPoint2 = teachPoint1; //teachPoint3 = teachPoint1;
             measureAngleStart = teachPoint1;
+            Console.WriteLine("X:{0},Y{1}",((XyPoint)Grbl.PosMarker).X, ((XyPoint)Grbl.PosMarker).Y); //TEACHPOINT1TEACH1
+            OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.PosMarker, "G92"));        // set new coordinates
+        }
+        public void Teachpoint1_process_Click_PBL()
+        {
+            teachPoint1 = (XyPoint)Grbl.PosMarker;
+            teachPoint2 = teachPoint1; //teachPoint3 = teachPoint1;
+            measureAngleStart = teachPoint1;
+            Console.WriteLine("X:{0},Y{1}", ((XyPoint)Grbl.PosMarker).X, ((XyPoint)Grbl.PosMarker).Y); //TEACHPOINT1TEACH1
             OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.PosMarker, "G92"));        // set new coordinates
         }
 
@@ -827,6 +836,21 @@ namespace GrblPlotter
             double angleResult = angle1 - angle2;
             lblAngle.Text = String.Format(culture, "{0:0.00}°", angleResult);
 
+            Console.WriteLine("X:{0},Y{1}", ((XyPoint)Grbl.PosMarker).X, ((XyPoint)Grbl.PosMarker).Y); //TEACHPOINT2TEACH2
+            OnRaiseXYEvent(new XYEventArgs(angleResult, dist2 / dist1, teachPoint1, "a"));       // rotate arround TP1
+        }
+
+        public void Teachpoint2_process_Click_PBL()
+        {
+            teachPoint2 = (XyPoint)Grbl.PosMarker;
+            double angle1 = teachPoint1.AngleTo(teachPoint2);
+            double dist1 = teachPoint1.DistanceTo(teachPoint2);
+            double angle2 = teachPoint1.AngleTo((XyPoint)Grbl.posWork);
+            double dist2 = teachPoint1.DistanceTo((XyPoint)Grbl.posWork);
+            double angleResult = angle1 - angle2;
+            lblAngle.Text = String.Format(culture, "{0:0.00}°", angleResult);
+
+            Console.WriteLine("X:{0},Y{1}", ((XyPoint)Grbl.PosMarker).X, ((XyPoint)Grbl.PosMarker).Y); //TEACHPOINT2TEACH2
             OnRaiseXYEvent(new XYEventArgs(angleResult, dist2 / dist1, teachPoint1, "a"));       // rotate arround TP1
         }
 

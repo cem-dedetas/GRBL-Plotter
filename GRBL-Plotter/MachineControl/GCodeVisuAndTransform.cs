@@ -155,6 +155,7 @@ namespace GrblPlotter
         /// </summary>
         public static void SetPosMarkerLine(int line, bool markFigure)
         {
+            Console.WriteLine(line.ToString(), markFigure.ToString());
             if (logDetailed) Logger.Trace("  setPosMarkerLine line:{0}  markFigure:{1}", line, markFigure);
             int figureNr;
             XyPoint center = new XyPoint(0, 0);

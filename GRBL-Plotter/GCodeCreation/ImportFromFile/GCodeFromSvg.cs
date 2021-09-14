@@ -746,7 +746,10 @@ namespace GrblPlotter
                         logSource = "Basic element " + form;
 
                         if (pathElement.Attribute("id") != null)
+                        {
+                            Console.WriteLine(pathElement.ToString());
                             Graphic.SetPathId(pathElement.Attribute("id").Value);
+                        }
 
                         offsetX = 0; offsetY = 0;
 
@@ -823,7 +826,7 @@ namespace GrblPlotter
                         else if (form == "circle")
                         {
                             if (svgComments) Graphic.SetComment(string.Format(" circle cx:{0:0.00} cy:{1:0.00} r:{2:0.00} ", cx, cy, r));
-                            if (logEnable) Logger.Trace(" circle cx:{0:0.00} cy:{1:0.00} r:{2:0.00} r=z:{3}", cx, cy, r, svgConvertCircleToDot);
+                            if (logEnable) Logger.Trace(" circle cx:{0:0.00} cy:{1:0.00} r:{2:0.00} r=z:{3} ", cx, cy, r, svgConvertCircleToDot);
 
                             if (svgConvertCircleToDot)
                             {

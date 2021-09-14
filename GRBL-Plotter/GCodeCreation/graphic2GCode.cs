@@ -449,7 +449,16 @@ namespace GrblPlotter
             if (pathObject.Info.GroupAttributes[5].Length > 0) attributes.Append(string.Format(culture, " Tile=\"{0}\"", pathObject.Info.GroupAttributes[5]));
             if (pathObject.Info.PathId.Length > 0) attributes.Append(string.Format(culture, " PathID=\"{0}\"", pathObject.Info.PathId));
             if (pathObject.PathLength > 0) attributes.Append(string.Format(culture, " PathLength=\"{0:0.0}\"", pathObject.PathLength));
-
+            if (pathObject.Info.PathId.Contains("fiduc0"))
+            {
+                attributes.Append(string.Format(culture, "MARKED TOP"));
+            }
+            if (pathObject.Info.PathId.Contains("fiduc1"))
+            {
+                attributes.Append(string.Format(culture, "MARKED BOTTOM"));
+            }
+            Console.WriteLine(attributes.ToString());
+            Console.WriteLine(pathObject.ToString());//HEREHEREHERE
             return attributes;
         }
 

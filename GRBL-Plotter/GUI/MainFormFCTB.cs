@@ -408,6 +408,11 @@ namespace GrblPlotter
         }
         #endregion
 
+        public void SetPosMarkerLine_PBL(int line,bool x)
+        {
+            VisuGCode.SetPosMarkerLine(line,x);
+        }
+
         #region CMS Menu
         // context Menu on fastColoredTextBox
         private void CmsFctb_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
