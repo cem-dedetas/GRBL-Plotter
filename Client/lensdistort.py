@@ -10,7 +10,9 @@ def fixshape(heig,leng):
     cx=chessboardSize[1]
     cy=chessboardSize[0]
 
-    frameSize = (1200,1360)
+    imgf = cv2.imread('distest0.jpeg') ###CHECKBOARD ONLY
+
+    frameSize = (len(imgf[0]),len(imgf))
     #frameSize=(1345,799)
 
 
@@ -89,23 +91,33 @@ def fixshape(heig,leng):
 
 
     # Undistort
+    cv2.imshow("test2",imgf)
     dstf = cv2.undistort(imgf, cameraMatrix, dist, None, newCameraMatrix)
 
     # crop the image
     xf, yf, wf, hf = roif
-    dstf = dstf[y:y+hf, x:x+wf]
+    dstf = dstf[yf:yf+hf, xf:xf+wf]
     cv2.imwrite('caliResult11.png', dstf)
+    
+    # Undistort
+    cv2.imshow("test2",imgf)
+    dstf = cv2.undistort(imgf, cameraMatrix, dist, None, newCameraMatrix)
+
+    # crop the image
+    xf, yf, wf, hf = roif
+    dstf = dstf[yf:yf+hf, xf:xf+wf]
+    cv2.imwrite('caliResult12.png', dstf)
 
     ##########################
     gr=cv2.cvtColor(dstf, cv2.COLOR_BGR2GRAY)
     
     ret, crn = cv2.findChessboardCorners(gr, chessboardSize, None)
     cv2.destroyAllWindows()
-   #cv2.imshow("test",gr)
+    cv2.imshow("test",gr)
 
 
     if ret == True:
-        #print("We in chief")
+        print("We in chief")
         objpoints.append(objp)
         corners2 = cv2.cornerSubPix(gr, crn, (11,11), (-1,-1), criteria)
         imgpoints.append(crn)
@@ -122,8 +134,11 @@ def fixshape(heig,leng):
                             [(int)(crn[cx*cy-1][0][0]),(int)(crn[cx*cy-1][0][1])],
                             [(int)(crn[cy-1][0][0]),(int)(crn[cy-1][0][1])]])
         #print(arr)
+        """
         width=abs((int)(crn[cx*cy-1][0][0]-crn[cy-1][0][0]))
-        height=abs((int)(crn[0][0][1]-crn[cy-1][0][1]))
+        height=abs((int)(crn[0][0][1]-crn[cy-1][0][1]))"""
+        width=1300
+        height=1500
         transformed=np.float32([[0,0],[width,0],[0,height],[width,height]])
         matrix=cv2.getPerspectiveTransform(arr,transformed)
         output=cv2.warpPerspective(dst,matrix,(width,height))
@@ -132,6 +147,7 @@ def fixshape(heig,leng):
         cv2.imwrite("caliResultFinal1.png",output)
     cv2.imwrite('caliResult4.png', dst)
 
+    cv2.destroyAllWindows()
     """
     for i in range(len(arr)):
         cv2.circle(dst,((int)(arr[i][0]),(int)(arr[i][1])),5,(0,0,i*60),cv2.FILLED)

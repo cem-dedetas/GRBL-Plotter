@@ -25,9 +25,6 @@ async def listener(string):
         await ws.send(msg)
         print(msg)
         
-
-
-
 def getAngle(a, b, c):
     ang = math.degrees(math.atan2(c[1]-b[1], c[0]-b[0]) - math.atan2(a[1]-b[1], a[0]-b[0]))
     #print("current ang",ang)
@@ -109,7 +106,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
     cv2.imshow('img',img) 
 
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
 
 
     gray= cv2.Canny(img,75,100)
@@ -125,7 +122,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
     # Apply Hough transform on the blurred image.
     detected_circles = cv2.HoughCircles(gray, 
                        cv2.HOUGH_GRADIENT, 1, 20, param1 = 30,
-                   param2 = 10, minRadius = 20, maxRadius = 23)
+                   param2 = 10, minRadius = 8, maxRadius = 8)
     #cv2.imshow("Detected Circle", img)
     #print("Amount detected",len(detected_circles[0]))
     # Draw circles that are detected.
@@ -249,7 +246,9 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
 
     cv2.imshow("Detected Circle", imgsvg)"""
-    cv2.imshow('imga',img) 
+    
+    nmg = cv2.resize(img, (960, 540))  
+    cv2.imshow('imga',nmg) 
 
     min=0
     max=9999999
@@ -382,8 +381,8 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
             #print("THIS RIGHT",arrkeep[i])
             arig=arrkeep[i]
 
-
-    cv2.imshow("test", nimg)
+    nmg = cv2.resize(nimg, (960, 540))  
+    cv2.imshow("test", nmg)
     #print("auto angle image",90+getAngle(atop,abot,(0,abot[1])))
 
 
@@ -422,7 +421,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
 
 
-    cv2. destroyAllWindows() 
+    #cv2. destroyAllWindows() 
     str1="X"+str(int(REDmovelen+perbox-(offsetXincubes*perbox)))+" Y"+str(int(REDmoveheight+perbox-(offsetYincubes*perbox)))
     str2="X"+str(int(RIGmovelen+perbox-(offsetXincubes*perbox)))+" Y"+str(int(RIGmoveheight+perbox-(offsetYincubes*perbox)))
     #print("checkrigx",checkrigx,"checkrigy",checkrigy)
@@ -437,12 +436,6 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
 if __name__ == "__main__":
     dotfinder("distort","distort1",-15,-15,-15,-15,-15)
-
-
-
-
-
-
 
 
 
