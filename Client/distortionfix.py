@@ -1,15 +1,18 @@
+import cv2
+import numpy as np
+
 
 def fixer(file0,file1):
     
-    path = r'C:\\Users\\yagiz\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort.jpg'
-    path2 = r'C:\\Users\\yagiz\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort1.jpg'
+    path = r'C:\\Users\\Liquidsnake\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort.jpg'
+    path2 = r'C:\\Users\\Liquidsnake\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort1.jpg'
 
     
     img=cv2.imread(path)
     img1=cv2.imread(path2)
     width=1200
     height=1360
-    arr=np.float32([[520,530],[1320,520],[200,1080],[1700,1080]])
+    arr=np.float32([[670,520],[1520,450],[120,1057],[1900,1059]])
     transformed=np.float32([[0,0],[width,0],[0,height],[width,height]])
 
 

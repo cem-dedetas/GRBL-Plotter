@@ -106,7 +106,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
     cv2.imshow('img',img) 
 
-    #cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
 
     gray= cv2.Canny(img,75,100)
@@ -122,7 +122,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
     # Apply Hough transform on the blurred image.
     detected_circles = cv2.HoughCircles(gray, 
                        cv2.HOUGH_GRADIENT, 1, 20, param1 = 30,
-                   param2 = 10, minRadius = 8, maxRadius = 8)
+                   param2 = 18, minRadius = 7, maxRadius = 15)
     #cv2.imshow("Detected Circle", img)
     #print("Amount detected",len(detected_circles[0]))
     # Draw circles that are detected.
@@ -328,7 +328,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
     #print("CIRCS on read",arrkeep)
 
 
-    testang1=arrkeep[2]
+    #testang1=arrkeep[2]
     #testang1[0]=0
     #print("angle read",360-getAngle(np.array(arrkeep[1], dtype=np.float64),np.array(arrkeep[2], dtype=np.float64),np.array((0,arrkeep[2][1]), dtype=np.float64)))
     #print(math.radians(360-getAngle(arrkeep[1],arrkeep[3],testang1)))
@@ -348,12 +348,13 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
     print("nimg2",sum(nimg[int(arrkeep[2][1]),int(arrkeep[2][0])]))"""
     #PICKS THE RING FROM CIRCLES BY FINDING WHICH ONE IS EMPTY---HIGHEST PIXEL SUM ==CLOSEST TO WHITE
     keep=0
+    print(arrkeep)
     for i in range(1,len(arrkeep)):
         if(sum(nimg[int(arrkeep[i][1]),int(arrkeep[i][0])])>sum(nimg[int(arrkeep[keep][1]),int(arrkeep[keep][0])])):
             keep=i
         else:
             continue
-
+    
     #print(keep)
     atop=arrkeep[keep]
 
@@ -367,11 +368,11 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
         if i==keep:
             ctb+=1
         for j in range(len(arrkeep)):
+            #if (i!=j):
+                #if(((arrkeep[i][0]-arrkeep[j][0])*(arrkeep[i][0]-arrkeep[j][0]))+((arrkeep[i][1]-arrkeep[j][1])*(arrkeep[i][1]-arrkeep[j][1]))==lensim[2] and i!=keep ):
+                    #ctb+=1
             if (i!=j):
-                if(((arrkeep[i][0]-arrkeep[j][0])*(arrkeep[i][0]-arrkeep[j][0]))+((arrkeep[i][1]-arrkeep[j][1])*(arrkeep[i][1]-arrkeep[j][1]))==lensim[2] and i!=keep ):
-                    ctb+=1
-            if (i!=j):
-                if(((arrkeep[i][0]-arrkeep[j][0])*(arrkeep[i][0]-arrkeep[j][0]))+((arrkeep[i][1]-arrkeep[j][1])*(arrkeep[i][1]-arrkeep[j][1]))==lensim[2] and i!=keep):
+                if(((arrkeep[i][0]-arrkeep[j][0])*(arrkeep[i][0]-arrkeep[j][0]))+((arrkeep[i][1]-arrkeep[j][1])*(arrkeep[i][1]-arrkeep[j][1]))==lensim[0] and i!=keep):
                     ctr+=1
                     
         if(ctb==0):
@@ -381,11 +382,15 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
             #print("THIS RIGHT",arrkeep[i])
             arig=arrkeep[i]
 
+
+            
+    cv2.circle(nimg,(int(atop[0]), int(atop[1])), 5, (0, 255, 255), 5)
+    cv2.circle(nimg,(int(arig[0]), int(arig[1])), 5, (0, 255, 255), 5)
     nmg = cv2.resize(nimg, (960, 540))  
     cv2.imshow("test", nmg)
     #print("auto angle image",90+getAngle(atop,abot,(0,abot[1])))
 
-
+    
     #print("last spot Y X",len(img)-1,len(img[len(img)-1])-1)
     #print("last spot Y X test",(len(img)),len(img[len(img)-1]))
 
@@ -421,7 +426,7 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
 
 
-    #cv2. destroyAllWindows() 
+    cv2. destroyAllWindows() 
     str1="X"+str(int(REDmovelen+perbox-(offsetXincubes*perbox)))+" Y"+str(int(REDmoveheight+perbox-(offsetYincubes*perbox)))
     str2="X"+str(int(RIGmovelen+perbox-(offsetXincubes*perbox)))+" Y"+str(int(RIGmoveheight+perbox-(offsetYincubes*perbox)))
     #print("checkrigx",checkrigx,"checkrigy",checkrigy)
@@ -436,6 +441,11 @@ def dotfinder(file0,file1,heig,leng,offx,offy,percube):
 
 if __name__ == "__main__":
     dotfinder("distort","distort1",-15,-15,-15,-15,-15)
+
+
+
+
+
 
 
 

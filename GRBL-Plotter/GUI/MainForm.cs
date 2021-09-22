@@ -1474,17 +1474,11 @@ namespace GrblPlotter
 
                 string camformtest;
                 ControlCameraForm _camForm =CameraToolStripMenuItem_Click_PBL();
-                for (int z=0;z<100;z++)
-                {
-                    z++;
-                    z--;
-                }
-
+             
                 while (i<2)
                 {
                     SendCommandFromServer(message[i]);
                     Console.WriteLine(message[i]);
-                    i++;
                     Console.WriteLine("IN");
                     System.Threading.Thread.Sleep(5000);
                     Console.WriteLine("OUT");
@@ -1498,12 +1492,40 @@ namespace GrblPlotter
                     this.SetPosMarkerLine_PBL(14+(i*6), false);
                     if(i==0)
                     {
-                        _camForm.Teachpoint1_process_Click_PBL();
+                        //_camForm.Teachpoint1_process_Click_PBL();
                     }
                     if (i == 1)
                     {
-                        _camForm.Teachpoint2_process_Click_PBL();
+                        //_camForm.Teachpoint2_process_Click_PBL();
                     }
+                    if (i == 0)
+                    {
+                        Console.WriteLine(Grbl.posWork.X);
+                        Console.WriteLine(Grbl.posWork.Y);
+                    }
+                    if (i == 0)
+                    {
+                        Console.WriteLine(Grbl.posWork.X);
+                        Console.WriteLine(Grbl.posWork.Y);
+
+                        int pFrom = message[i].LastIndexOf("X");
+                        int pTo = message[i].IndexOf(" Y");
+
+                        String result = message[i].Substring(pFrom, pTo - pFrom);
+                        Console.WriteLine(result);
+                    }
+                    if (i == 1)
+                    {
+                        Console.WriteLine(Grbl.posWork.X);
+                        Console.WriteLine(Grbl.posWork.Y);
+
+                        int pFrom = message[i].LastIndexOf("X");
+                        int pTo = message[i].IndexOf(" Y");
+
+                        String result = message[i].Substring(pFrom, pTo - pFrom);
+                        Console.WriteLine(result);
+                    }
+                    i++;
                     //SELECT FIDUCIAL ROUTINE
 
                 }

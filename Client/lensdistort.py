@@ -129,10 +129,13 @@ def fixshape(heig,leng):
 
 
         arr=np.float32([
-                            [(int)(crn[cx*cy-cy][0][0]),(int)(crn[cx*cy-cy][0][1])],    
-                            [(int)(crn[0][0][0]),(int)(crn[0][0][1])],
+                            [(int)(crn[cy-1][0][0]),(int)(crn[cy-1][0][1])],    
                             [(int)(crn[cx*cy-1][0][0]),(int)(crn[cx*cy-1][0][1])],
-                            [(int)(crn[cy-1][0][0]),(int)(crn[cy-1][0][1])]])
+                            [(int)(crn[0][0][0]),(int)(crn[0][0][1])],
+                            [(int)(crn[cx*cy-cy][0][0]),(int)(crn[cx*cy-cy][0][1])]
+
+                            ]
+                       )
         #print(arr)
         """
         width=abs((int)(crn[cx*cy-1][0][0]-crn[cy-1][0][0]))

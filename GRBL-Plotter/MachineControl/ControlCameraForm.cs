@@ -489,7 +489,10 @@ namespace GrblPlotter
         // show actual offset from tool position
         private void TeachToolStripMenuItem_Click(object sender, EventArgs e)       // teach offset of G59 coord system
         {
-            OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G10 L2 P6 "));   // move relative and fast
+            XyPoint a = new XyPoint(-116.016, -93.125); 
+            OnRaiseXYEvent(new XYEventArgs(0, 1, a, "G10 L2 P6 "));   // move relative and fast
+            a = new XyPoint(0, 0);
+            OnRaiseXYEvent(new XYEventArgs(0, 1, a, "G10 L2 P0 "));   // move relative and fast
         }
 
         // measure angle 
