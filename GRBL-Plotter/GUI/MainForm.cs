@@ -1474,56 +1474,56 @@ namespace GrblPlotter
 
                 string camformtest;
                 ControlCameraForm _camForm =CameraToolStripMenuItem_Click_PBL();
-             
+
+
+                int pFrom;
+                int pTo;
+
+                pFrom = message[0].IndexOf("X") + 1;
+                pTo = message[0].IndexOf(" Y");
+                double resultX0 = Convert.ToDouble(message[0].Substring(pFrom, pTo - pFrom));
+
+                pFrom = message[0].IndexOf("Y") + 1;
+                pTo = message[0].Length;
+                double resultY0 = Convert.ToDouble(message[0].Substring(pFrom, pTo - pFrom));
+
+                pFrom = message[1].IndexOf("X") + 1;
+                pTo = message[1].IndexOf(" Y");
+                double resultX1 = Convert.ToDouble(message[1].Substring(pFrom, pTo - pFrom));
+
+                pFrom = message[1].IndexOf("Y") + 1;
+                pTo = message[1].Length;
+                double resultY1 = Convert.ToDouble(message[1].Substring(pFrom, pTo - pFrom));
+
+                double RelativeX = resultX1 - resultX0;
+                double RelativeY = resultY1 - resultY0;
+
+                Console.WriteLine("RELATIVE X/Y" + RelativeX + RelativeY);
+
+
                 while (i<2)
                 {
                     SendCommandFromServer(message[i]);
                     Console.WriteLine(message[i]);
-                    Console.WriteLine("IN");
                     System.Threading.Thread.Sleep(5000);
-                    Console.WriteLine("OUT");
                     camformtest = _camForm.AutoCenter();
                     Console.WriteLine(camformtest);
-                    Console.WriteLine("IN");
                     System.Threading.Thread.Sleep(1000);
-                    Console.WriteLine("OUT");
                     camformtest = _camForm.AutoCenter();
                     Console.WriteLine(camformtest);
                     this.SetPosMarkerLine_PBL(14+(i*6), false);
                     if(i==0)
                     {
                         //_camForm.Teachpoint1_process_Click_PBL();
+                        double Xrel = Grbl.posWork.X + RelativeX;
+                        double Yrel = Grbl.posWork.Y + RelativeY;
+                        String message1 = "X" + Xrel + " Y" +Yrel;
+                        message[1] = message1;
                     }
                     if (i == 1)
                     {
+                        Console.Write("MESSAGE 1 UPDATED" + message[1]);
                         //_camForm.Teachpoint2_process_Click_PBL();
-                    }
-                    if (i == 0)
-                    {
-                        Console.WriteLine(Grbl.posWork.X);
-                        Console.WriteLine(Grbl.posWork.Y);
-                    }
-                    if (i == 0)
-                    {
-                        Console.WriteLine(Grbl.posWork.X);
-                        Console.WriteLine(Grbl.posWork.Y);
-
-                        int pFrom = message[i].LastIndexOf("X");
-                        int pTo = message[i].IndexOf(" Y");
-
-                        String result = message[i].Substring(pFrom, pTo - pFrom);
-                        Console.WriteLine(result);
-                    }
-                    if (i == 1)
-                    {
-                        Console.WriteLine(Grbl.posWork.X);
-                        Console.WriteLine(Grbl.posWork.Y);
-
-                        int pFrom = message[i].LastIndexOf("X");
-                        int pTo = message[i].IndexOf(" Y");
-
-                        String result = message[i].Substring(pFrom, pTo - pFrom);
-                        Console.WriteLine(result);
                     }
                     i++;
                     //SELECT FIDUCIAL ROUTINE
