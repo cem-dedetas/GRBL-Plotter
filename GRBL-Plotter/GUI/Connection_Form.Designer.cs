@@ -34,6 +34,9 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave = new System.Windows.Forms.Button();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.setTool = new System.Windows.Forms.Button();
+            this.btnMark2 = new System.Windows.Forms.Button();
+            this.btnMark1 = new System.Windows.Forms.Button();
             this.btnCenter2 = new System.Windows.Forms.Button();
             this.btnMove2 = new System.Windows.Forms.Button();
             this.btnCenter1 = new System.Windows.Forms.Button();
@@ -53,8 +56,8 @@ namespace GrblPlotter.GUI
             this.label_IP = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.btnMark1 = new System.Windows.Forms.Button();
-            this.btnMark2 = new System.Windows.Forms.Button();
+            this.btnCamCrdManual = new System.Windows.Forms.Button();
+            this.btnRST_con = new System.Windows.Forms.Button();
             this.server_tab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +94,9 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.btnRST_con);
+            this.server_tab.Controls.Add(this.btnCamCrdManual);
+            this.server_tab.Controls.Add(this.setTool);
             this.server_tab.Controls.Add(this.btnMark2);
             this.server_tab.Controls.Add(this.btnMark1);
             this.server_tab.Controls.Add(this.btnCenter2);
@@ -118,9 +124,39 @@ namespace GrblPlotter.GUI
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
             // 
+            // setTool
+            // 
+            this.setTool.Location = new System.Drawing.Point(54, 321);
+            this.setTool.Name = "setTool";
+            this.setTool.Size = new System.Drawing.Size(100, 23);
+            this.setTool.TabIndex = 21;
+            this.setTool.Text = "Set Tool Distance ";
+            this.setTool.UseVisualStyleBackColor = true;
+            this.setTool.Click += new System.EventHandler(this.setTool_Click);
+            // 
+            // btnMark2
+            // 
+            this.btnMark2.Location = new System.Drawing.Point(216, 412);
+            this.btnMark2.Name = "btnMark2";
+            this.btnMark2.Size = new System.Drawing.Size(75, 23);
+            this.btnMark2.TabIndex = 20;
+            this.btnMark2.Text = "MARK2";
+            this.btnMark2.UseVisualStyleBackColor = true;
+            this.btnMark2.Click += new System.EventHandler(this.btnMark2_Click);
+            // 
+            // btnMark1
+            // 
+            this.btnMark1.Location = new System.Drawing.Point(54, 412);
+            this.btnMark1.Name = "btnMark1";
+            this.btnMark1.Size = new System.Drawing.Size(75, 23);
+            this.btnMark1.TabIndex = 19;
+            this.btnMark1.Text = "MARK1 ";
+            this.btnMark1.UseVisualStyleBackColor = true;
+            this.btnMark1.Click += new System.EventHandler(this.btnMark1_Click);
+            // 
             // btnCenter2
             // 
-            this.btnCenter2.Location = new System.Drawing.Point(290, 406);
+            this.btnCenter2.Location = new System.Drawing.Point(297, 383);
             this.btnCenter2.Name = "btnCenter2";
             this.btnCenter2.Size = new System.Drawing.Size(75, 23);
             this.btnCenter2.TabIndex = 18;
@@ -130,7 +166,7 @@ namespace GrblPlotter.GUI
             // 
             // btnMove2
             // 
-            this.btnMove2.Location = new System.Drawing.Point(209, 406);
+            this.btnMove2.Location = new System.Drawing.Point(216, 383);
             this.btnMove2.Name = "btnMove2";
             this.btnMove2.Size = new System.Drawing.Size(75, 23);
             this.btnMove2.TabIndex = 17;
@@ -140,7 +176,7 @@ namespace GrblPlotter.GUI
             // 
             // btnCenter1
             // 
-            this.btnCenter1.Location = new System.Drawing.Point(128, 406);
+            this.btnCenter1.Location = new System.Drawing.Point(135, 383);
             this.btnCenter1.Name = "btnCenter1";
             this.btnCenter1.Size = new System.Drawing.Size(75, 23);
             this.btnCenter1.TabIndex = 16;
@@ -150,7 +186,7 @@ namespace GrblPlotter.GUI
             // 
             // btnMove1
             // 
-            this.btnMove1.Location = new System.Drawing.Point(47, 406);
+            this.btnMove1.Location = new System.Drawing.Point(54, 383);
             this.btnMove1.Name = "btnMove1";
             this.btnMove1.Size = new System.Drawing.Size(75, 23);
             this.btnMove1.TabIndex = 15;
@@ -161,7 +197,7 @@ namespace GrblPlotter.GUI
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(50, 383);
+            this.label2.Location = new System.Drawing.Point(56, 264);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 14;
@@ -170,7 +206,7 @@ namespace GrblPlotter.GUI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 357);
+            this.label1.Location = new System.Drawing.Point(50, 238);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 13;
@@ -178,7 +214,7 @@ namespace GrblPlotter.GUI
             // 
             // txtPythonPath
             // 
-            this.txtPythonPath.Location = new System.Drawing.Point(115, 354);
+            this.txtPythonPath.Location = new System.Drawing.Point(121, 235);
             this.txtPythonPath.Name = "txtPythonPath";
             this.txtPythonPath.Size = new System.Drawing.Size(278, 20);
             this.txtPythonPath.TabIndex = 12;
@@ -186,7 +222,7 @@ namespace GrblPlotter.GUI
             // 
             // txtScriptPath
             // 
-            this.txtScriptPath.Location = new System.Drawing.Point(115, 380);
+            this.txtScriptPath.Location = new System.Drawing.Point(121, 261);
             this.txtScriptPath.Name = "txtScriptPath";
             this.txtScriptPath.Size = new System.Drawing.Size(278, 20);
             this.txtScriptPath.TabIndex = 11;
@@ -194,7 +230,7 @@ namespace GrblPlotter.GUI
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(364, 444);
+            this.btnStart.Location = new System.Drawing.Point(318, 203);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 10;
@@ -204,7 +240,7 @@ namespace GrblPlotter.GUI
             // 
             // btn_LogClear
             // 
-            this.btn_LogClear.Location = new System.Drawing.Point(318, 325);
+            this.btn_LogClear.Location = new System.Drawing.Point(237, 203);
             this.btn_LogClear.Name = "btn_LogClear";
             this.btn_LogClear.Size = new System.Drawing.Size(75, 23);
             this.btn_LogClear.TabIndex = 9;
@@ -214,12 +250,12 @@ namespace GrblPlotter.GUI
             // 
             // txtConLog
             // 
-            this.txtConLog.Location = new System.Drawing.Point(47, 137);
+            this.txtConLog.Location = new System.Drawing.Point(53, 113);
             this.txtConLog.Multiline = true;
             this.txtConLog.Name = "txtConLog";
             this.txtConLog.ReadOnly = true;
             this.txtConLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConLog.Size = new System.Drawing.Size(346, 182);
+            this.txtConLog.Size = new System.Drawing.Size(346, 84);
             this.txtConLog.TabIndex = 7;
             // 
             // txtPort
@@ -294,25 +330,25 @@ namespace GrblPlotter.GUI
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnMark1
+            // btnCamCrdManual
             // 
-            this.btnMark1.Location = new System.Drawing.Point(47, 435);
-            this.btnMark1.Name = "btnMark1";
-            this.btnMark1.Size = new System.Drawing.Size(75, 23);
-            this.btnMark1.TabIndex = 19;
-            this.btnMark1.Text = "MARK1 ";
-            this.btnMark1.UseVisualStyleBackColor = true;
-            this.btnMark1.Click += new System.EventHandler(this.btnMark1_Click);
+            this.btnCamCrdManual.Location = new System.Drawing.Point(160, 321);
+            this.btnCamCrdManual.Name = "btnCamCrdManual";
+            this.btnCamCrdManual.Size = new System.Drawing.Size(100, 23);
+            this.btnCamCrdManual.TabIndex = 22;
+            this.btnCamCrdManual.Text = "Swap Cam Coord";
+            this.btnCamCrdManual.UseVisualStyleBackColor = true;
+            this.btnCamCrdManual.Click += new System.EventHandler(this.btnCamCrdManual_Click);
             // 
-            // btnMark2
+            // btnRST_con
             // 
-            this.btnMark2.Location = new System.Drawing.Point(209, 435);
-            this.btnMark2.Name = "btnMark2";
-            this.btnMark2.Size = new System.Drawing.Size(75, 23);
-            this.btnMark2.TabIndex = 20;
-            this.btnMark2.Text = "MARK2";
-            this.btnMark2.UseVisualStyleBackColor = true;
-            this.btnMark2.Click += new System.EventHandler(this.btnMark2_Click);
+            this.btnRST_con.Location = new System.Drawing.Point(266, 321);
+            this.btnRST_con.Name = "btnRST_con";
+            this.btnRST_con.Size = new System.Drawing.Size(46, 23);
+            this.btnRST_con.TabIndex = 23;
+            this.btnRST_con.Text = "RST";
+            this.btnRST_con.UseVisualStyleBackColor = true;
+            this.btnRST_con.Click += new System.EventHandler(this.btnRST_con_Click);
             // 
             // Connection_Form
             // 
@@ -363,5 +399,8 @@ namespace GrblPlotter.GUI
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Button btnMark2;
         private System.Windows.Forms.Button btnMark1;
+        private System.Windows.Forms.Button setTool;
+        private System.Windows.Forms.Button btnCamCrdManual;
+        private System.Windows.Forms.Button btnRST_con;
     }
 }

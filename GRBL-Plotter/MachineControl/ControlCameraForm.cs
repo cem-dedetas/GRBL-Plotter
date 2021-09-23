@@ -399,6 +399,10 @@ namespace GrblPlotter
         {
             RaiseXYEvent?.Invoke(this, e);
         }
+        public virtual void OnRaiseXYEvent_PBL(XYEventArgs e)
+        {
+            RaiseXYEvent?.Invoke(this, e);
+        }
 
         // select video source from list
         public void CamSourceSubmenuItem_Click(object sender, EventArgs e)
@@ -486,13 +490,20 @@ namespace GrblPlotter
             btnCamCoordCam.BackColor = Color.Lime;
             btnCamCoordTool.BackColor = SystemColors.Control;
         }
+        public void BtnCamCoordCam_Click_PBL()
+        {
+            if (cBCamCoordMove.Checked)
+                OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G59; G0G90"));  // switch coord system and move
+            else
+                OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G59"));         // only switch
+            btnCamCoordCam.BackColor = Color.Lime;
+            btnCamCoordTool.BackColor = SystemColors.Control;
+        }
         // show actual offset from tool position
         private void TeachToolStripMenuItem_Click(object sender, EventArgs e)       // teach offset of G59 coord system
         {
-            XyPoint a = new XyPoint(-116.016, -93.125); 
-            OnRaiseXYEvent(new XYEventArgs(0, 1, a, "G10 L2 P6 "));   // move relative and fast
-            a = new XyPoint(0, 0);
-            OnRaiseXYEvent(new XYEventArgs(0, 1, a, "G10 L2 P0 "));   // move relative and fast
+            OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G10 L2 P6 "));   // move relative and fast
+            OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G10 L2 P0 "));   // move relative and fast
         }
 
         // measure angle 

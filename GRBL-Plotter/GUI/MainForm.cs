@@ -1502,8 +1502,7 @@ namespace GrblPlotter
                 double RelativeX = resultX1 - resultX0;
                 double RelativeY = resultY1 - resultY0;
 
-                Console.WriteLine("RELATIVE X/Y" + RelativeX + RelativeY);
-                _connection_form.sendinfo(message, RelativeX, RelativeY, _camForm,this);
+                _connection_form.sendinfo(message, RelativeX, RelativeY, _camForm,this,this._serial_form);
                 /*
                 while (i<2)
                 {

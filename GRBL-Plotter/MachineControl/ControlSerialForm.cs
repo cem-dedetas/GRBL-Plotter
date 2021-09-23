@@ -1022,6 +1022,8 @@ namespace GrblPlotter
         { GrblReset(true); }    // savePos
         private void BtnGRBLHardReset_Click(object sender, EventArgs e)
         { GrblHardReset(); }
+        public void BtnGRBLHardReset_Click_PBL()
+        { GrblHardReset(); }
 
         #endregion
 

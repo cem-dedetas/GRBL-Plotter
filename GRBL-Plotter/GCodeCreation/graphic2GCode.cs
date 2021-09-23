@@ -457,8 +457,6 @@ namespace GrblPlotter
             {
                 attributes.Append(string.Format(culture, "MARKED BOTTOM"));
             }
-            Console.WriteLine(attributes.ToString());
-            Console.WriteLine(pathObject.ToString());//HEREHEREHERE
             return attributes;
         }
 

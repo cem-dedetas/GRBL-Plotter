@@ -747,7 +747,6 @@ namespace GrblPlotter
 
                         if (pathElement.Attribute("id") != null)
                         {
-                            Console.WriteLine(pathElement.ToString());
                             Graphic.SetPathId(pathElement.Attribute("id").Value);
                         }
 
