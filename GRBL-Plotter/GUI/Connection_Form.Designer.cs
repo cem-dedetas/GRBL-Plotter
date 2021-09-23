@@ -34,6 +34,10 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave = new System.Windows.Forms.Button();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.btnCenter2 = new System.Windows.Forms.Button();
+            this.btnMove2 = new System.Windows.Forms.Button();
+            this.btnCenter1 = new System.Windows.Forms.Button();
+            this.btnMove1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtPythonPath = new System.Windows.Forms.TextBox();
@@ -48,6 +52,9 @@ namespace GrblPlotter.GUI
             this.port_label = new System.Windows.Forms.Label();
             this.label_IP = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.btnMark1 = new System.Windows.Forms.Button();
+            this.btnMark2 = new System.Windows.Forms.Button();
             this.server_tab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +91,12 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.btnMark2);
+            this.server_tab.Controls.Add(this.btnMark1);
+            this.server_tab.Controls.Add(this.btnCenter2);
+            this.server_tab.Controls.Add(this.btnMove2);
+            this.server_tab.Controls.Add(this.btnCenter1);
+            this.server_tab.Controls.Add(this.btnMove1);
             this.server_tab.Controls.Add(this.label2);
             this.server_tab.Controls.Add(this.label1);
             this.server_tab.Controls.Add(this.txtPythonPath);
@@ -105,10 +118,50 @@ namespace GrblPlotter.GUI
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
             // 
+            // btnCenter2
+            // 
+            this.btnCenter2.Location = new System.Drawing.Point(290, 406);
+            this.btnCenter2.Name = "btnCenter2";
+            this.btnCenter2.Size = new System.Drawing.Size(75, 23);
+            this.btnCenter2.TabIndex = 18;
+            this.btnCenter2.Text = "CENTER2";
+            this.btnCenter2.UseVisualStyleBackColor = true;
+            this.btnCenter2.Click += new System.EventHandler(this.btnCenter2_Click);
+            // 
+            // btnMove2
+            // 
+            this.btnMove2.Location = new System.Drawing.Point(209, 406);
+            this.btnMove2.Name = "btnMove2";
+            this.btnMove2.Size = new System.Drawing.Size(75, 23);
+            this.btnMove2.TabIndex = 17;
+            this.btnMove2.Text = "MOVE2";
+            this.btnMove2.UseVisualStyleBackColor = true;
+            this.btnMove2.Click += new System.EventHandler(this.btnMove2_Click);
+            // 
+            // btnCenter1
+            // 
+            this.btnCenter1.Location = new System.Drawing.Point(128, 406);
+            this.btnCenter1.Name = "btnCenter1";
+            this.btnCenter1.Size = new System.Drawing.Size(75, 23);
+            this.btnCenter1.TabIndex = 16;
+            this.btnCenter1.Text = "CENTER1";
+            this.btnCenter1.UseVisualStyleBackColor = true;
+            this.btnCenter1.Click += new System.EventHandler(this.btnCenter1_Click);
+            // 
+            // btnMove1
+            // 
+            this.btnMove1.Location = new System.Drawing.Point(47, 406);
+            this.btnMove1.Name = "btnMove1";
+            this.btnMove1.Size = new System.Drawing.Size(75, 23);
+            this.btnMove1.TabIndex = 15;
+            this.btnMove1.Text = "MOVE1 ";
+            this.btnMove1.UseVisualStyleBackColor = true;
+            this.btnMove1.Click += new System.EventHandler(this.btnMove1_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 414);
+            this.label2.Location = new System.Drawing.Point(50, 383);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 14;
@@ -117,7 +170,7 @@ namespace GrblPlotter.GUI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 388);
+            this.label1.Location = new System.Drawing.Point(44, 357);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 13;
@@ -125,7 +178,7 @@ namespace GrblPlotter.GUI
             // 
             // txtPythonPath
             // 
-            this.txtPythonPath.Location = new System.Drawing.Point(115, 385);
+            this.txtPythonPath.Location = new System.Drawing.Point(115, 354);
             this.txtPythonPath.Name = "txtPythonPath";
             this.txtPythonPath.Size = new System.Drawing.Size(278, 20);
             this.txtPythonPath.TabIndex = 12;
@@ -133,7 +186,7 @@ namespace GrblPlotter.GUI
             // 
             // txtScriptPath
             // 
-            this.txtScriptPath.Location = new System.Drawing.Point(115, 411);
+            this.txtScriptPath.Location = new System.Drawing.Point(115, 380);
             this.txtScriptPath.Name = "txtScriptPath";
             this.txtScriptPath.Size = new System.Drawing.Size(278, 20);
             this.txtScriptPath.TabIndex = 11;
@@ -141,7 +194,7 @@ namespace GrblPlotter.GUI
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(318, 437);
+            this.btnStart.Location = new System.Drawing.Point(364, 444);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 10;
@@ -233,6 +286,34 @@ namespace GrblPlotter.GUI
             this.tabControl1.Size = new System.Drawing.Size(456, 499);
             this.tabControl1.TabIndex = 0;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(480, 24);
+            this.menuStrip1.TabIndex = 13;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // btnMark1
+            // 
+            this.btnMark1.Location = new System.Drawing.Point(47, 435);
+            this.btnMark1.Name = "btnMark1";
+            this.btnMark1.Size = new System.Drawing.Size(75, 23);
+            this.btnMark1.TabIndex = 19;
+            this.btnMark1.Text = "MARK1 ";
+            this.btnMark1.UseVisualStyleBackColor = true;
+            this.btnMark1.Click += new System.EventHandler(this.btnMark1_Click);
+            // 
+            // btnMark2
+            // 
+            this.btnMark2.Location = new System.Drawing.Point(209, 435);
+            this.btnMark2.Name = "btnMark2";
+            this.btnMark2.Size = new System.Drawing.Size(75, 23);
+            this.btnMark2.TabIndex = 20;
+            this.btnMark2.Text = "MARK2";
+            this.btnMark2.UseVisualStyleBackColor = true;
+            this.btnMark2.Click += new System.EventHandler(this.btnMark2_Click);
+            // 
             // Connection_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,7 +322,9 @@ namespace GrblPlotter.GUI
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnConnectionSave);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Connection_Form";
             this.Text = "Connection Settings";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
@@ -250,6 +333,7 @@ namespace GrblPlotter.GUI
             this.server_tab.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -272,5 +356,12 @@ namespace GrblPlotter.GUI
         public System.Windows.Forms.TextBox txtScriptPath;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnCenter2;
+        private System.Windows.Forms.Button btnMove2;
+        private System.Windows.Forms.Button btnCenter1;
+        private System.Windows.Forms.Button btnMove1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.Button btnMark2;
+        private System.Windows.Forms.Button btnMark1;
     }
 }

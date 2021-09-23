@@ -6894,54 +6894,6 @@ namespace GrblPlotter.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 Y1.000 F100\n")]
-        public string gamePadPOVC00 {
-            get {
-                return ((string)(this["gamePadPOVC00"]));
-            }
-            set {
-                this["gamePadPOVC00"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 Y-1.000 F100\n")]
-        public string gamePadPOVC05 {
-            get {
-                return ((string)(this["gamePadPOVC05"]));
-            }
-            set {
-                this["gamePadPOVC05"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 F100\n")]
-        public string gamePadPOVC06 {
-            get {
-                return ((string)(this["gamePadPOVC06"]));
-            }
-            set {
-                this["gamePadPOVC06"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 Y1.000 F100\n")]
-        public string gamePadPOVC07 {
-            get {
-                return ((string)(this["gamePadPOVC07"]));
-            }
-            set {
-                this["gamePadPOVC07"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
         public global::System.Drawing.Point locationSerForm4 {
             get {
@@ -7045,6 +6997,66 @@ namespace GrblPlotter.Properties {
             }
             set {
                 this["scriptPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 Y1.000 F100\r\n")]
+        public string gamePadPOVC00 {
+            get {
+                return ((string)(this["gamePadPOVC00"]));
+            }
+            set {
+                this["gamePadPOVC00"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 Y-1.000 F100\r\n")]
+        public string gamePadPOVC05 {
+            get {
+                return ((string)(this["gamePadPOVC05"]));
+            }
+            set {
+                this["gamePadPOVC05"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 F100\r\n")]
+        public string gamePadPOVC06 {
+            get {
+                return ((string)(this["gamePadPOVC06"]));
+            }
+            set {
+                this["gamePadPOVC06"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$J=G91 X-1.000 Y1.000 F100\r\n")]
+        public string gamePadPOVC07 {
+            get {
+                return ((string)(this["gamePadPOVC07"]));
+            }
+            set {
+                this["gamePadPOVC07"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool btnCenter1stn {
+            get {
+                return ((bool)(this["btnCenter1stn"]));
+            }
+            set {
+                this["btnCenter1stn"] = value;
             }
         }
     }

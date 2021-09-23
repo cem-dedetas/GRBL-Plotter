@@ -1461,6 +1461,10 @@ namespace GrblPlotter
             {
                 ws.Stop();
             }
+            if((args.SettingName== "btnCenter1stn") && (args.NewValue.ToString() == "True"))
+            {
+
+            }
             if((args.SettingName == "startClicked") && (args.NewValue.ToString() == "True"))
             {
                 string fl = Properties.Settings.Default.scriptPath;
@@ -1499,8 +1503,8 @@ namespace GrblPlotter
                 double RelativeY = resultY1 - resultY0;
 
                 Console.WriteLine("RELATIVE X/Y" + RelativeX + RelativeY);
-
-
+                _connection_form.sendinfo(message, RelativeX, RelativeY, _camForm,this);
+                /*
                 while (i<2)
                 {
                     SendCommandFromServer(message[i]);
@@ -1528,7 +1532,7 @@ namespace GrblPlotter
                     i++;
                     //SELECT FIDUCIAL ROUTINE
 
-                }
+                }*/
 
 
 

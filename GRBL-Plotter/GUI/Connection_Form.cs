@@ -151,6 +151,61 @@ namespace GrblPlotter.GUI
             Properties.Settings.Default.scriptPath = txtScriptPath.Text;
             Properties.Settings.Default.startClicked = true;
         }
+        List<string> messages;
+        double Xrelative;
+        double Yrelative;
+        ControlCameraForm _camForm;
+        MainForm main;
+
+        public void sendinfo(List<string> str, double xrel, double yrel,ControlCameraForm ccf,MainForm mf)
+        {
+            this.messages = str;
+            this.Xrelative = xrel;
+            this.Yrelative = yrel;
+            this._camForm = ccf;
+            this.main = mf;
+            Console.WriteLine("STR XREL YREL" + str[0] + str[1] + xrel +  yrel);
+        }
+
+        private void btnMove1_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("INMOVE1");
+            main.SendCommandFromServer(messages[0]);
+        }
+
+        private void btnCenter1_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("INCENTER1");
+            _camForm.AutoCenter();
+        }
+
+        private void btnMark1_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("INMARK1");
+            main.SetPosMarkerLine_PBL(14, false);
+            double Xrel = Grbl.posWork.X + Xrelative;
+            double Yrel = Grbl.posWork.Y + Yrelative;
+            String message1 = "X" + Xrel + " Y" + Yrel;
+            messages[1] = message1;
+        }
+
+        private void btnMove2_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer(messages[1]);
+            Console.WriteLine("INMOVE2");
+        }
+
+        private void btnCenter2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("INCENTER2");
+            _camForm.AutoCenter();
+        }
+
+        private void btnMark2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("INMARK2");
+            main.SetPosMarkerLine_PBL(20, false);
+        }
 
     }
 }

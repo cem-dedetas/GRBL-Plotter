@@ -1718,22 +1718,6 @@
     <Setting Name="useCaseLastLoaded" Type="System.String" Scope="User">
       <Value Profile="(Default)">?</Value>
     </Setting>
-    <Setting Name="gamePadPOVC00" Type="System.String" Scope="User">
-      <Value Profile="(Default)">$J=G91 Y1.000 F100
-</Value>
-    </Setting>
-    <Setting Name="gamePadPOVC05" Type="System.String" Scope="User">
-      <Value Profile="(Default)">$J=G91 X-1.000 Y-1.000 F100
-</Value>
-    </Setting>
-    <Setting Name="gamePadPOVC06" Type="System.String" Scope="User">
-      <Value Profile="(Default)">$J=G91 X-1.000 F100
-</Value>
-    </Setting>
-    <Setting Name="gamePadPOVC07" Type="System.String" Scope="User">
-      <Value Profile="(Default)">$J=G91 X-1.000 Y1.000 F100
-</Value>
-    </Setting>
     <Setting Name="locationSerForm4" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">0, 0</Value>
     </Setting>
@@ -1760,6 +1744,25 @@
     </Setting>
     <Setting Name="scriptPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="gamePadPOVC00" Type="System.String" Scope="User">
+      <Value Profile="(Default)">$J=G91 Y1.000 F100
+</Value>
+    </Setting>
+    <Setting Name="gamePadPOVC05" Type="System.String" Scope="User">
+      <Value Profile="(Default)">$J=G91 X-1.000 Y-1.000 F100
+</Value>
+    </Setting>
+    <Setting Name="gamePadPOVC06" Type="System.String" Scope="User">
+      <Value Profile="(Default)">$J=G91 X-1.000 F100
+</Value>
+    </Setting>
+    <Setting Name="gamePadPOVC07" Type="System.String" Scope="User">
+      <Value Profile="(Default)">$J=G91 X-1.000 Y1.000 F100
+</Value>
+    </Setting>
+    <Setting Name="btnCenter1stn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
