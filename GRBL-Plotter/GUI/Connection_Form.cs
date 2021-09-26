@@ -199,6 +199,7 @@ namespace GrblPlotter.GUI
                 double Yrel = Grbl.posWork.Y + Yrelative;
                 String message1 = "X" + Xrel + " Y" + Yrel;
                 messages[1] = message1;
+                _camForm.Teachpoint1_process_Click_PBL();
             }
         }
 
@@ -226,6 +227,7 @@ namespace GrblPlotter.GUI
             { 
                 Console.WriteLine("INMARK2");
                 main.SetPosMarkerLine_PBL(20, false);
+                _camForm.Teachpoint2_process_Click_PBL();
             }
         }
 
