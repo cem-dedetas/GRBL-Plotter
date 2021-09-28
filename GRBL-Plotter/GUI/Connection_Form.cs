@@ -193,16 +193,17 @@ namespace GrblPlotter.GUI
         {
             if (camOpen) 
             {
-                _camForm.BtnCamCoordTool_Click_PBL();
+                //_camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK1");
                 main.SetPosMarkerLine_PBL(14, false);
+                _camForm.Teachpoint1_process_Click_PBL();
                 double Xrel = Grbl.posWork.X + Xrelative;
                 double Yrel = Grbl.posWork.Y + Yrelative;
                 String message1 = "X" + Xrel + " Y" + Yrel;
                 Console.WriteLine("M1"+message1);
-                //messages[1] = message1;
-                _camForm.Teachpoint1_process_Click_PBL();
-                _camForm.BtnCamCoordCam_Click_PBL();
+                messages[1] = message1;
+                Console.WriteLine("MESSAGE 1 IS : " + messages[1]);
+                //_camForm.BtnCamCoordCam_Click_PBL();
             }
         }
 
@@ -229,11 +230,11 @@ namespace GrblPlotter.GUI
         {
             if (camOpen)
             {
-                _camForm.BtnCamCoordTool_Click_PBL();
+                //_camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK2");
                 main.SetPosMarkerLine_PBL(20, false);
                 _camForm.Teachpoint2_process_Click_PBL();
-                _camForm.BtnCamCoordCam_Click_PBL();
+                //_camForm.BtnCamCoordCam_Click_PBL();
             }
         }
 
