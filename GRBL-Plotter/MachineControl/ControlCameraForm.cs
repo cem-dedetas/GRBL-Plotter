@@ -499,6 +499,15 @@ namespace GrblPlotter
             btnCamCoordCam.BackColor = Color.Lime;
             btnCamCoordTool.BackColor = SystemColors.Control;
         }
+        public void BtnCamCoordTool_Click_PBL()
+        {
+            if (cBCamCoordMove.Checked)
+                OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G54; G0G90"));  // switch coord system and move
+            else
+                OnRaiseXYEvent(new XYEventArgs(0, 1, (XyPoint)Grbl.posWork, "G54"));         // only switch
+            btnCamCoordTool.BackColor = Color.Lime;
+            btnCamCoordCam.BackColor = SystemColors.Control;
+        }
         // show actual offset from tool position
         private void TeachToolStripMenuItem_Click(object sender, EventArgs e)       // teach offset of G59 coord system
         {

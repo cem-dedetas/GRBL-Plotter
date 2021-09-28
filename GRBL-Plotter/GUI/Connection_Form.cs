@@ -168,7 +168,7 @@ namespace GrblPlotter.GUI
             this.main = mf;
             this._serial_form = sf;
             camOpen = true;
-            Console.WriteLine("STR XREL YREL" + str[0] + str[1] + xrel +  yrel);
+            Console.WriteLine("STR XREL YREL" + messages[0] + messages[1] + xrel +  yrel);
         }
 
         private void btnMove1_Click(object sender, EventArgs e)
@@ -192,14 +192,17 @@ namespace GrblPlotter.GUI
         private void btnMark1_Click(object sender, EventArgs e)
         {
             if (camOpen) 
-            { 
+            {
+                _camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK1");
                 main.SetPosMarkerLine_PBL(14, false);
                 double Xrel = Grbl.posWork.X + Xrelative;
                 double Yrel = Grbl.posWork.Y + Yrelative;
                 String message1 = "X" + Xrel + " Y" + Yrel;
-                messages[1] = message1;
+                Console.WriteLine("M1"+message1);
+                //messages[1] = message1;
                 _camForm.Teachpoint1_process_Click_PBL();
+                _camForm.BtnCamCoordCam_Click_PBL();
             }
         }
 
@@ -208,7 +211,8 @@ namespace GrblPlotter.GUI
             if (camOpen) 
             { 
                 main.SendCommandFromServer(messages[1]);
-                Console.WriteLine("INMOVE2");
+                
+                Console.WriteLine("INMOVE2 STR IS "+messages[1]);
             }
         }
 
@@ -223,11 +227,13 @@ namespace GrblPlotter.GUI
 
         private void btnMark2_Click(object sender, EventArgs e)
         {
-            if (camOpen) 
-            { 
+            if (camOpen)
+            {
+                _camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK2");
                 main.SetPosMarkerLine_PBL(20, false);
                 _camForm.Teachpoint2_process_Click_PBL();
+                _camForm.BtnCamCoordCam_Click_PBL();
             }
         }
 
