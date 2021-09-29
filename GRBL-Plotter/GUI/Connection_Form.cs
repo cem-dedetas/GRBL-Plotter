@@ -304,6 +304,7 @@ namespace GrblPlotter.GUI
                 double resultY0 = Convert.ToDouble(messages[0].Substring(pFrom, pTo - pFrom));
                 double xabs, yabs;
                 bool stay = true;
+                /*
                 while (stay)
                 {
                     xabs = Math.Abs(resultX0 - Grbl.posWork.X);
@@ -314,7 +315,7 @@ namespace GrblPlotter.GUI
                     {
                         stay = false;
                     }
-                }
+                }*/
                 Console.WriteLine("Got Out");
 
                 _camForm.AutoCenter();
@@ -343,6 +344,7 @@ namespace GrblPlotter.GUI
                 pTo = messages[1].Length;
                 resultY0 = Convert.ToDouble(messages[1].Substring(pFrom, pTo - pFrom));
                 stay = true;
+                /*
                 while (stay)
                 {
                     xabs = Math.Abs(resultX0 - Grbl.posWork.X);
@@ -351,7 +353,7 @@ namespace GrblPlotter.GUI
                     {
                         stay = false;
                     }
-                }
+                }*/
 
                 _camForm.AutoCenter();
 
