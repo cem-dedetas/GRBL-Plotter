@@ -34,6 +34,11 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave = new System.Windows.Forms.Button();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.ZeroXY = new System.Windows.Forms.Button();
+            this.moveToZero = new System.Windows.Forms.Button();
+            this.HomeXY = new System.Windows.Forms.Button();
+            this.btnRST_con = new System.Windows.Forms.Button();
+            this.btnCamCrdManual = new System.Windows.Forms.Button();
             this.setTool = new System.Windows.Forms.Button();
             this.btnMark2 = new System.Windows.Forms.Button();
             this.btnMark1 = new System.Windows.Forms.Button();
@@ -56,8 +61,7 @@ namespace GrblPlotter.GUI
             this.label_IP = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.btnCamCrdManual = new System.Windows.Forms.Button();
-            this.btnRST_con = new System.Windows.Forms.Button();
+            this.FullCalib = new System.Windows.Forms.Button();
             this.server_tab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -94,6 +98,10 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.FullCalib);
+            this.server_tab.Controls.Add(this.ZeroXY);
+            this.server_tab.Controls.Add(this.moveToZero);
+            this.server_tab.Controls.Add(this.HomeXY);
             this.server_tab.Controls.Add(this.btnRST_con);
             this.server_tab.Controls.Add(this.btnCamCrdManual);
             this.server_tab.Controls.Add(this.setTool);
@@ -123,10 +131,61 @@ namespace GrblPlotter.GUI
             this.server_tab.TabIndex = 0;
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
+            this.server_tab.Click += new System.EventHandler(this.server_tab_Click);
+            // 
+            // ZeroXY
+            // 
+            this.ZeroXY.Location = new System.Drawing.Point(267, 287);
+            this.ZeroXY.Name = "ZeroXY";
+            this.ZeroXY.Size = new System.Drawing.Size(100, 23);
+            this.ZeroXY.TabIndex = 26;
+            this.ZeroXY.Text = "ZeroXY";
+            this.ZeroXY.UseVisualStyleBackColor = true;
+            this.ZeroXY.Click += new System.EventHandler(this.ZeroXY_Click);
+            // 
+            // moveToZero
+            // 
+            this.moveToZero.Location = new System.Drawing.Point(161, 287);
+            this.moveToZero.Name = "moveToZero";
+            this.moveToZero.Size = new System.Drawing.Size(100, 23);
+            this.moveToZero.TabIndex = 25;
+            this.moveToZero.Text = "Move to 0,0";
+            this.moveToZero.UseVisualStyleBackColor = true;
+            this.moveToZero.Click += new System.EventHandler(this.moveToZero_Click);
+            // 
+            // HomeXY
+            // 
+            this.HomeXY.Location = new System.Drawing.Point(55, 287);
+            this.HomeXY.Name = "HomeXY";
+            this.HomeXY.Size = new System.Drawing.Size(100, 23);
+            this.HomeXY.TabIndex = 24;
+            this.HomeXY.Text = "HomeXY";
+            this.HomeXY.UseVisualStyleBackColor = true;
+            this.HomeXY.Click += new System.EventHandler(this.HomeXY_Click);
+            // 
+            // btnRST_con
+            // 
+            this.btnRST_con.Location = new System.Drawing.Point(267, 316);
+            this.btnRST_con.Name = "btnRST_con";
+            this.btnRST_con.Size = new System.Drawing.Size(46, 23);
+            this.btnRST_con.TabIndex = 23;
+            this.btnRST_con.Text = "RST";
+            this.btnRST_con.UseVisualStyleBackColor = true;
+            this.btnRST_con.Click += new System.EventHandler(this.btnRST_con_Click);
+            // 
+            // btnCamCrdManual
+            // 
+            this.btnCamCrdManual.Location = new System.Drawing.Point(161, 316);
+            this.btnCamCrdManual.Name = "btnCamCrdManual";
+            this.btnCamCrdManual.Size = new System.Drawing.Size(100, 23);
+            this.btnCamCrdManual.TabIndex = 22;
+            this.btnCamCrdManual.Text = "Swap Cam Coord";
+            this.btnCamCrdManual.UseVisualStyleBackColor = true;
+            this.btnCamCrdManual.Click += new System.EventHandler(this.btnCamCrdManual_Click);
             // 
             // setTool
             // 
-            this.setTool.Location = new System.Drawing.Point(54, 321);
+            this.setTool.Location = new System.Drawing.Point(55, 316);
             this.setTool.Name = "setTool";
             this.setTool.Size = new System.Drawing.Size(100, 23);
             this.setTool.TabIndex = 21;
@@ -330,25 +389,15 @@ namespace GrblPlotter.GUI
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnCamCrdManual
+            // FullCalib
             // 
-            this.btnCamCrdManual.Location = new System.Drawing.Point(160, 321);
-            this.btnCamCrdManual.Name = "btnCamCrdManual";
-            this.btnCamCrdManual.Size = new System.Drawing.Size(100, 23);
-            this.btnCamCrdManual.TabIndex = 22;
-            this.btnCamCrdManual.Text = "Swap Cam Coord";
-            this.btnCamCrdManual.UseVisualStyleBackColor = true;
-            this.btnCamCrdManual.Click += new System.EventHandler(this.btnCamCrdManual_Click);
-            // 
-            // btnRST_con
-            // 
-            this.btnRST_con.Location = new System.Drawing.Point(266, 321);
-            this.btnRST_con.Name = "btnRST_con";
-            this.btnRST_con.Size = new System.Drawing.Size(46, 23);
-            this.btnRST_con.TabIndex = 23;
-            this.btnRST_con.Text = "RST";
-            this.btnRST_con.UseVisualStyleBackColor = true;
-            this.btnRST_con.Click += new System.EventHandler(this.btnRST_con_Click);
+            this.FullCalib.Location = new System.Drawing.Point(54, 354);
+            this.FullCalib.Name = "FullCalib";
+            this.FullCalib.Size = new System.Drawing.Size(101, 23);
+            this.FullCalib.TabIndex = 27;
+            this.FullCalib.Text = "Full Calibration";
+            this.FullCalib.UseVisualStyleBackColor = true;
+            this.FullCalib.Click += new System.EventHandler(this.FullCalib_Click);
             // 
             // Connection_Form
             // 
@@ -402,5 +451,9 @@ namespace GrblPlotter.GUI
         private System.Windows.Forms.Button setTool;
         private System.Windows.Forms.Button btnCamCrdManual;
         private System.Windows.Forms.Button btnRST_con;
+        private System.Windows.Forms.Button moveToZero;
+        private System.Windows.Forms.Button HomeXY;
+        private System.Windows.Forms.Button ZeroXY;
+        private System.Windows.Forms.Button FullCalib;
     }
 }

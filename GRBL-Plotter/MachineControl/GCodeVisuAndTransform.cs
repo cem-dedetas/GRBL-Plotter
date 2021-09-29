@@ -160,7 +160,7 @@ namespace GrblPlotter
             int figureNr;
             XyPoint center = new XyPoint(0, 0);
             bool showCenter = false;
-            Console.WriteLine(coordList[14]);
+            //Console.WriteLine(coordList[14]);
             try
             {
                 if (line < coordList.Count)

@@ -268,12 +268,30 @@ namespace GrblPlotter
             int progressSub;
             int progressSubOld = 0;
             int count2 = 0;
-			
+
+            bool notfound0 = true;
+            bool notfound1 = true;
+
             /*********************************************************************/
             for (int lineNr = 0; lineNr < GCode.Length; lineNr++)   // go through all gcode lines
             {
                 modal.ResetSubroutine();                            // reset m, p, o, l Word
                 singleLine = GCode[lineNr].ToUpper().Trim();        // get line, remove unneeded chars
+                if(GCode[lineNr].ToUpper().Contains("FIDUC0") && notfound0)
+                {
+                    int Fiduc0Mark = lineNr;
+                    Grbl.fiduc0 = Fiduc0Mark;
+                    notfound0 = false;
+                    Console.WriteLine("FOUND FIDUC 0"+GCode[lineNr].ToUpper() + Fiduc0Mark);
+                }
+                if (GCode[lineNr].ToUpper().Contains("FIDUC1") && notfound1)
+                {
+                    int Fiduc1Mark = lineNr;
+                    Grbl.fiduc1 = Fiduc1Mark;
+                    notfound1 = false;
+                    Console.WriteLine("FOUND FIDUC 1" + GCode[lineNr].ToUpper() + Fiduc1Mark);
+                }// Send back material
+
 
                 if (worker != null)
                 {

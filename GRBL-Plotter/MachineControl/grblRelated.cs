@@ -49,6 +49,8 @@ namespace GrblPlotter
         internal static XyzPoint posMachine = new XyzPoint(0, 0, 0);
         public static bool posChanged = true;
         public static bool wcoChanged = true;
+        public static int fiduc0;
+        public static int fiduc1;
 
         public static bool isVersion_0 = true;  // note if grbl version <=0.9 or >=1.1
         public static bool isMarlin = false;

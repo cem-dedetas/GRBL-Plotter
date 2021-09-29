@@ -195,7 +195,7 @@ namespace GrblPlotter.GUI
             {
                 //_camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK1");
-                main.SetPosMarkerLine_PBL(14, false);
+                main.SetPosMarkerLine_PBL(Grbl.fiduc0, false);
                 _camForm.Teachpoint1_process_Click_PBL();
                 double Xrel = Grbl.posWork.X + Xrelative;
                 double Yrel = Grbl.posWork.Y + Yrelative;
@@ -232,7 +232,7 @@ namespace GrblPlotter.GUI
             {
                 //_camForm.BtnCamCoordTool_Click_PBL();
                 Console.WriteLine("INMARK2");
-                main.SetPosMarkerLine_PBL(20, false);
+                main.SetPosMarkerLine_PBL(Grbl.fiduc1, false);
                 _camForm.Teachpoint2_process_Click_PBL();
                 //_camForm.BtnCamCoordCam_Click_PBL();
             }
@@ -264,6 +264,103 @@ namespace GrblPlotter.GUI
                 this._serial_form.BtnGRBLHardReset_Click_PBL();
             }
 
+        }
+
+        private void server_tab_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HomeXY_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer("$HXY");
+        }
+
+        private void moveToZero_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer("X8 Y40");
+        }
+
+        private void ZeroXY_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer((Grbl.isMarlin ? "G92" : "G10 L20 P0") + " X0.000 Y0.000");
+        }
+
+        private void FullCalib_Click(object sender, EventArgs e)
+        {
+            if (camOpen)
+            {
+                main.SendCommandFromServer(messages[0]);
+
+                int pFrom;
+                int pTo;
+
+                pFrom = messages[0].IndexOf("X") + 1;
+                pTo = messages[0].IndexOf(" Y");
+                double resultX0 = Convert.ToDouble(messages[0].Substring(pFrom, pTo - pFrom));
+
+                pFrom = messages[0].IndexOf("Y") + 1;
+                pTo = messages[0].Length;
+                double resultY0 = Convert.ToDouble(messages[0].Substring(pFrom, pTo - pFrom));
+                double xabs, yabs;
+                bool stay = true;
+                while (stay)
+                {
+                    xabs = Math.Abs(resultX0 - Grbl.posWork.X);
+                    yabs = Math.Abs(resultY0 - Grbl.posWork.Y);
+                    Console.Write(xabs + "-");
+                    Console.WriteLine(yabs);
+                    if (xabs + yabs < 0.001)
+                    {
+                        stay = false;
+                    }
+                }
+                Console.WriteLine("Got Out");
+
+                _camForm.AutoCenter();
+
+                main.SetPosMarkerLine_PBL(Grbl.fiduc0, false);
+
+
+
+                _camForm.Teachpoint1_process_Click_PBL();
+                double Xrel = Grbl.posWork.X + Xrelative;
+                double Yrel = Grbl.posWork.Y + Yrelative;
+                String message1 = "X" + Xrel + " Y" + Yrel;
+                Console.WriteLine("M1" + message1);
+                messages[1] = message1;
+                Console.WriteLine("MESSAGE 1 IS : " + messages[1]);
+
+
+
+                main.SendCommandFromServer(messages[1]);
+
+                pFrom = messages[1].IndexOf("X") + 1;
+                pTo = messages[1].IndexOf(" Y");
+                resultX0 = Convert.ToDouble(messages[1].Substring(pFrom, pTo - pFrom));
+
+                pFrom = messages[1].IndexOf("Y") + 1;
+                pTo = messages[1].Length;
+                resultY0 = Convert.ToDouble(messages[1].Substring(pFrom, pTo - pFrom));
+                stay = true;
+                while (stay)
+                {
+                    xabs = Math.Abs(resultX0 - Grbl.posWork.X);
+                    yabs = Math.Abs(resultY0 - Grbl.posWork.Y);
+                    if (xabs + yabs < 0.001)
+                    {
+                        stay = false;
+                    }
+                }
+
+                _camForm.AutoCenter();
+
+                Console.WriteLine("INMARK2");
+                main.SetPosMarkerLine_PBL(Grbl.fiduc1, false);
+                _camForm.Teachpoint2_process_Click_PBL();
+
+
+            }
         }
     }
 }

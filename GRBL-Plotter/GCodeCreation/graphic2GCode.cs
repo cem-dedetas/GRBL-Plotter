@@ -151,7 +151,6 @@ namespace GrblPlotter
                 Gcode.Comment(finalGcodeString, XmlMarker.TileEnd + ">");
                 iDToSet++;
             }
-
             Gcode.JobEnd(finalGcodeString, "EndJob");       // Spindle / laser off
 
             return FinalGCode(graphicInfo.Title, graphicInfo.FilePath);
@@ -440,7 +439,7 @@ namespace GrblPlotter
         private static StringBuilder GetFigureAttributes(PathObject pathObject)
         {
             StringBuilder attributes = new StringBuilder();
-
+            
             if (pathObject.Info.PathGeometry.Length > 0) attributes.Append(string.Format(culture, " Geometry=\"{0}\"", pathObject.Info.PathGeometry));
             if (pathObject.Info.GroupAttributes[1].Length > 0) attributes.Append(string.Format(culture, " PenColor=\"{0}\"", pathObject.Info.GroupAttributes[1]));
             if (pathObject.Info.GroupAttributes[2].Length > 0) attributes.Append(string.Format(culture, " PenWidth=\"{0}\"", pathObject.Info.GroupAttributes[2]));
@@ -466,6 +465,7 @@ namespace GrblPlotter
         /// </summary>
         private static PathInformation pathInfo = new PathInformation();
         private static bool overWriteId = false;
+        static int repeat = 0;
         private static int StartPath(PathObject pathObject, int toolNr, string toolCmt, string penCmt = "")//string cmt)
         {
             Point endPenUp = pathObject.Start;
@@ -486,8 +486,8 @@ namespace GrblPlotter
                 iDToSet = ++PathCount;
                 if (overWriteId && (pathObject.FigureId > 0))
                     iDToSet = pathObject.FigureId;
-
                 string xml = string.Format(culture, "{0} Id=\"{1}\"{2}> ", XmlMarker.FigureStart, iDToSet, GetFigureAttributes(pathObject).ToString());//attributeGeometry, attributeId, attributeColor, attributeToolNr);
+                Console.WriteLine(xml);
                 if (figureEnable)
                     Comment(xml);
                 if (logCoordinates) Logger.Trace(culture, " StartPath Option:{0}  {1}", pathObject.Options, xml);
