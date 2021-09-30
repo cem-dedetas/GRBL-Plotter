@@ -34,6 +34,9 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave = new System.Windows.Forms.Button();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.SendBTN = new System.Windows.Forms.Button();
+            this.commandBox = new System.Windows.Forms.TextBox();
+            this.killalarmbtn = new System.Windows.Forms.Button();
             this.FullCalib = new System.Windows.Forms.Button();
             this.ZeroXY = new System.Windows.Forms.Button();
             this.moveToZero = new System.Windows.Forms.Button();
@@ -62,7 +65,6 @@ namespace GrblPlotter.GUI
             this.label_IP = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.killalarmbtn = new System.Windows.Forms.Button();
             this.server_tab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -99,6 +101,8 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.SendBTN);
+            this.server_tab.Controls.Add(this.commandBox);
             this.server_tab.Controls.Add(this.killalarmbtn);
             this.server_tab.Controls.Add(this.FullCalib);
             this.server_tab.Controls.Add(this.ZeroXY);
@@ -134,6 +138,35 @@ namespace GrblPlotter.GUI
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
             this.server_tab.Click += new System.EventHandler(this.server_tab_Click);
+            // 
+            // SendBTN
+            // 
+            this.SendBTN.Location = new System.Drawing.Point(353, 352);
+            this.SendBTN.Name = "SendBTN";
+            this.SendBTN.Size = new System.Drawing.Size(46, 23);
+            this.SendBTN.TabIndex = 30;
+            this.SendBTN.Text = "Send";
+            this.SendBTN.UseVisualStyleBackColor = true;
+            this.SendBTN.Click += new System.EventHandler(this.SendBTN_Click);
+            // 
+            // commandBox
+            // 
+            this.commandBox.Location = new System.Drawing.Point(161, 354);
+            this.commandBox.Name = "commandBox";
+            this.commandBox.Size = new System.Drawing.Size(191, 20);
+            this.commandBox.TabIndex = 29;
+            this.commandBox.TextChanged += new System.EventHandler(this.commandBox_TextChanged);
+            this.commandBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.commandBox_KeyDown);
+            // 
+            // killalarmbtn
+            // 
+            this.killalarmbtn.Location = new System.Drawing.Point(326, 316);
+            this.killalarmbtn.Name = "killalarmbtn";
+            this.killalarmbtn.Size = new System.Drawing.Size(97, 23);
+            this.killalarmbtn.TabIndex = 28;
+            this.killalarmbtn.Text = "Kill Alarm";
+            this.killalarmbtn.UseVisualStyleBackColor = true;
+            this.killalarmbtn.Click += new System.EventHandler(this.killalarmbtn_Click);
             // 
             // FullCalib
             // 
@@ -401,16 +434,6 @@ namespace GrblPlotter.GUI
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // killalarmbtn
-            // 
-            this.killalarmbtn.Location = new System.Drawing.Point(326, 316);
-            this.killalarmbtn.Name = "killalarmbtn";
-            this.killalarmbtn.Size = new System.Drawing.Size(97, 23);
-            this.killalarmbtn.TabIndex = 28;
-            this.killalarmbtn.Text = "Kill Alarm";
-            this.killalarmbtn.UseVisualStyleBackColor = true;
-            this.killalarmbtn.Click += new System.EventHandler(this.killalarmbtn_Click);
-            // 
             // Connection_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -468,5 +491,7 @@ namespace GrblPlotter.GUI
         private System.Windows.Forms.Button ZeroXY;
         private System.Windows.Forms.Button FullCalib;
         private System.Windows.Forms.Button killalarmbtn;
+        private System.Windows.Forms.Button SendBTN;
+        private System.Windows.Forms.TextBox commandBox;
     }
 }

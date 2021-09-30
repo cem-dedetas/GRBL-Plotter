@@ -305,9 +305,9 @@ namespace GrblPlotter.GUI
                 double resultY0 = Convert.ToDouble(messages[0].Substring(pFrom, pTo - pFrom));
                 double xabs, yabs;
                 bool stay = true;
-                /*
                 while (stay)
                 {
+                    this._serial_form.ProcessGrblPositionUpdate_PBL();
                     xabs = Math.Abs(resultX0 - Grbl.posWork.X);
                     yabs = Math.Abs(resultY0 - Grbl.posWork.Y);
                     Console.Write(xabs + "-");
@@ -316,7 +316,7 @@ namespace GrblPlotter.GUI
                     {
                         stay = false;
                     }
-                }*/
+                }
                 Console.WriteLine("Got Out");
 
                 _camForm.AutoCenter();
@@ -345,16 +345,16 @@ namespace GrblPlotter.GUI
                 pTo = messages[1].Length;
                 resultY0 = Convert.ToDouble(messages[1].Substring(pFrom, pTo - pFrom));
                 stay = true;
-                /*
                 while (stay)
                 {
+                    this._serial_form.ProcessGrblPositionUpdate_PBL();
                     xabs = Math.Abs(resultX0 - Grbl.posWork.X);
                     yabs = Math.Abs(resultY0 - Grbl.posWork.Y);
                     if (xabs + yabs < 0.001)
                     {
                         stay = false;
                     }
-                }*/
+                }
 
                 _camForm.AutoCenter();
 
@@ -369,6 +369,26 @@ namespace GrblPlotter.GUI
         private void killalarmbtn_Click(object sender, EventArgs e)
         {
             main.SendCommandFromServer("$X");
+        }
+
+        private void SendBTN_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer(commandBox.Text);
+            commandBox.Text = "";
+            
+        }
+
+        private void commandBox_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void commandBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SendBTN_Click(this, new EventArgs());
+            }
+
         }
     }
 }

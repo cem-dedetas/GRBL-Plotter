@@ -478,6 +478,32 @@ namespace GrblPlotter
 
             mParserState.changed = false;
         }
+        public void ProcessGrblPositionUpdate_PBL()
+        {
+            if (iamSerial == 1)
+            {
+                if (!Grbl.posChanged)
+                    Grbl.posChanged = !(XyzPoint.AlmostEqual(Grbl.posWCO, posWCO) && XyzPoint.AlmostEqual(Grbl.posMachine, posMachine));
+                if (!Grbl.wcoChanged)
+                    Grbl.wcoChanged = !(XyzPoint.AlmostEqual(Grbl.posWCO, posWCO));
+                Grbl.posWCO = posWCO; Grbl.posWork = posWork; Grbl.posMachine = posMachine;
+            }
+            OnRaisePosEvent(new PosEventArgs(posWork, posMachine, grblStateNow, machineState, mParserState, rxString));
+
+            /*            if (isStreaming)
+                        {
+                            string[] tmp = machineState.FS.Split(',');
+                            string s = "";
+                            if (tmp.Length > 1)
+                                s = "S"+tmp[1];
+                            LogPos.Trace("G1 X{0} Y{1} Z{2} {3} (FS:{4})", posWork.X, posWork.Y, posWork.Z, s, machineState.FS);
+                        }*/
+            // set local variables
+            gcodeVariable["MACX"] = posMachine.X; gcodeVariable["MACY"] = posMachine.Y; gcodeVariable["MACZ"] = posMachine.Z;
+            gcodeVariable["WACX"] = posWork.X; gcodeVariable["WACY"] = posWork.Y; gcodeVariable["WACZ"] = posWork.Z;
+
+            mParserState.changed = false;
+        }
 
         /***** process IDLE state *****/
         private void ProcessGrblStateChange()
