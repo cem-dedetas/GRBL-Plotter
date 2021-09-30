@@ -273,7 +273,8 @@ namespace GrblPlotter.GUI
 
         private void HomeXY_Click(object sender, EventArgs e)
         {
-            main.SendCommandFromServer("$HXY");
+            main.SendCommandFromServer("$HX");
+            main.SendCommandFromServer("$HY");
         }
 
         private void moveToZero_Click(object sender, EventArgs e)
@@ -363,6 +364,11 @@ namespace GrblPlotter.GUI
 
 
             }
+        }
+
+        private void killalarmbtn_Click(object sender, EventArgs e)
+        {
+            main.SendCommandFromServer("$X");
         }
     }
 }

@@ -4,8 +4,8 @@ import numpy as np
 
 def fixer(file0,file1):
     
-    path = r'C:\\Users\\Liquidsnake\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort.jpg'
-    path2 = r'C:\\Users\\Liquidsnake\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort1.jpg'
+    path = r'C:\\Users\\yagiz\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort.jpg'
+    path2 = r'C:\\Users\\yagiz\\Documents\\GitHub\\GRBL-Plotter\\Client\\distort1.jpg'
 
     
     img=cv2.imread(path)

@@ -34,6 +34,7 @@ namespace GrblPlotter.GUI
             this.btnConnectionSave = new System.Windows.Forms.Button();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.server_tab = new System.Windows.Forms.TabPage();
+            this.FullCalib = new System.Windows.Forms.Button();
             this.ZeroXY = new System.Windows.Forms.Button();
             this.moveToZero = new System.Windows.Forms.Button();
             this.HomeXY = new System.Windows.Forms.Button();
@@ -61,7 +62,7 @@ namespace GrblPlotter.GUI
             this.label_IP = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.FullCalib = new System.Windows.Forms.Button();
+            this.killalarmbtn = new System.Windows.Forms.Button();
             this.server_tab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
@@ -98,6 +99,7 @@ namespace GrblPlotter.GUI
             // 
             // server_tab
             // 
+            this.server_tab.Controls.Add(this.killalarmbtn);
             this.server_tab.Controls.Add(this.FullCalib);
             this.server_tab.Controls.Add(this.ZeroXY);
             this.server_tab.Controls.Add(this.moveToZero);
@@ -132,6 +134,16 @@ namespace GrblPlotter.GUI
             this.server_tab.Text = "Server";
             this.server_tab.UseVisualStyleBackColor = true;
             this.server_tab.Click += new System.EventHandler(this.server_tab_Click);
+            // 
+            // FullCalib
+            // 
+            this.FullCalib.Location = new System.Drawing.Point(54, 354);
+            this.FullCalib.Name = "FullCalib";
+            this.FullCalib.Size = new System.Drawing.Size(101, 23);
+            this.FullCalib.TabIndex = 27;
+            this.FullCalib.Text = "Full Calibration";
+            this.FullCalib.UseVisualStyleBackColor = true;
+            this.FullCalib.Click += new System.EventHandler(this.FullCalib_Click);
             // 
             // ZeroXY
             // 
@@ -389,15 +401,15 @@ namespace GrblPlotter.GUI
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // FullCalib
+            // killalarmbtn
             // 
-            this.FullCalib.Location = new System.Drawing.Point(54, 354);
-            this.FullCalib.Name = "FullCalib";
-            this.FullCalib.Size = new System.Drawing.Size(101, 23);
-            this.FullCalib.TabIndex = 27;
-            this.FullCalib.Text = "Full Calibration";
-            this.FullCalib.UseVisualStyleBackColor = true;
-            this.FullCalib.Click += new System.EventHandler(this.FullCalib_Click);
+            this.killalarmbtn.Location = new System.Drawing.Point(326, 316);
+            this.killalarmbtn.Name = "killalarmbtn";
+            this.killalarmbtn.Size = new System.Drawing.Size(97, 23);
+            this.killalarmbtn.TabIndex = 28;
+            this.killalarmbtn.Text = "Kill Alarm";
+            this.killalarmbtn.UseVisualStyleBackColor = true;
+            this.killalarmbtn.Click += new System.EventHandler(this.killalarmbtn_Click);
             // 
             // Connection_Form
             // 
@@ -455,5 +467,6 @@ namespace GrblPlotter.GUI
         private System.Windows.Forms.Button HomeXY;
         private System.Windows.Forms.Button ZeroXY;
         private System.Windows.Forms.Button FullCalib;
+        private System.Windows.Forms.Button killalarmbtn;
     }
 }
